@@ -4,7 +4,7 @@ module.exports = {
   bracketSpacing: false,
   trailingComma: 'all',
 
-  // teenybox 프리티어
+  // teenybox 프리티어!
   tabWidth: 2,
   singleQuote: false,
   semi: true,
