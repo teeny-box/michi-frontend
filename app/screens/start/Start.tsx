@@ -1,7 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export type RootStackParam = {
   signup: undefined;
@@ -10,11 +12,10 @@ export type RootStackParam = {
 
 export function Start() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
-
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={{ color: "black", fontSize: 30 }}>michi</Text>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <Text style={styles.title}>michi</Text>
         <TouchableOpacity onPressIn={() => navigation.navigate("login")}>
           <Text>login</Text>
         </TouchableOpacity>
@@ -29,7 +30,11 @@ export function Start() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "tomato",
+  },
+  title: {
+    flex: 1,
+    color: "black",
+    fontSize: 30,
   },
 });
