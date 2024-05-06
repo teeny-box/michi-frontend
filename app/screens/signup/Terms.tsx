@@ -5,7 +5,7 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-na
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export type RootStackParam = {
-  start: undefined;
+  login: undefined;
 };
 
 export function Terms(): React.JSX.Element {
@@ -61,7 +61,7 @@ export function Terms(): React.JSX.Element {
             bounceEffectIn={0.95}
           />
         </View>
-        <TouchableOpacity onPressIn={() => navigation.replace("start")}>
+        <TouchableOpacity onPressIn={() => navigation.replace("login")}>
           <Text>NEXT BUTTON</Text>
         </TouchableOpacity>
       </View>

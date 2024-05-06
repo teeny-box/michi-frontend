@@ -5883,7 +5883,7 @@ react-native-screens@^3.31.1, "react-native-screens@>= 3.0.0":
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-webview@>=11.x:
+react-native-webview@^13.8.7, react-native-webview@>=11.x:
   version "13.8.7"
   resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-13.8.7.tgz"
   integrity sha512-r8y+qlyh2+mtuPhOvgPB9Ccn2itDXacvaVFuB61AYTfisz1YhJ57iFEE8j32DfDpvl6NhaaFIzzHsumwJk92bQ==
