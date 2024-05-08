@@ -19,9 +19,17 @@ export function Login() {
         <Text style={styles.title}>로그인 페이지</Text>
         <TextInput value={id} onChangeText={setId} style={styles.input} placeholder="ID" />
         <TextInput value={password} onChangeText={setPassword} secureTextEntry={true} style={styles.input} placeholder="PASSWORD" />
-        <TouchableOpacity onPressIn={() => navigation.replace("main")}>
-          <Text>LOGIN BUTTON</Text>
+        <TouchableOpacity style={styles.longinButton} onPressIn={() => navigation.replace("main")}>
+          <Text style={styles.longinButtonText}>LOGIN BUTTON</Text>
         </TouchableOpacity>
+        <View>
+          <TouchableOpacity onPressIn={() => navigation.replace("main")}>
+            <Text>아이디 찾기</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPressIn={() => navigation.replace("main")}>
+            <Text>비밀번호 찾기</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -42,5 +50,16 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "black",
+  },
+
+  longinButton: {
+    width: 250,
+    padding: 10,
+    backgroundColor: "purple",
+  },
+
+  longinButtonText: {
+    color: "white",
+    textAlign: "center",
   },
 });
