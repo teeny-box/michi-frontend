@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Text, TouchableOpacity, View, StyleSheet, Dimensions } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -13,28 +12,45 @@ export type RootStackParam = {
 export function Start() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
   return (
-    <SafeAreaView>
       <View style={styles.container}>
-        <Text style={styles.title}>michi</Text>
-        <TouchableOpacity onPressIn={() => navigation.navigate("login")}>
-          <Text>login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPressIn={() => navigation.navigate("signup")}>
-          <Text>signup</Text>
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <Text style={styles.title}>michi</Text>
+        </View>
+        <View style={styles.body}>
+          <TouchableOpacity onPressIn={() => navigation.navigate("login")} style={styles.button}>
+            <Text style={styles.buttonText}>login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPressIn={() => navigation.navigate("signup")} style={styles.button}>
+            <Text style={styles.buttonText}>signup</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "tomato",
+    backgroundColor: "#7000FF",
+  },
+  header: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
-    flex: 1,
     color: "black",
-    fontSize: 30,
+    fontSize: 50,
+  },
+  body: { flex: 1, flexDirection: "row", justifyContent: "center", gap: 10, alignItems: "center" },
+  button: {
+    width: 100,
+    height: 40,
+    padding: 10,
+    backgroundColor: "white",
+    borderRadius: 5,
+  },
+  buttonText: {
+    textAlign: "center",
   },
 });

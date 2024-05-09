@@ -1,4 +1,6 @@
+import { StyleSheet } from "react-native";
 import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Home } from "../home/Home";
 import { MyPage } from "../mypage/MyPage";
 
@@ -17,10 +19,19 @@ export function MainTabNavigation() {
   };
 
   return (
-    <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="home" component={Home} />
-      {/* <Tab.Screen name="chat" component={} /> */}
-      <Tab.Screen name="mypage" component={MyPage} />
-    </Tab.Navigator>
+    <SafeAreaView style={styles.safeArea}>
+      <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
+        <Tab.Screen name="home" component={Home} />
+        {/* <Tab.Screen name="chat" component={} /> */}
+        <Tab.Screen name="mypage" component={MyPage} />
+      </Tab.Navigator>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FFF",
+  },
+});
