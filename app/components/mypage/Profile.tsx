@@ -1,4 +1,5 @@
 import { Image, StyleSheet, Text, View } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export function Profile() {
   return (
@@ -8,7 +9,7 @@ export function Profile() {
       </View>
       <View style={styles.nicknameBox}>
         <Text style={styles.nickname}>맹구콧물</Text>
-        {/* <MaterialIcons name="edit" size={24} color="black" /> */}
+        <MaterialCommunityIcons name="account-edit" />
       </View>
     </View>
   );
@@ -17,7 +18,8 @@ export function Profile() {
 const styles = StyleSheet.create({
   outBox: {
     flexDirection: "row",
-    backgroundColor: "linear()",
+    backgroundColor:
+      "linear-gradient(to right, rgba(15, 15, 15, 0.508) 0%, rgba(15, 15, 15, 0.697) 35%, rgba(15, 15, 15, 0.697) 65%, rgba(15, 15, 15, 0.508) 100%)",
     padding: 20,
   },
   image: {
