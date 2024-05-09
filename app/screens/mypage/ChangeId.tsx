@@ -7,19 +7,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export type RootStackParam = {
   id: undefined;
   password: undefined;
-  birthyear: undefined;
+  nickname: undefined;
 };
 
-export function Nickname(): React.JSX.Element {
+export function ChangeId() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
-  const [nickname, setNickname] = useState("");
+  const [id, setId] = useState("");
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text style={styles.title}>닉네임을 입력하세요</Text>
-        <TextInput value={nickname} onChangeText={setNickname} style={styles.input} />
-        <TouchableOpacity onPressIn={() => navigation.navigate("birthyear")}>
+        <Text style={styles.title}>아이디를 입력하세요</Text>
+        <TextInput value={id} onChangeText={setId} style={styles.input} />
+        <TouchableOpacity onPressIn={() => navigation.navigate("password")}>
           <Text>NEXT BUTTON</Text>
         </TouchableOpacity>
       </View>
