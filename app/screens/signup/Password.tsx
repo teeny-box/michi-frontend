@@ -18,7 +18,7 @@ export function Password(): React.JSX.Element {
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>비밀번호를 입력하세요</Text>
-        <TextInput value={password} onChangeText={setPassword} style={styles.input} />
+        <TextInput value={password} onChangeText={setPassword} secureTextEntry={true} style={styles.input} />
         <TouchableOpacity onPressIn={() => navigation.navigate("nickname")}>
           <Text>NEXT BUTTON</Text>
         </TouchableOpacity>
