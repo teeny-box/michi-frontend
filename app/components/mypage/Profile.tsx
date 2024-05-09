@@ -7,7 +7,7 @@ export function Profile() {
         <Image source={{ uri: "https://i.pinimg.com/564x/b4/b4/5f/b4b45f38fb15427b0f609f011b44f384.jpg" }} style={styles.image} />
       </View>
       <View style={styles.nicknameBox}>
-        <Text style={styles.nickname}>맹구귀여워</Text>
+        <Text style={styles.nickname}>맹구콧물</Text>
         {/* <MaterialIcons name="edit" size={24} color="black" /> */}
       </View>
     </View>
@@ -17,7 +17,7 @@ export function Profile() {
 const styles = StyleSheet.create({
   outBox: {
     flexDirection: "row",
-    backgroundColor: "red",
+    backgroundColor: "linear()",
     padding: 20,
   },
   image: {
