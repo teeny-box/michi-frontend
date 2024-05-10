@@ -3,7 +3,7 @@ import { MyPage } from "@screens/mypage/MyPage";
 import { ChangeId } from "@screens/mypage/ChangeId";
 import { ChangePassword } from "@screens/mypage/ChangePassword";
 import { ChangeProfile } from "../mypage/ChangeProfile";
-import { Certification } from "../common/Certification";
+import { Certification } from "../signup/Certification";
 
 const Stack = createNativeStackNavigator();
 

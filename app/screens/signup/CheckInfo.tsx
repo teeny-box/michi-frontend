@@ -9,7 +9,7 @@ export type RootStackParam = {
   terms: undefined;
 };
 
-export function BirthYear(): React.JSX.Element {
+export function CheckInfo(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
   const [open, setOpen] = useState(false);
   const [birthYear, setBirthYear] = useState(2000);

@@ -1,44 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import IMP from "iamport-react-native";
+import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-export type RootStackParam = {
-  id: undefined;
-};
+import { RootStackParam } from "../navigation/SignUpStackNavigation";
+import { IMPCertification } from "@/components/common/IMPCertification";
 
 export function Certification() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
   const [state, setState] = useState<"waiting" | "running" | "success" | "fail">("waiting");
 
-  /* [필수입력] 본인인증 종료 후, 라우터를 변경하고 결과를 전달합니다. */
-  function callback(response: any) {
-    console.log(response);
-    setState(response.success === "true" ? "success" : "fail");
-  }
-
-  /* [필수입력] 본인인증에 필요한 데이터를 입력합니다. */
-  const data = {
-    merchant_uid: `mid_${new Date().getTime()}`,
-    company: "아임포트",
-    carrier: "",
-    name: "",
-    phone: "",
-    min_age: "",
+  const callback = (res: any) => {
+    console.log(res);
+    setState(res.success === "true" ? "success" : "fail");
   };
 
   return (
     <>
-      {state === "running" ? (
-        <IMP.Certification
-          userCode={"imp18262154"} // 가맹점 식별코드
-          loading={<Text>loading...</Text>} // 로딩 컴포넌트
-          data={data} // 본인인증 데이터
-          callback={callback} // 본인인증 종료 후 콜백
-        />
-      ) : (
+      {state !== "running" ? (
         <SafeAreaView style={styles.container}>
           <View>
             <Text style={styles.title}>본인인증을 해주세요</Text>
@@ -52,12 +31,14 @@ export function Certification() {
               </TouchableOpacity>
             )}
             {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
-            <TouchableOpacity onPressIn={() => navigation.navigate("id")}>
+            <TouchableOpacity onPressIn={() => navigation.push("checkInfo")}>
               {/* disabled={state !== "success"} */}
               <Text>NEXT BUTTON</Text>
             </TouchableOpacity>
           </View>
         </SafeAreaView>
+      ) : (
+        <IMPCertification callback={callback} />
       )}
     </>
   );
