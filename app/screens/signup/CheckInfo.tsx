@@ -27,7 +27,7 @@ export function CheckInfo(): React.JSX.Element {
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>출생년도를 알려주세요</Text>
-        <DropDownPicker open={open} value={birthYear} items={years} setOpen={setOpen} setValue={setBirthYear} setItems={setYears} style={styles.input} />
+        <Text>{birthYear}</Text>
         <TouchableOpacity onPressIn={() => navigation.navigate("terms")}>
           <Text>NEXT BUTTON</Text>
         </TouchableOpacity>
