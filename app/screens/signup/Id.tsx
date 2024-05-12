@@ -3,12 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-export type RootStackParam = {
-  id: undefined;
-  password: undefined;
-  nickname: undefined;
-};
+import { RootStackParam } from "../navigation/SignUpStackNavigation";
 
 export function Id() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();

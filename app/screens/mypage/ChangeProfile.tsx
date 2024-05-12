@@ -1,15 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StyleSheet, Text, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-export type RootStackParam = {
-  changeProfile: undefined;
-};
-
-export function Profile() {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
-
+export function ChangeProfile() {
   return (
     <View style={styles.outBox}>
       <View style={styles.image}>
@@ -17,7 +9,6 @@ export function Profile() {
       </View>
       <View style={styles.nicknameBox}>
         <Text style={styles.nickname}>맹구콧물</Text>
-        <MaterialCommunityIcons name="account-edit" size={26} onPress={() => navigation.navigate("changeProfile")} />
       </View>
     </View>
   );

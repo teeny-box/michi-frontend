@@ -2,11 +2,20 @@ import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react
 import { Id } from "../signup/Id";
 import { Password } from "../signup/Password";
 import { Nickname } from "../signup/Nickname";
-import { BirthYear } from "../signup/BirthYear";
+import { CheckInfo } from "../signup/CheckInfo";
 import { Terms } from "../signup/Terms";
 import { Certification } from "../signup/Certification";
 
-const Stack = createNativeStackNavigator();
+export type RootStackParam = {
+  signup_certification: undefined;
+  id: undefined;
+  password: undefined;
+  nickname: undefined;
+  checkInfo: undefined;
+  terms: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParam>();
 
 export function SignUpStackNavigation() {
   const customStackNavigationOptions: NativeStackNavigationOptions = {
@@ -22,12 +31,12 @@ export function SignUpStackNavigation() {
   };
 
   return (
-    <Stack.Navigator initialRouteName="certification" screenOptions={{ headerTransparent: true }}>
-      <Stack.Screen name="certification" component={Certification} options={{ headerShown: false }} />
+    <Stack.Navigator initialRouteName="signup_certification" screenOptions={{ headerTransparent: true }}>
+      <Stack.Screen name="signup_certification" component={Certification} options={{ headerShown: false }} />
+      <Stack.Screen name="checkInfo" component={CheckInfo} />
       <Stack.Screen name="id" component={Id} />
       <Stack.Screen name="password" component={Password} />
       <Stack.Screen name="nickname" component={Nickname} />
-      <Stack.Screen name="birthyear" component={BirthYear} />
       <Stack.Screen name="terms" component={Terms} />
     </Stack.Navigator>
   );
