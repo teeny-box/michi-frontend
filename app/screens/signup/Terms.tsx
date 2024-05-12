@@ -7,6 +7,7 @@ import { commonStyles } from "./Common.styled";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilValue } from "recoil";
 import { birthYearState, idState, nicknameState, passwordState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
+import { authUrl } from "@/utils/apiUrls";
 
 export function Terms(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();

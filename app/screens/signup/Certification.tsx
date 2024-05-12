@@ -8,6 +8,7 @@ import { IMPCertification } from "@/components/common/IMPCertification";
 import { commonStyles } from "./Common.styled";
 import { useSetRecoilState } from "recoil";
 import { birthYearState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
+import { authUrl } from "@/utils/apiUrls";
 
 type stateType = "waiting" | "running" | "success" | "fail";
 

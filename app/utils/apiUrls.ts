@@ -1,4 +1,4 @@
-const baseURL = "/";
+const baseURL = "";
 
-const authUrl = `${baseURL}/auth`;
-const userUrl = `${baseURL}/users`;
+export const authUrl = `${baseURL}/auth`;
+export const userUrl = `${baseURL}/users`;
