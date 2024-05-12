@@ -1,6 +1,13 @@
 import { StyleSheet } from "react-native";
 
 export const commonStyles = StyleSheet.create({
+  container: {
+    marginHorizontal: 40,
+    marginVertical: 70,
+    position: "relative",
+    flexGrow: 1,
+  },
+
   nextButton: {
     position: "absolute",
     bottom: 0,
@@ -12,6 +19,7 @@ export const commonStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   nextButtonDisabled: {
     position: "absolute",
     bottom: 0,

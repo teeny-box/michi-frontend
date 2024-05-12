@@ -1,41 +1,84 @@
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RootStackParam } from "../navigation/SignUpStackNavigation";
+import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { IMPCertification } from "@/components/common/IMPCertification";
 import { commonStyles } from "./Common.styled";
+import { useSetRecoilState } from "recoil";
+import { birthYearState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
+
+type stateType = "waiting" | "running" | "success" | "fail";
 
 export function Certification() {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
-  const [state, setState] = useState<"waiting" | "running" | "success" | "fail">("waiting");
+  const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
+  const [state, setState] = useState<stateType>("waiting");
+  const setUserName = useSetRecoilState(userNameState);
+  const setPhoneNumber = useSetRecoilState(phoneNumberState);
+  const setBirthYear = useSetRecoilState(birthYearState);
+
+  useEffect(() => {
+    if (state !== "success") {
+      setUserName("");
+      setPhoneNumber("");
+      setBirthYear("");
+    }
+  }, [state]);
 
   const handlePressCertificationButton = () => {
     setState("running");
   };
 
-  const getPortOne = async (impUid: string) => {
-    try {
-      const res = await fetch(`${authUrl}/${impUid}`);
-      const data = await res.json();
+  const getPortOne = async (impUid: string): Promise<{ state: stateType }> => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
 
-      return { error: data.errorCode, data: data.data };
-    } catch (err) {
-      return { error: err, data: null };
-    }
+    // try {
+    //   const res = await fetch(`${authUrl}/${impUid}`);
+
+    //   if (res.ok) {
+    //     const data = await res.json();
+
+    //     if (currentYear - parseInt(data.data.birthYear) > 18) {
+    //       setUserName(data.data.userName);
+    //       setPhoneNumber(data.data.phoneNumber);
+    //       setBirthYear(data.data.birthYear);
+    //       return { state: "success" };
+    //     } else {
+    //       Alert.alert("⚠️ 미성년자는 가입할 수 없습니다.", "", [{ text: "OK", style: "cancel" }]);
+    //     }
+    //   }
+    //   return { state: "fail" };
+    // } catch (err) {
+    //   console.error("get portone error : ", err);
+    //   return { state: "fail" };
+    // }
+
+    setUserName("이진이");
+    setPhoneNumber("01077440745");
+    setBirthYear("2000");
+    return { state: "success" };
   };
 
   const callback = async (res: any) => {
     console.log(res);
+    if (res.success === "false") {
+      setState("fail");
+      return;
+    }
     const apiRes = await getPortOne(res.imp_uid);
-    setState(apiRes.error ? "fail" : "success");
+    setState(apiRes.state);
+  };
+
+  const handlePressNextButton = () => {
+    navigation.push("checkInfo");
   };
 
   return (
     <>
       {state !== "running" ? (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={commonStyles.container}>
           <Text style={styles.title}>본인인증을 해주세요</Text>
           {state === "success" ? (
             <View style={styles.buttonSuccess}>
@@ -48,7 +91,7 @@ export function Certification() {
           )}
           {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           <TouchableOpacity
-            onPressIn={() => navigation.push("checkInfo")}
+            onPressIn={handlePressNextButton}
             // disabled={state !== "success"}
             // style={state === "success" ? commonStyles.nextButton : commonStyles.nextButtonDisabled}
             style={commonStyles.nextButton}>
@@ -63,13 +106,6 @@ export function Certification() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 40,
-    marginVertical: 70,
-    position: "relative",
-    flexGrow: 1,
-  },
-
   title: {
     color: "black",
     fontSize: 26,
