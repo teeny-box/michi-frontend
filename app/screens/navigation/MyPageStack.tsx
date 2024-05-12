@@ -1,6 +1,9 @@
 import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MyPage } from "../mypage/MyPage";
-import { ChangeId } from "../mypage/ChangeId";
+import { MyPage } from "@screens/mypage/MyPage";
+import { ChangeId } from "@screens/mypage/ChangeId";
+import { ChangePassword } from "@screens/mypage/ChangePassword";
+import { ChangeProfile } from "../mypage/ChangeProfile";
+import { Certification } from "../signup/Certification";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,9 +21,12 @@ export function MyPageStackNavigation() {
   };
 
   return (
-    <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: true }}>
+    <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false }}>
       <Stack.Screen name="mypage" component={MyPage} options={{ headerShown: false }} />
       <Stack.Screen name="changeId" component={ChangeId} />
+      <Stack.Screen name="changePassword" component={ChangePassword} />
+      <Stack.Screen name="changeProfile" component={ChangeProfile} />
+      <Stack.Screen name="certification" component={Certification} />
     </Stack.Navigator>
   );
 }

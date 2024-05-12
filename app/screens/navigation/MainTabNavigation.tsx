@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Home } from "../home/Home";
-import { MyPage } from "../mypage/MyPage";
+import { MyPageStackNavigation } from "./MyPageStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,13 +19,11 @@ export function MainTabNavigation() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="home" component={Home} />
-        {/* <Tab.Screen name="chat" component={} /> */}
-        <Tab.Screen name="mypage" component={MyPage} />
-      </Tab.Navigator>
-    </SafeAreaView>
+    <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="home" component={Home} />
+      {/* <Tab.Screen name="chat" component={} /> */}
+      <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
+    </Tab.Navigator>
   );
 }
 
