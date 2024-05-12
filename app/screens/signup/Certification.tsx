@@ -11,9 +11,25 @@ export function Certification() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
   const [state, setState] = useState<"waiting" | "running" | "success" | "fail">("waiting");
 
-  const callback = (res: any) => {
+  const handlePressCertificationButton = () => {
+    setState("running");
+  };
+
+  const getPortOne = async (impUid: string) => {
+    try {
+      const res = await fetch(`${authUrl}/${impUid}`);
+      const data = await res.json();
+
+      return { error: data.errorCode, data: data.data };
+    } catch (err) {
+      return { error: err, data: null };
+    }
+  };
+
+  const callback = async (res: any) => {
     console.log(res);
-    setState(res.success === "true" ? "success" : "fail");
+    const apiRes = await getPortOne(res.imp_uid);
+    setState(apiRes.error ? "fail" : "success");
   };
 
   return (
@@ -26,15 +42,16 @@ export function Certification() {
               <Text>인증완료</Text>
             </View>
           ) : (
-            <TouchableOpacity style={styles.button} onPressIn={() => setState("running")}>
+            <TouchableOpacity style={styles.button} onPressIn={handlePressCertificationButton}>
               <Text>인증하기</Text>
             </TouchableOpacity>
           )}
           {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           <TouchableOpacity
             onPressIn={() => navigation.push("checkInfo")}
-            disabled={state !== "success"}
-            style={state === "success" ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
+            // disabled={state !== "success"}
+            // style={state === "success" ? commonStyles.nextButton : commonStyles.nextButtonDisabled}
+            style={commonStyles.nextButton}>
             <Text>NEXT</Text>
           </TouchableOpacity>
         </SafeAreaView>
