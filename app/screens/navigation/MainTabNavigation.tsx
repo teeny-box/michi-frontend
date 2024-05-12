@@ -1,5 +1,6 @@
 import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home } from "../home/Home";
+import { Chatrooms } from "../chatrooms/Chatrooms";
 import { MyPageStackNavigation } from "./MyPageStack";
 
 const Tab = createBottomTabNavigator();
@@ -19,7 +20,7 @@ export function MainTabNavigation() {
   return (
     <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
       <Tab.Screen name="home" component={Home} />
-      {/* <Tab.Screen name="chat" component={} /> */}
+      <Tab.Screen name="chatting" component={Chatrooms} />
       <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
     </Tab.Navigator>
   );
