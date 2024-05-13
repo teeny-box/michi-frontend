@@ -1,14 +1,17 @@
-import { tokenState } from "@/recoil/authAtoms";
-import { useRecoilState } from "recoil";
+import { tokenState, userState } from "@/recoil/authAtoms";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MainTabNavigation } from "./MainTabNavigation";
 import { StartStackNavigation } from "./StartStackNavigation";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Text, View } from "react-native";
+import { userUrl } from "@/utils/apiUrls";
 
 export function AppNavigation() {
   const [state, setState] = useState("loading");
   const [token, setToken] = useRecoilState(tokenState);
+  const setUser = useSetRecoilState(userState);
+  const resetUser = useResetRecoilState(userState);
 
   useEffect(() => {
     const getTokenFromAsyncStorege = async () => {
@@ -27,6 +30,26 @@ export function AppNavigation() {
 
     getTokenFromAsyncStorege();
   }, []);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await fetch(`${userUrl}`, { headers: { Authorization: `Bearer ${token}` } });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.data);
+        }
+      } catch (err) {
+        console.error("get user data error : ", err);
+      }
+    };
+
+    if (token) {
+      getUserData();
+    } else {
+      resetUser();
+    }
+  }, [token]);
 
   return (
     <>
