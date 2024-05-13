@@ -19,11 +19,13 @@ export function MainTabNavigation() {
   };
 
   return (
+    <SafeAreaView style={styles.safeArea}>
     <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
       <Tab.Screen name="home" component={Home} />
       {/* <Tab.Screen name="chat" component={} /> */}
       <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
     </Tab.Navigator>
+    </SafeAreaView>
   );
 }
 

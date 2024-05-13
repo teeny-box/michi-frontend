@@ -13,6 +13,7 @@ import { StartStackNavigation } from "./screens/navigation/StartStackNavigation"
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { MainTabNavigation } from "./screens/navigation/MainTabNavigation";
+import { HomeStackNavigation } from "./screens/navigation/HomeStackNavigation";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";

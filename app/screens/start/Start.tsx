@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Text, TouchableOpacity, View, StyleSheet, Dimensions } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -12,19 +13,20 @@ export type RootStackParam = {
 export function Start() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
   return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>michi</Text>
-        </View>
-        <View style={styles.body}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("login")} style={styles.button}>
-            <Text style={styles.buttonText}>login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPressIn={() => navigation.navigate("signup")} style={styles.button}>
-            <Text style={styles.buttonText}>signup</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>michi</Text>
+        <Icon name="forward" size={30} color="#4F8EF7" />
       </View>
+      <View style={styles.body}>
+        <TouchableOpacity onPressIn={() => navigation.navigate("login")} style={styles.button}>
+          <Text style={styles.buttonText}>login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPressIn={() => navigation.navigate("signup")} style={styles.button}>
+          <Text style={styles.buttonText}>signup</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
