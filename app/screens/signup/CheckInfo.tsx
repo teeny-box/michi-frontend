@@ -1,54 +1,50 @@
+import { birthYearState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-export type RootStackParam = {
-  terms: undefined;
-};
+import { useRecoilValue } from "recoil";
+import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
+import { commonStyles } from "./Common.styled";
 
 export function CheckInfo(): React.JSX.Element {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
-  const [open, setOpen] = useState(false);
-  const [birthYear, setBirthYear] = useState(2000);
-  const [years, setYears] = useState<{ label: string; value: number }[] | []>([]);
+  const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
+  const phoneNumber = useRecoilValue(phoneNumberState);
+  const birthYear = useRecoilValue(birthYearState);
+  const userName = useRecoilValue(userNameState);
 
-  useEffect(() => {
-    const yearsList = [];
-    for (let i = 1990; i < 2006; i++) {
-      yearsList.push({ label: i.toString(), value: i });
-    }
-    setYears(yearsList);
-  }, []);
+  const handlePressNextButton = () => {
+    navigation.push("id");
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}>출생년도를 알려주세요</Text>
-        <Text>{birthYear}</Text>
-        <TouchableOpacity onPressIn={() => navigation.navigate("terms")}>
-          <Text>NEXT BUTTON</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={commonStyles.container}>
+      <Text style={styles.title}>인증 정보를 확인해주세요.</Text>
+      <Text style={styles.label}>이름</Text>
+      <Text style={styles.value}>{userName}</Text>
+      <Text style={styles.label}>전화번호</Text>
+      <Text style={styles.value}>{phoneNumber}</Text>
+      <Text style={styles.label}>출생년도</Text>
+      <Text style={styles.value}>{birthYear}</Text>
+      <TouchableOpacity style={commonStyles.nextButton} onPressIn={handlePressNextButton}>
+        <Text>NEXT</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 70,
-    marginHorizontal: 40,
-    marginVertical: 20,
-  },
-
   title: {
     color: "black",
     fontSize: 26,
   },
 
-  input: {
+  label: {
+    fontSize: 12,
+    marginTop: 30,
+  },
+
+  value: {
     borderWidth: 1,
     borderColor: "black",
     marginVertical: 10,

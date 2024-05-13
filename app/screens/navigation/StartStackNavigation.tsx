@@ -4,7 +4,14 @@ import { Login } from "../login/Login";
 import { SignUpStackNavigation } from "./SignUpStackNavigation";
 import { MainTabNavigation } from "./MainTabNavigation";
 
-const Stack = createNativeStackNavigator();
+export type StartRootStackParam = {
+  start: undefined;
+  login: undefined;
+  signup: undefined;
+  main: undefined;
+};
+
+const Stack = createNativeStackNavigator<StartRootStackParam>();
 
 export function StartStackNavigation() {
   const customStackNavigationOptions: NativeStackNavigationOptions = {

@@ -5,17 +5,19 @@ import { Nickname } from "../signup/Nickname";
 import { CheckInfo } from "../signup/CheckInfo";
 import { Terms } from "../signup/Terms";
 import { Certification } from "../signup/Certification";
+import { Welcome } from "../signup/Welcome";
 
-export type RootStackParam = {
+export type SignUpRootStackParam = {
   signup_certification: undefined;
   id: undefined;
   password: undefined;
   nickname: undefined;
   checkInfo: undefined;
   terms: undefined;
+  welcome: undefined;
 };
 
-const Stack = createNativeStackNavigator<RootStackParam>();
+const Stack = createNativeStackNavigator<SignUpRootStackParam>();
 
 export function SignUpStackNavigation() {
   const customStackNavigationOptions: NativeStackNavigationOptions = {
@@ -38,6 +40,7 @@ export function SignUpStackNavigation() {
       <Stack.Screen name="password" component={Password} />
       <Stack.Screen name="nickname" component={Nickname} />
       <Stack.Screen name="terms" component={Terms} />
+      <Stack.Screen name="welcome" component={Welcome} />
     </Stack.Navigator>
   );
 }
