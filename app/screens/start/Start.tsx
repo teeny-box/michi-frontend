@@ -24,10 +24,7 @@ export function Start() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#7000FF",
-  },
-  header: {
-    flex: 1,
+    alignItems: "center",
     justifyContent: "center",
   },
 
