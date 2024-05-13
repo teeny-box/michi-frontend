@@ -3,6 +3,7 @@ import { Start } from "../start/Start";
 import { Login } from "../login/Login";
 import { SignUpStackNavigation } from "./SignUpStackNavigation";
 import { MainTabNavigation } from "./MainTabNavigation";
+import { FeedEdit } from "../home/FeedEdit";
 
 export type StartRootStackParam = {
   start: undefined;
@@ -30,6 +31,7 @@ export function StartStackNavigation() {
     <Stack.Navigator initialRouteName="start" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="start" component={Start} options={{ animation: "fade" }} />
       <Stack.Screen name="login" component={Login} options={{ headerShown: true }} />
+      <Stack.Screen name="feedEdit" component={FeedEdit} options={{ headerShown: false }}/>
       <Stack.Screen name="signup" component={SignUpStackNavigation} />
       <Stack.Screen name="main" component={MainTabNavigation} />
     </Stack.Navigator>

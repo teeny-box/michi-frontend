@@ -6,13 +6,14 @@
  */
 
 import React, { useState } from "react";
-import { StatusBar, useColorScheme } from "react-native";
+import { StatusBar, useColorScheme, StyleSheet } from "react-native";
 
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { StartStackNavigation } from "./screens/navigation/StartStackNavigation";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { MainTabNavigation } from "./screens/navigation/MainTabNavigation";
+import { HomeStackNavigation } from "./screens/navigation/HomeStackNavigation";
 import { RecoilRoot } from "recoil";
 
 function App(): React.JSX.Element {
