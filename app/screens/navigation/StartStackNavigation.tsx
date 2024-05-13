@@ -3,12 +3,16 @@ import { Start } from "../start/Start";
 import { Login } from "../login/Login";
 import { SignUpStackNavigation } from "./SignUpStackNavigation";
 import { MainTabNavigation } from "./MainTabNavigation";
+import { FindIdStackNavigation } from "./user/FindIdNavigation";
+import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
 
 export type StartRootStackParam = {
   start: undefined;
   login: undefined;
   signup: undefined;
   main: undefined;
+  findId_login: undefined;
+  findPassword_login: undefined;
 };
 
 const Stack = createNativeStackNavigator<StartRootStackParam>();
@@ -32,6 +36,8 @@ export function StartStackNavigation() {
       <Stack.Screen name="login" component={Login} options={{ headerShown: true }} />
       <Stack.Screen name="signup" component={SignUpStackNavigation} />
       <Stack.Screen name="main" component={MainTabNavigation} />
+      <Stack.Screen name="findId_login" component={FindIdStackNavigation} />
+      <Stack.Screen name="findPassword_login" component={FindPasswordStackNavigation} />
     </Stack.Navigator>
   );
 }

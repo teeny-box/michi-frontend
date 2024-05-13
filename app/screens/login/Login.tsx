@@ -7,13 +7,10 @@ import { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSetRecoilState } from "recoil";
-
-export type RootStackParam = {
-  main: undefined;
-};
+import { StartRootStackParam } from "../navigation/StartStackNavigation";
 
 export function Login() {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
+  const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const setToken = useSetRecoilState(tokenState);
@@ -57,6 +54,14 @@ export function Login() {
     }
   };
 
+  const handlePressFindID = () => {
+    navigation.push("findId_login");
+  };
+
+  const handlePressFindPassword = () => {
+    navigation.push("findPassword_login");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -67,10 +72,10 @@ export function Login() {
           <Text style={styles.longinButtonText}>LOGIN</Text>
         </TouchableOpacity>
         <View>
-          <TouchableOpacity onPressIn={() => navigation.replace("main")}>
+          <TouchableOpacity onPressIn={handlePressFindID}>
             <Text>아이디 찾기</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPressIn={() => navigation.replace("main")}>
+          <TouchableOpacity onPressIn={handlePressFindPassword}>
             <Text>비밀번호 찾기</Text>
           </TouchableOpacity>
         </View>

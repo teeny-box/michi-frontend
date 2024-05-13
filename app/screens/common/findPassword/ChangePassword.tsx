@@ -1,25 +1,24 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { commonStyles } from "./Common.styled";
 import { useRecoilState } from "recoil";
 import { passwordState } from "@/recoil/signupAtoms";
-import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
+import { StartRootStackParam } from "@/screens/navigation/StartStackNavigation";
+import { commonStyles } from "@/screens/signup/Common.styled";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.
 const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
 
-export function Password(): React.JSX.Element {
-  const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
+export function ChangePassword(): React.JSX.Element {
+  const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const [newPassword, setNewPassword] = useRecoilState(passwordState);
   const [checkPassword, setCheckPassword] = useState("");
   const [checkValidationMessage, setCheckValidationMessage] = useState("특수문자, 공백은 사용할 수 없습니다.");
   const [isSame, setIsSmae] = useState(false);
   const [isAvailable, setIsAvailable] = useState(false);
-  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
   useEffect(() => {
     if (newPassword) passwordValidation(newPassword);
@@ -46,43 +45,18 @@ export function Password(): React.JSX.Element {
   const handleChangePassword = (text: string) => {
     setNewPassword(text);
 
-    // 유효성 검사
     if (!text) {
-      clearTimeout(timer);
       setCheckValidationMessage("특수문자, 공백은 사용할 수 없습니다.");
       setIsAvailable(false);
       return;
     }
 
+    // 유효성 검사
     passwordValidation(text);
-
-    // setCheckMessage("...");
-    // setIsAvailable(false);
-
-    // // 중복 검사(api) 디바운싱
-    // if (timer) {
-    //   clearTimeout(timer);
-    // }
-
-    // const newTimer = setTimeout(async () => {
-    //   try {
-    //     if (!regex.test(text)) {
-    //       setCheckMessage("사용할 수 없는 비밀번호입니다.");
-    //     } else {
-    //       // api 요청
-    //       setCheckMessage("사용 가능한 비밀번호입니다.");
-    //       setIsAvailable(true);
-    //     }
-    //   } catch (e) {
-    //     console.error("error", e);
-    //     setCheckMessage("사용할 수 없는 비밀번호입니다.");
-    //   }
-    // }, 500);
-    // setTimer(newTimer);
   };
 
   const handlePressNextButton = () => {
-    navigation.push("nickname");
+    navigation.pop(3);
   };
 
   return (

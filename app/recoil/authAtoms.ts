@@ -9,3 +9,8 @@ export const tokenState = atom({
   key: "tokenState",
   default: "",
 });
+
+export const idFoundState = atom({
+  key: "idFoundState",
+  default: "",
+});
