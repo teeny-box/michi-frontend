@@ -2,11 +2,12 @@ import { nicknameState } from "@/recoil/signupAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRecoilState } from "recoil";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { commonStyles } from "./Common.styled";
+import { userUrl } from "@/utils/apiUrls";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
@@ -26,17 +27,21 @@ export function Nickname(): React.JSX.Element {
   const nicknameValidation = async (nickname: string) => {
     setIsAvailable(false);
 
+    if (!regex.test(nickname)) {
+      setCheckMessage("사용할 수 없는 닉네임입니다.");
+      return;
+    }
     try {
-      if (!regex.test(nickname)) {
-        setCheckMessage("사용할 수 없는 ID입니다.");
-      } else {
-        // api 요청
-        setCheckMessage("사용 가능한 ID입니다.");
+      const res = await fetch(`${userUrl}/nickname-check/${nickname}`);
+      if (res.ok) {
+        setCheckMessage("사용 가능한 닉네임입니다.");
         setIsAvailable(true);
+      } else {
+        setCheckMessage("사용할 수 없는 닉네임입니다.");
       }
     } catch (e) {
       console.error("error", e);
-      setCheckMessage("사용할 수 없는 ID입니다.");
+      setCheckMessage("사용할 수 없는 닉네임입니다.");
     }
   };
 
@@ -71,9 +76,11 @@ export function Nickname(): React.JSX.Element {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <Text style={styles.title}>닉네임을 입력하세요</Text>
-      <TextInput value={nickname} onChangeText={handleChangeNickname} style={styles.input} maxLength={10} />
-      <Text>{checkMessage}</Text>
+      <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>닉네임을 입력하세요</Text>
+        <TextInput value={nickname} onChangeText={handleChangeNickname} style={styles.input} maxLength={10} />
+        <Text>{checkMessage}</Text>
+      </ScrollView>
       <TouchableOpacity
         onPressIn={handlePressNextButton}
         disabled={!isAvailable}

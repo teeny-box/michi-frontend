@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { commonStyles } from "./Common.styled";
 import { useRecoilState } from "recoil";
@@ -26,7 +26,7 @@ export function Password(): React.JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (newPassword === checkPassword) {
+    if (newPassword && newPassword === checkPassword) {
       setIsSmae(true);
     } else {
       setIsSmae(false);
@@ -87,12 +87,14 @@ export function Password(): React.JSX.Element {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <Text style={styles.title}>비밀번호를 입력하세요</Text>
-      <Text style={styles.label}>새 비밀번호</Text>
-      <TextInput value={newPassword} onChangeText={handleChangePassword} secureTextEntry={true} style={styles.input} />
-      <Text>{checkValidationMessage}</Text>
-      <Text style={styles.label}>비밀번호 확인</Text>
-      <TextInput value={checkPassword} onChangeText={setCheckPassword} secureTextEntry={true} style={styles.input} />
+      <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>비밀번호를 입력하세요</Text>
+        <Text style={styles.label}>새 비밀번호</Text>
+        <TextInput value={newPassword} onChangeText={handleChangePassword} secureTextEntry={true} style={styles.input} />
+        <Text>{checkValidationMessage}</Text>
+        <Text style={styles.label}>비밀번호 확인</Text>
+        <TextInput value={checkPassword} onChangeText={setCheckPassword} secureTextEntry={true} style={styles.input} />
+      </ScrollView>
       <TouchableOpacity onPressIn={handlePressNextButton} disabled={!isSame} style={isSame ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
         <Text>NEXT</Text>
       </TouchableOpacity>

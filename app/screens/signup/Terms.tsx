@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { commonStyles } from "./Common.styled";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
@@ -28,33 +28,25 @@ export function Terms(): React.JSX.Element {
 
   const signUp = async () => {
     try {
-      // const res = await fetch(`${authUrl}`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     userId,
-      //     password,
-      //     nickname,
-      //     userName,
-      //     phoneNumber,
-      //     birthYear,
-      //   }),
-      // });
-      const res = { ok: true };
+      const res = await fetch(`${authUrl}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          password,
+          nickname,
+          userName,
+          phoneNumber,
+          birthYear,
+        }),
+      });
+      console.log(await res.json());
 
       if (res.ok) {
-        Alert.alert("회원 가입 완료!", "", [
-          {
-            text: "OK",
-          },
-        ]);
+        Alert.alert("회원 가입 완료!", "", [{ text: "OK" }]);
         return 1;
       }
-      Alert.alert("⚠️ 회원가입 실패", "입력한 정보를 다시 확인해주세요.", [
-        {
-          text: "OK",
-        },
-      ]);
+      Alert.alert("⚠️ 회원가입 실패", "입력한 정보를 다시 확인해주세요.", [{ text: "OK" }]);
       return 0;
     } catch (err) {
       console.error("sign up error : ", err);
@@ -71,55 +63,57 @@ export function Terms(): React.JSX.Element {
     const success = await signUp();
 
     if (success) {
-      navigation.push("welcome");
+      navigation.reset({ index: 0, routes: [{ name: "welcome" }] });
     }
   };
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <Text style={styles.title}>이용약관</Text>
-      <BouncyCheckbox
-        isChecked={allChecked}
-        size={20}
-        fillColor="plum"
-        text="아래 항목에 전부 동의합니다."
-        iconStyle={styles.checkboxIcon}
-        innerIconStyle={styles.checkboxInnerIcon}
-        textStyle={styles.checkboxText}
-        onPress={(isChecked: boolean) => {
-          setIsChecked2(isChecked);
-          setIsChecked3(isChecked);
-        }}
-        bounceEffectIn={1}
-      />
-      <View style={styles.detailCheckContainer}>
+      <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>이용약관</Text>
         <BouncyCheckbox
-          isChecked={isChecked2}
+          isChecked={allChecked}
           size={20}
           fillColor="plum"
-          text="Custom Checkbox"
+          text="아래 항목에 전부 동의합니다."
           iconStyle={styles.checkboxIcon}
           innerIconStyle={styles.checkboxInnerIcon}
           textStyle={styles.checkboxText}
           onPress={(isChecked: boolean) => {
             setIsChecked2(isChecked);
-          }}
-          bounceEffectIn={1}
-        />
-        <BouncyCheckbox
-          isChecked={isChecked3}
-          size={20}
-          fillColor="plum"
-          text="Custom Checkbox"
-          iconStyle={styles.checkboxIcon}
-          innerIconStyle={styles.checkboxInnerIcon}
-          textStyle={styles.checkboxText}
-          onPress={(isChecked: boolean) => {
             setIsChecked3(isChecked);
           }}
           bounceEffectIn={1}
         />
-      </View>
+        <View style={styles.detailCheckContainer}>
+          <BouncyCheckbox
+            isChecked={isChecked2}
+            size={20}
+            fillColor="plum"
+            text="Custom Checkbox"
+            iconStyle={styles.checkboxIcon}
+            innerIconStyle={styles.checkboxInnerIcon}
+            textStyle={styles.checkboxText}
+            onPress={(isChecked: boolean) => {
+              setIsChecked2(isChecked);
+            }}
+            bounceEffectIn={1}
+          />
+          <BouncyCheckbox
+            isChecked={isChecked3}
+            size={20}
+            fillColor="plum"
+            text="Custom Checkbox"
+            iconStyle={styles.checkboxIcon}
+            innerIconStyle={styles.checkboxInnerIcon}
+            textStyle={styles.checkboxText}
+            onPress={(isChecked: boolean) => {
+              setIsChecked3(isChecked);
+            }}
+            bounceEffectIn={1}
+          />
+        </View>
+      </ScrollView>
       <TouchableOpacity onPressIn={handlePressSignUpButton} disabled={!allChecked} style={allChecked ? styles.signUpButton : styles.signUpButtonDisabled}>
         <Text>가입하기</Text>
       </TouchableOpacity>
@@ -151,26 +145,22 @@ const styles = StyleSheet.create({
   },
 
   signUpButton: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
     borderRadius: 50,
     backgroundColor: "plum",
     width: "100%",
     height: 40,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 25,
   },
 
   signUpButtonDisabled: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
     borderRadius: 50,
     backgroundColor: "lightgrey",
     width: "100%",
     height: 40,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 25,
   },
 });

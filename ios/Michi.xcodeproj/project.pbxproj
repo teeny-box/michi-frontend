@@ -14,6 +14,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-Michi-MichiTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Michi-MichiTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		544899FFB1444720826839CF /* WavvePADO-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 69A9019C369D463B9AD768BF /* WavvePADO-Regular.otf */; };
+		8BF3F63C9F4F407C966805C4 /* package.json in Resources */ = {isa = PBXBuildFile; fileRef = 58104FBC95CD4AD6B3B1621C /* package.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Michi/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Michi-MichiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Michi-MichiTests.release.xcconfig"; path = "Target Support Files/Pods-Michi-MichiTests/Pods-Michi-MichiTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		69A9019C369D463B9AD768BF /* WavvePADO-Regular.otf */ = {isa = PBXFileReference; name = "WavvePADO-Regular.otf"; path = "../app/assets/fonts/WavvePADO-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		58104FBC95CD4AD6B3B1621C /* package.json */ = {isa = PBXFileReference; name = "package.json"; path = "../app/assets/fonts/package.json"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +174,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				0EEA5547F5B749338E058616 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -195,6 +200,16 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		0EEA5547F5B749338E058616 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				69A9019C369D463B9AD768BF /* WavvePADO-Regular.otf */,
+				58104FBC95CD4AD6B3B1621C /* package.json */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -291,6 +306,8 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				544899FFB1444720826839CF /* WavvePADO-Regular.otf in Resources */,
+				8BF3F63C9F4F407C966805C4 /* package.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

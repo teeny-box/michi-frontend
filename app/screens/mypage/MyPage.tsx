@@ -3,7 +3,7 @@ import { Profile } from "@components/mypage/Profile.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EntypoIcon from "react-native-vector-icons/Entypo";
-import { setAsyncStorage } from "@/storage/AsyncStorage";
+import { removeAsyncStorage, setAsyncStorage } from "@/storage/AsyncStorage";
 import { useSetRecoilState } from "recoil";
 import { tokenState } from "@/recoil/authAtoms";
 
@@ -18,7 +18,7 @@ export function MyPage() {
 
   const logout = () => {
     setToken("");
-    setAsyncStorage("token", "");
+    removeAsyncStorage("token");
   };
 
   return (

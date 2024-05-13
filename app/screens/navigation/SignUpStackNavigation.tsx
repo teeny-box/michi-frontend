@@ -34,7 +34,7 @@ export function SignUpStackNavigation() {
 
   return (
     <Stack.Navigator initialRouteName="signup_certification" screenOptions={{ headerTransparent: true }}>
-      <Stack.Screen name="signup_certification" component={Certification} options={{ headerShown: false }} />
+      <Stack.Screen name="signup_certification" component={Certification} />
       <Stack.Screen name="checkInfo" component={CheckInfo} />
       <Stack.Screen name="id" component={Id} />
       <Stack.Screen name="password" component={Password} />

@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "app/assets/fonts/package.json",
+      "sha1": "7172f1f78e80aee32d8bfb6a4513ba59071efc42"
+    },
+    {
+      "path": "app/assets/fonts/WavvePADO-Regular.otf",
+      "sha1": "497386dc9123014acc0d3ea3a625a0ae2bfc397e"
+    }
+  ]
+}

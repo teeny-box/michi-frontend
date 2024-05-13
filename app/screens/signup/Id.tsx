@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilState } from "recoil";
 import { idState } from "@/recoil/signupAtoms";
 import { commonStyles } from "./Common.styled";
 import { useEffect, useState } from "react";
+import { userUrl } from "@/utils/apiUrls";
 
 // 영문자로 시작해야 합니다.
 // 영문자, 숫자, 밑줄(_)로만 이루어져야 합니다.
@@ -27,13 +28,17 @@ export function Id() {
   const idValidation = async (id: string) => {
     setIsAvailable(false);
 
+    if (!regex.test(id)) {
+      setCheckMessage("사용할 수 없는 ID입니다.");
+      return;
+    }
     try {
-      if (!regex.test(id)) {
-        setCheckMessage("사용할 수 없는 ID입니다.");
-      } else {
-        // api 요청
+      const res = await fetch(`${userUrl}/id-check/${id}`);
+      if (res.ok) {
         setCheckMessage("사용 가능한 ID입니다.");
         setIsAvailable(true);
+      } else {
+        setCheckMessage("사용할 수 없는 ID입니다.");
       }
     } catch (e) {
       console.error("error", e);
@@ -72,9 +77,11 @@ export function Id() {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <Text style={styles.title}>아이디를 입력하세요</Text>
-      <TextInput value={id} onChangeText={handleChangeId} style={styles.input} maxLength={20} />
-      <Text>{checkMessage}</Text>
+      <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>아이디를 입력하세요</Text>
+        <TextInput value={id} onChangeText={handleChangeId} style={styles.input} maxLength={20} />
+        <Text>{checkMessage}</Text>
+      </ScrollView>
       <TouchableOpacity
         onPressIn={handlePressNextButton}
         disabled={!isAvailable}

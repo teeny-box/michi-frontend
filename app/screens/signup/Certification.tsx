@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { IMPCertification } from "@/components/common/IMPCertification";
@@ -9,6 +9,9 @@ import { commonStyles } from "./Common.styled";
 import { useSetRecoilState } from "recoil";
 import { birthYearState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
 import { authUrl } from "@/utils/apiUrls";
+import { Gradation } from "@/components/common/Gradation";
+import { GradationButton } from "@/components/common/GradationButton";
+import { Title } from "@/components/signup/Title";
 
 type stateType = "waiting" | "running" | "success" | "fail";
 
@@ -45,6 +48,7 @@ export function Certification() {
     //       setUserName(data.data.userName);
     //       setPhoneNumber(data.data.phoneNumber);
     //       setBirthYear(data.data.birthYear);
+    //       navigation.push("checkInfo");
     //       return { state: "success" };
     //     } else {
     //       Alert.alert("⚠️ 미성년자는 가입할 수 없습니다.", "", [{ text: "OK", style: "cancel" }]);
@@ -59,6 +63,7 @@ export function Certification() {
     setUserName("이진이");
     setPhoneNumber("01077440745");
     setBirthYear("2000");
+    navigation.push("checkInfo");
     return { state: "success" };
   };
 
@@ -80,23 +85,26 @@ export function Certification() {
     <>
       {state !== "running" ? (
         <SafeAreaView style={commonStyles.container}>
-          <Text style={styles.title}>본인인증을 해주세요</Text>
-          {state === "success" ? (
-            <View style={styles.buttonSuccess}>
-              <Text>인증완료</Text>
-            </View>
-          ) : (
-            <TouchableOpacity style={styles.button} onPressIn={handlePressCertificationButton}>
-              <Text>인증하기</Text>
-            </TouchableOpacity>
-          )}
-          {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
+          <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
+            <Title text="본인인증을 해주세요" />
+            {state === "success" ? (
+              <View style={styles.buttonSuccess}>
+                <Text>인증완료</Text>
+              </View>
+            ) : (
+              <TouchableOpacity style={styles.button} onPressIn={handlePressCertificationButton}>
+                <GradationButton text="인증하기" />
+              </TouchableOpacity>
+            )}
+            {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
+          </ScrollView>
           <TouchableOpacity
             onPressIn={handlePressNextButton}
             // disabled={state !== "success"}
-            // style={state === "success" ? commonStyles.nextButton : commonStyles.nextButtonDisabled}
-            style={commonStyles.nextButton}>
-            <Text>NEXT</Text>
+            style={state === "success" ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
+            <Gradation>
+              <Text>NEXT</Text>
+            </Gradation>
           </TouchableOpacity>
         </SafeAreaView>
       ) : (
@@ -107,11 +115,6 @@ export function Certification() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    color: "black",
-    fontSize: 26,
-  },
-
   input: {
     borderWidth: 1,
     borderColor: "black",
@@ -119,10 +122,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    paddingVertical: 10,
-    backgroundColor: "plum",
-    marginVertical: 4,
-    alignItems: "center",
+    width: "100%",
+    height: 45,
   },
 
   buttonSuccess: {
