@@ -2,21 +2,25 @@ import { nicknameState } from "@/recoil/signupAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRecoilState } from "recoil";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { commonStyles } from "./Common.styled";
 import { userUrl } from "@/utils/apiUrls";
+import { TextInputField } from "@components/signup/TextInputField";
+import { Title } from "@components/signup/Title";
+import { NextButton } from "@components/signup/NextButton";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
 const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
+const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 이상 10자 이내로 입력해주세요.";
 
 export function Nickname(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [nickname, setNickname] = useRecoilState(nicknameState);
-  const [checkMessage, setCheckMessage] = useState("블라블라 대충 규칙 메시지가 나옵니다.");
+  const [checkMessage, setCheckMessage] = useState(defaultMessage);
   const [isAvailable, setIsAvailable] = useState(false);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
@@ -24,24 +28,28 @@ export function Nickname(): React.JSX.Element {
     if (nickname) nicknameValidation(nickname);
   }, []);
 
-  const nicknameValidation = async (nickname: string) => {
+  const nicknameValidation = async (text: string) => {
     setIsAvailable(false);
 
-    if (!regex.test(nickname)) {
-      setCheckMessage("사용할 수 없는 닉네임입니다.");
+    if (!regex.test(text)) {
+      if (/[^a-zA-Z0-9가-힣]/.test(text)) {
+        setCheckMessage("* 한글, 영어, 숫자만 사용해주세요.");
+      } else {
+        setCheckMessage("* 2자 이상 입력해주세요.");
+      }
       return;
     }
     try {
-      const res = await fetch(`${userUrl}/nickname-check/${nickname}`);
+      const res = await fetch(`${userUrl}/nickname-check/${text}`);
       if (res.ok) {
         setCheckMessage("사용 가능한 닉네임입니다.");
         setIsAvailable(true);
       } else {
-        setCheckMessage("사용할 수 없는 닉네임입니다.");
+        setCheckMessage("* 이미 사용 중인 닉네임입니다.");
       }
     } catch (e) {
       console.error("error", e);
-      setCheckMessage("사용할 수 없는 닉네임입니다.");
+      setCheckMessage("* 사용할 수 없는 닉네임입니다.");
     }
   };
 
@@ -51,7 +59,7 @@ export function Nickname(): React.JSX.Element {
     // 유효성 검사
     if (!text) {
       clearTimeout(timer);
-      setCheckMessage("특수문자, 공백은 사용할 수 없습니다.");
+      setCheckMessage(defaultMessage);
       setIsAvailable(false);
       return;
     }
@@ -77,29 +85,10 @@ export function Nickname(): React.JSX.Element {
   return (
     <SafeAreaView style={commonStyles.container}>
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>닉네임을 입력하세요</Text>
-        <TextInput value={nickname} onChangeText={handleChangeNickname} style={styles.input} maxLength={10} />
-        <Text>{checkMessage}</Text>
+        <Title text="닉네임을 입력해주세요" />
+        <TextInputField label="닉네임" value={nickname} setValue={handleChangeNickname} maxLength={10} message={checkMessage} isAvailable={isAvailable} />
       </ScrollView>
-      <TouchableOpacity
-        onPressIn={handlePressNextButton}
-        disabled={!isAvailable}
-        style={isAvailable ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
-        <Text>NEXT</Text>
-      </TouchableOpacity>
+      <NextButton onPressIn={handlePressNextButton} disabled={!isAvailable} />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    color: "black",
-    fontSize: 26,
-  },
-
-  input: {
-    borderWidth: 1,
-    borderColor: "black",
-    marginVertical: 10,
-  },
-});

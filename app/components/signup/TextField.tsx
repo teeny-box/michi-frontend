@@ -5,7 +5,7 @@ type DisableTextFieldProps = {
   value: string;
 };
 
-export function DisableTextField({ label, value }: DisableTextFieldProps) {
+export function TextField({ label, value }: DisableTextFieldProps) {
   return (
     <>
       <Text style={styles.label}>{label}</Text>
@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: "500",
+    fontFamily: "Freesentation-4Regular",
+    color: "#141414",
   },
 
   valueBox: {
@@ -33,6 +35,7 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     fontWeight: "500",
+    fontFamily: "Freesentation-5Medium",
     color: "#000",
     paddingHorizontal: 10,
   },

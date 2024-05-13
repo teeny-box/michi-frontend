@@ -1,16 +1,12 @@
 import { GradationButton } from "@/components/common/GradationButton";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-export type RootStackParam = {
-  signup: undefined;
-  login: undefined;
-};
+import { StartRootStackParam } from "../navigation/StartStackNavigation";
 
 export function Start() {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
+  const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
 
   return (
     <SafeAreaView style={styles.container}>

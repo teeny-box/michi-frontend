@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 type gradationProps = {
@@ -15,6 +15,7 @@ export function Gradation({ children }: gradationProps) {
 
 const styles = StyleSheet.create({
   linearGradient: {
-    flex: 1,
+    width: "100%",
+    height: "100%",
   },
 });

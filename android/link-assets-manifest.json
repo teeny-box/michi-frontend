@@ -2,6 +2,42 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "app/assets/fonts/Freesentation-1Thin.ttf",
+      "sha1": "5e64045d3b25b502f07e20f0e95cfb299fe9b7d1"
+    },
+    {
+      "path": "app/assets/fonts/Freesentation-2ExtraLight.ttf",
+      "sha1": "ceda43961a8d59f8f391ac0380675aa63890c148"
+    },
+    {
+      "path": "app/assets/fonts/Freesentation-3Light.ttf",
+      "sha1": "e5b4bc821aba0a6cda667c6b8d9580b92a60bdf3"
+    },
+    {
+      "path": "app/assets/fonts/Freesentation-4Regular.ttf",
+      "sha1": "fd9a1750e06a153faccfd228bbb9df2281c521df"
+    },
+    {
+      "path": "app/assets/fonts/Freesentation-5Medium.ttf",
+      "sha1": "c82691bfe22366d24e26e3ce6d68173640511f9e"
+    },
+    {
+      "path": "app/assets/fonts/Freesentation-6SemiBold.ttf",
+      "sha1": "05a71094f1c6baa5e49606c3c25b90912c52d482"
+    },
+    {
+      "path": "app/assets/fonts/Freesentation-7Bold.ttf",
+      "sha1": "2bd7dd0a727184b7133930c4f0c30d920cbb855d"
+    },
+    {
+      "path": "app/assets/fonts/Freesentation-8ExtraBold.ttf",
+      "sha1": "08e43fb5aa8ec5779eb54bacaaf0befa48b2cee0"
+    },
+    {
+      "path": "app/assets/fonts/Freesentation-9Black.ttf",
+      "sha1": "56abddfd54f2185818f130d13e06d3410cbedf6f"
+    },
+    {
       "path": "app/assets/fonts/package.json",
       "sha1": "7172f1f78e80aee32d8bfb6a4513ba59071efc42"
     },

@@ -16,6 +16,15 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		544899FFB1444720826839CF /* WavvePADO-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 69A9019C369D463B9AD768BF /* WavvePADO-Regular.otf */; };
 		8BF3F63C9F4F407C966805C4 /* package.json in Resources */ = {isa = PBXBuildFile; fileRef = 58104FBC95CD4AD6B3B1621C /* package.json */; };
+		8F14A3F08C1F4932ABCE258B /* Freesentation-1Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8FDC2820BB6F4B8082D8AECE /* Freesentation-1Thin.ttf */; };
+		4E0B0B4041ED405195680109 /* Freesentation-2ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF5F0910504D482995BC5DEE /* Freesentation-2ExtraLight.ttf */; };
+		9E5C5F5D77DE4B7DB510C125 /* Freesentation-3Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFD3D0C4775944B48B6230AC /* Freesentation-3Light.ttf */; };
+		A1B820C220DE48228258EFC7 /* Freesentation-4Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F5082923B0B430098FF9F43 /* Freesentation-4Regular.ttf */; };
+		970A91E3484A44F78EA9D1F9 /* Freesentation-5Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84808E564914165A6179431 /* Freesentation-5Medium.ttf */; };
+		2A6BC84BDF6A474FB7F52D82 /* Freesentation-6SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86D8141BAD724AF4A173C176 /* Freesentation-6SemiBold.ttf */; };
+		DFE37B8872F14DDCA4A27D60 /* Freesentation-7Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A8100D62F40D09230F279 /* Freesentation-7Bold.ttf */; };
+		56376A1A2558482985FF0F5F /* Freesentation-8ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF8D45C69AC4470F8749894F /* Freesentation-8ExtraBold.ttf */; };
+		A8265F4A2E2648B7B709DCBA /* Freesentation-9Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BE30FFF5A0D4FEF9915A1DB /* Freesentation-9Black.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +77,15 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		69A9019C369D463B9AD768BF /* WavvePADO-Regular.otf */ = {isa = PBXFileReference; name = "WavvePADO-Regular.otf"; path = "../app/assets/fonts/WavvePADO-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		58104FBC95CD4AD6B3B1621C /* package.json */ = {isa = PBXFileReference; name = "package.json"; path = "../app/assets/fonts/package.json"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8FDC2820BB6F4B8082D8AECE /* Freesentation-1Thin.ttf */ = {isa = PBXFileReference; name = "Freesentation-1Thin.ttf"; path = "../app/assets/fonts/Freesentation-1Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CF5F0910504D482995BC5DEE /* Freesentation-2ExtraLight.ttf */ = {isa = PBXFileReference; name = "Freesentation-2ExtraLight.ttf"; path = "../app/assets/fonts/Freesentation-2ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FFD3D0C4775944B48B6230AC /* Freesentation-3Light.ttf */ = {isa = PBXFileReference; name = "Freesentation-3Light.ttf"; path = "../app/assets/fonts/Freesentation-3Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0F5082923B0B430098FF9F43 /* Freesentation-4Regular.ttf */ = {isa = PBXFileReference; name = "Freesentation-4Regular.ttf"; path = "../app/assets/fonts/Freesentation-4Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F84808E564914165A6179431 /* Freesentation-5Medium.ttf */ = {isa = PBXFileReference; name = "Freesentation-5Medium.ttf"; path = "../app/assets/fonts/Freesentation-5Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		86D8141BAD724AF4A173C176 /* Freesentation-6SemiBold.ttf */ = {isa = PBXFileReference; name = "Freesentation-6SemiBold.ttf"; path = "../app/assets/fonts/Freesentation-6SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3B2A8100D62F40D09230F279 /* Freesentation-7Bold.ttf */ = {isa = PBXFileReference; name = "Freesentation-7Bold.ttf"; path = "../app/assets/fonts/Freesentation-7Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BF8D45C69AC4470F8749894F /* Freesentation-8ExtraBold.ttf */ = {isa = PBXFileReference; name = "Freesentation-8ExtraBold.ttf"; path = "../app/assets/fonts/Freesentation-8ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1BE30FFF5A0D4FEF9915A1DB /* Freesentation-9Black.ttf */ = {isa = PBXFileReference; name = "Freesentation-9Black.ttf"; path = "../app/assets/fonts/Freesentation-9Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +224,15 @@
 			children = (
 				69A9019C369D463B9AD768BF /* WavvePADO-Regular.otf */,
 				58104FBC95CD4AD6B3B1621C /* package.json */,
+				8FDC2820BB6F4B8082D8AECE /* Freesentation-1Thin.ttf */,
+				CF5F0910504D482995BC5DEE /* Freesentation-2ExtraLight.ttf */,
+				FFD3D0C4775944B48B6230AC /* Freesentation-3Light.ttf */,
+				0F5082923B0B430098FF9F43 /* Freesentation-4Regular.ttf */,
+				F84808E564914165A6179431 /* Freesentation-5Medium.ttf */,
+				86D8141BAD724AF4A173C176 /* Freesentation-6SemiBold.ttf */,
+				3B2A8100D62F40D09230F279 /* Freesentation-7Bold.ttf */,
+				BF8D45C69AC4470F8749894F /* Freesentation-8ExtraBold.ttf */,
+				1BE30FFF5A0D4FEF9915A1DB /* Freesentation-9Black.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -308,6 +335,15 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				544899FFB1444720826839CF /* WavvePADO-Regular.otf in Resources */,
 				8BF3F63C9F4F407C966805C4 /* package.json in Resources */,
+				8F14A3F08C1F4932ABCE258B /* Freesentation-1Thin.ttf in Resources */,
+				4E0B0B4041ED405195680109 /* Freesentation-2ExtraLight.ttf in Resources */,
+				9E5C5F5D77DE4B7DB510C125 /* Freesentation-3Light.ttf in Resources */,
+				A1B820C220DE48228258EFC7 /* Freesentation-4Regular.ttf in Resources */,
+				970A91E3484A44F78EA9D1F9 /* Freesentation-5Medium.ttf in Resources */,
+				2A6BC84BDF6A474FB7F52D82 /* Freesentation-6SemiBold.ttf in Resources */,
+				DFE37B8872F14DDCA4A27D60 /* Freesentation-7Bold.ttf in Resources */,
+				56376A1A2558482985FF0F5F /* Freesentation-8ExtraBold.ttf in Resources */,
+				A8265F4A2E2648B7B709DCBA /* Freesentation-9Black.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

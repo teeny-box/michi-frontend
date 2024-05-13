@@ -9,9 +9,9 @@ import { commonStyles } from "./Common.styled";
 import { useSetRecoilState } from "recoil";
 import { birthYearState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
 import { authUrl } from "@/utils/apiUrls";
-import { Gradation } from "@/components/common/Gradation";
 import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
+import { NextButton } from "@/components/signup/NextButton";
 
 type stateType = "waiting" | "running" | "success" | "fail";
 
@@ -98,14 +98,7 @@ export function Certification() {
             )}
             {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           </ScrollView>
-          <TouchableOpacity
-            onPressIn={handlePressNextButton}
-            // disabled={state !== "success"}
-            style={state === "success" ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
-            <Gradation>
-              <Text>NEXT</Text>
-            </Gradation>
-          </TouchableOpacity>
+          <NextButton onPressIn={handlePressNextButton} disabled={state !== "success"} />
         </SafeAreaView>
       ) : (
         <IMPCertification callback={callback} />
@@ -115,12 +108,6 @@ export function Certification() {
 }
 
 const styles = StyleSheet.create({
-  input: {
-    borderWidth: 1,
-    borderColor: "black",
-    marginVertical: 10,
-  },
-
   button: {
     width: "100%",
     height: 45,

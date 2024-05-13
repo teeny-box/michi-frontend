@@ -13,6 +13,6 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 30,
     fontFamily: "WavvePADO-Regular",
-    marginBottom: 20,
+    marginBottom: 30,
   },
 });

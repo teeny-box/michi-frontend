@@ -40,7 +40,7 @@ export function SignUpStackNavigation() {
       <Stack.Screen name="password" component={Password} />
       <Stack.Screen name="nickname" component={Nickname} />
       <Stack.Screen name="terms" component={Terms} />
-      <Stack.Screen name="welcome" component={Welcome} />
+      <Stack.Screen name="welcome" component={Welcome} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
