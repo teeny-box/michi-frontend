@@ -1,5 +1,5 @@
 import { ChangePassword } from "@/screens/common/findPassword/ChangePassword";
-import { IdCheck } from "@/screens/common/findPassword/IdCheck";
+import { IdExistCheck } from "@/screens/common/findPassword/IdExistCheck";
 import { IdFound } from "@/screens/common/finduserId/IdFound";
 import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -26,7 +26,7 @@ export function FindPasswordStackNavigation() {
 
   return (
     <Stack.Navigator initialRouteName="idCheck" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="idCheck" component={IdCheck} />
+      <Stack.Screen name="idCheck" component={IdExistCheck} />
       <Stack.Screen name="findPassword" component={IdFound} />
       <Stack.Screen name="changePassword" component={ChangePassword} />
     </Stack.Navigator>

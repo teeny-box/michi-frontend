@@ -6,7 +6,7 @@ import { useState } from "react";
 import { commonStyles } from "@/screens/signup/Common.styled";
 import { useRecoilState } from "recoil";
 import { idFoundState } from "@/recoil/authAtoms";
-import { authUrl } from "@/utils/apiUrls";
+import { userUrl } from "@/utils/apiUrls";
 import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswordNavigation";
 
 // 영문자로 시작해야 합니다.
@@ -14,7 +14,7 @@ import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswo
 // 길이는 4자 이상 20자 이하여야 합니다.
 const regex = /^[a-zA-Z][a-zA-Z0-9_]*$/;
 
-export function IdCheck() {
+export function IdExistCheck() {
   const navigation = useNavigation<NativeStackNavigationProp<FindPasswordRootStackParam>>();
   const [id, setId] = useRecoilState(idFoundState);
   const [checkMessage, setCheckMessage] = useState("");
@@ -31,7 +31,7 @@ export function IdCheck() {
 
   const checkIdExist = async () => {
     try {
-      const res = await fetch(`${authUrl}`);
+      const res = await fetch(`${userUrl}/id-exists/${id}`);
       if (res.ok) {
         return 1;
       }
