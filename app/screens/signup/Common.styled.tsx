@@ -2,33 +2,14 @@ import { StyleSheet } from "react-native";
 
 export const commonStyles = StyleSheet.create({
   container: {
-    marginHorizontal: 40,
-    marginVertical: 70,
+    marginTop: 50,
+    paddingHorizontal: 25,
     position: "relative",
     flexGrow: 1,
   },
 
-  nextButton: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    borderRadius: 50,
-    backgroundColor: "plum",
-    width: 50,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  nextButtonDisabled: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    borderRadius: 50,
-    backgroundColor: "lightgrey",
-    width: 50,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
+  scrollBox: {
+    paddingTop: 80,
+    paddingBottom: 80,
   },
 });

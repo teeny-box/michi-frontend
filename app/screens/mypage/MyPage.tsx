@@ -3,6 +3,9 @@ import { Profile } from "@components/mypage/Profile.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EntypoIcon from "react-native-vector-icons/Entypo";
+import { removeAsyncStorage, setAsyncStorage } from "@/storage/AsyncStorage";
+import { useSetRecoilState } from "recoil";
+import { tokenState } from "@/recoil/authAtoms";
 
 export type RootStackParam = {
   changeId: undefined;
@@ -11,6 +14,12 @@ export type RootStackParam = {
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
+  const setToken = useSetRecoilState(tokenState);
+
+  const logout = () => {
+    setToken("");
+    removeAsyncStorage("token");
+  };
 
   return (
     <View style={styles.outBox}>
@@ -42,7 +51,7 @@ export function MyPage() {
           <EntypoIcon name="chevron-right" size={14} style={styles.arrowIcon} />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} onPressIn={() => {}}>
+      <TouchableOpacity style={styles.button} onPressIn={logout}>
         <Text style={styles.buttonText}>로그아웃</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPressIn={() => {}}>
