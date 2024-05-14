@@ -17,8 +17,8 @@
 		4E0B0B4041ED405195680109 /* Freesentation-2ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF5F0910504D482995BC5DEE /* Freesentation-2ExtraLight.ttf */; };
 		544899FFB1444720826839CF /* WavvePADO-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 69A9019C369D463B9AD768BF /* WavvePADO-Regular.otf */; };
 		56376A1A2558482985FF0F5F /* Freesentation-8ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF8D45C69AC4470F8749894F /* Freesentation-8ExtraBold.ttf */; };
+		7C50007529784142970096CE /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		8BF3F63C9F4F407C966805C4 /* package.json in Resources */ = {isa = PBXBuildFile; fileRef = 58104FBC95CD4AD6B3B1621C /* package.json */; };
 		8F14A3F08C1F4932ABCE258B /* Freesentation-1Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8FDC2820BB6F4B8082D8AECE /* Freesentation-1Thin.ttf */; };
 		970A91E3484A44F78EA9D1F9 /* Freesentation-5Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84808E564914165A6179431 /* Freesentation-5Medium.ttf */; };
 		9E5C5F5D77DE4B7DB510C125 /* Freesentation-3Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFD3D0C4775944B48B6230AC /* Freesentation-3Light.ttf */; };
@@ -336,7 +336,6 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				544899FFB1444720826839CF /* WavvePADO-Regular.otf in Resources */,
-				8BF3F63C9F4F407C966805C4 /* package.json in Resources */,
 				8F14A3F08C1F4932ABCE258B /* Freesentation-1Thin.ttf in Resources */,
 				4E0B0B4041ED405195680109 /* Freesentation-2ExtraLight.ttf in Resources */,
 				9E5C5F5D77DE4B7DB510C125 /* Freesentation-3Light.ttf in Resources */,
@@ -346,6 +345,7 @@
 				DFE37B8872F14DDCA4A27D60 /* Freesentation-7Bold.ttf in Resources */,
 				56376A1A2558482985FF0F5F /* Freesentation-8ExtraBold.ttf in Resources */,
 				A8265F4A2E2648B7B709DCBA /* Freesentation-9Black.ttf in Resources */,
+				7C50007529784142970096CE /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
