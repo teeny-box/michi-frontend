@@ -1,22 +1,27 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilState } from "recoil";
 import { idState } from "@/recoil/signupAtoms";
 import { commonStyles } from "./Common.styled";
 import { useEffect, useState } from "react";
+import { userUrl } from "@/utils/apiUrls";
+import { TextInputField } from "@/components/signup/TextInputField";
+import { Title } from "@/components/signup/Title";
+import { NextButton } from "@/components/signup/NextButton";
 
 // 영문자로 시작해야 합니다.
 // 영문자, 숫자, 밑줄(_)로만 이루어져야 합니다.
 // 길이는 4자 이상 20자 이하여야 합니다.
 const regex = /^[a-zA-Z][a-zA-Z0-9_]{3,19}$/;
+const defaultMessage = "* 영어, 숫자, 밑줄(_)만 사용해주세요.\n* 4자 이상 20자 이내로 입력해주세요.";
 
 export function Id() {
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [id, setId] = useRecoilState(idState);
-  const [checkMessage, setCheckMessage] = useState("블라블라 대충 규칙 메시지가 나옵니다.");
+  const [checkMessage, setCheckMessage] = useState(defaultMessage);
   const [isAvailable, setIsAvailable] = useState(false);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
@@ -24,20 +29,33 @@ export function Id() {
     if (id) idValidation(id);
   }, []);
 
-  const idValidation = async (id: string) => {
+  const idValidation = async (text: string) => {
     setIsAvailable(false);
 
-    try {
-      if (!regex.test(id)) {
-        setCheckMessage("사용할 수 없는 ID입니다.");
+    if (!regex.test(text)) {
+      if (/[^a-zA-Z0-9_]/.test(text)) {
+        setCheckMessage("* 밑줄(_)을 제외한 특수문자, 공백은 사용할 수 없습니다.");
+      } else if (!/^[a-zA-Z]/.test(text)) {
+        setCheckMessage("* 영문자로 시작해야 합니다.");
+      } else if (text.length < 4) {
+        setCheckMessage("* 4자 이상 20자 이내로 입력해주세요.");
       } else {
-        // api 요청
-        setCheckMessage("사용 가능한 ID입니다.");
+        setCheckMessage("* 사용할 수 없는 아이디입니다.");
+      }
+      return;
+    }
+
+    try {
+      const res = await fetch(`${userUrl}/id-check/${text}`);
+      if (res.ok) {
+        setCheckMessage("사용 가능한 아이디입니다.");
         setIsAvailable(true);
+      } else {
+        setCheckMessage("* 이미 사용 중인 아이디입니다.");
       }
     } catch (e) {
-      console.error("error", e);
-      setCheckMessage("사용할 수 없는 ID입니다.");
+      console.error("id duplicate check error", e);
+      setCheckMessage("* 사용할 수 없는 아이디입니다.");
     }
   };
 
@@ -47,7 +65,7 @@ export function Id() {
     // 유효성 검사
     if (!text) {
       clearTimeout(timer);
-      setCheckMessage("특수문자, 공백은 사용할 수 없습니다.");
+      setCheckMessage(defaultMessage);
       setIsAvailable(false);
       return;
     }
@@ -59,7 +77,6 @@ export function Id() {
     if (timer) {
       clearTimeout(timer);
     }
-
     const newTimer = setTimeout(async () => {
       await idValidation(text);
     }, 500);
@@ -72,29 +89,19 @@ export function Id() {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <Text style={styles.title}>아이디를 입력하세요</Text>
-      <TextInput value={id} onChangeText={handleChangeId} style={styles.input} maxLength={20} />
-      <Text>{checkMessage}</Text>
-      <TouchableOpacity
-        onPressIn={handlePressNextButton}
-        disabled={!isAvailable}
-        style={isAvailable ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
-        {/* style={commonStyles.nextButton}> */}
-        <Text>NEXT</Text>
-      </TouchableOpacity>
+      <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
+        <Title text="아이디를 입력해주세요" />
+        <TextInputField
+          label="아이디 ID"
+          placeholder="아이디를 입력해주세요"
+          value={id}
+          setValue={handleChangeId}
+          message={checkMessage}
+          maxLength={20}
+          isAvailable={isAvailable}
+        />
+      </ScrollView>
+      <NextButton onPressIn={handlePressNextButton} disabled={!isAvailable} />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    color: "black",
-    fontSize: 26,
-  },
-
-  input: {
-    borderWidth: 1,
-    borderColor: "black",
-    marginVertical: 10,
-  },
-});

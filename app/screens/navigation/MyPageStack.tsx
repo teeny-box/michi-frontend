@@ -4,6 +4,8 @@ import { ChangeId } from "@screens/mypage/ChangeId";
 import { ChangePassword } from "@screens/mypage/ChangePassword";
 import { ChangeProfile } from "../mypage/ChangeProfile";
 import { Certification } from "../signup/Certification";
+import { FindIdStackNavigation } from "./user/FindIdNavigation";
+import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,8 @@ export function MyPageStackNavigation() {
       <Stack.Screen name="changePassword" component={ChangePassword} />
       <Stack.Screen name="changeProfile" component={ChangeProfile} />
       <Stack.Screen name="certification" component={Certification} />
+      <Stack.Screen name="findId" component={FindIdStackNavigation} />
+      <Stack.Screen name="findPassword" component={FindPasswordStackNavigation} />
     </Stack.Navigator>
   );
 }

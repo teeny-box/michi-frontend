@@ -5,20 +5,24 @@
  * @format
  */
 
-import React, { useState } from "react";
-import { StatusBar, useColorScheme, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { StatusBar, useColorScheme } from "react-native";
 
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import { StartStackNavigation } from "./screens/navigation/StartStackNavigation";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { MainTabNavigation } from "./screens/navigation/MainTabNavigation";
-import { HomeStackNavigation } from "./screens/navigation/HomeStackNavigation";
 import { RecoilRoot } from "recoil";
+import { AppNavigation } from "./screens/navigation/AppNavigation";
+import SplashScreen from "react-native-splash-screen";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000); //스플래시 활성화 시간
+  }, []);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -29,7 +33,7 @@ function App(): React.JSX.Element {
       <SafeAreaProvider>
         <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} backgroundColor={backgroundStyle.backgroundColor} />
         <NavigationContainer>
-          <StartStackNavigation />
+          <AppNavigation />
         </NavigationContainer>
       </SafeAreaProvider>
     </RecoilRoot>
