@@ -35,7 +35,7 @@ export function StartStackNavigation() {
   return (
     <Stack.Navigator initialRouteName="start" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="start" component={Start} options={{ animation: "fade" }} />
-      <Stack.Screen name="login" component={Login} options={{ headerShown: true }} />
+      <Stack.Screen name="login" component={Login} />
       <Stack.Screen name="feedEdit" component={FeedEdit} options={{ headerShown: false }} />
       <Stack.Screen name="signup" component={SignUpStackNavigation} />
       <Stack.Screen name="main" component={MainTabNavigation} />

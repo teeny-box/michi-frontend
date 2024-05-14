@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 type gradationProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export function Gradation({ children }: gradationProps) {
