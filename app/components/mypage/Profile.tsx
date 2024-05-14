@@ -12,11 +12,12 @@ export function Profile() {
 
   return (
     <View style={styles.outBox}>
-      <View style={styles.image}>
-        <Image source={{ uri: "https://i.pinimg.com/564x/b4/b4/5f/b4b45f38fb15427b0f609f011b44f384.jpg" }} style={styles.image} />
+      <View style={styles.imageBox}>
+        <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
+        <Image source={{ uri: "https://i.pinimg.com/564x/b4/b4/5f/b4b45f38fb15427b0f609f011b44f384.jpg" }} style={styles.userImage} />
       </View>
       <View style={styles.nicknameBox}>
-        <Text style={styles.nickname}>맹구콧물</Text>
+        <Text style={styles.nickname}>맹구콧물띄어쓰기없이</Text>
         <MaterialCommunityIcons name="account-edit" size={26} onPress={() => navigation.navigate("changeProfile")} />
       </View>
     </View>
@@ -26,23 +27,37 @@ export function Profile() {
 const styles = StyleSheet.create({
   outBox: {
     flexDirection: "row",
-    padding: 20,
+    marginBottom: 25,
   },
-  image: {
-    width: 60,
-    height: 60,
+  imageBox: {
+    width: 80,
+    height: 80,
     borderRadius: 100,
+    position: "relative",
+  },
+  borderImage: {
+    width: 80,
+    height: 80,
+    position: "absolute",
+  },
+  userImage: {
+    width: 80 - 8 * 2,
+    height: 80 - 8 * 2,
+    borderRadius: 100,
+    margin: "auto",
   },
   nicknameBox: {
-    alignSelf: "center",
+    alignSelf: "flex-end",
+    paddingBottom: 10,
     marginLeft: 10,
     flexDirection: "row",
     flexGrow: 1,
     justifyContent: "space-between",
   },
   nickname: {
-    fontSize: 20,
+    color: "#141414",
+    fontSize: 24,
+    fontFamily: "WavvePADO-Regular",
     lineHeight: 26,
-    fontWeight: "900",
   },
 });
