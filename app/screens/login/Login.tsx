@@ -50,9 +50,12 @@ export function Login() {
 
   const handlePressLoginButton = async () => {
     // const success = await login();
+
+    // --- 개발용 ---
     const success = true;
     setToken("qwer");
     setAsyncStorage("token", "qwer");
+    // --------------
 
     if (!success) {
       Alert.alert("로그인 실패", "아이디 또는 비밀번호를 다시 확인해주세요.", [{ text: "OK" }]);
@@ -76,7 +79,7 @@ export function Login() {
           <Image source={require("@assets/images/logo_ver2.png")} style={styles.logoImage} />
           <View style={{ width: "100%" }}>
             <TextInputField label="아이디 ID" value={id} setValue={setId} placeholder="아이디를 입력하세요" />
-            <TextInputField label="비밀번호 P/W" value={password} setValue={setPassword} placeholder="비밀번호를 입력하세요" />
+            <TextInputField label="비밀번호 P/W" value={password} setValue={setPassword} placeholder="비밀번호를 입력하세요" secureTextEntry={true} />
           </View>
           <TouchableOpacity style={styles.longinButton} onPressIn={handlePressLoginButton}>
             <GradationButton text="로그인" />
