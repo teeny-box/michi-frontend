@@ -11,7 +11,8 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		4C444458776BB5AED9B4556C /* libPods-Michi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 263CCE8F49C991BE22645A6E /* libPods-Michi.a */; };
+		1CC73A9B8DC0C31CA76D00A5 /* libPods-Michi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 395DE58D04E843B0086BF57A /* libPods-Michi.a */; };
+		4C444458776BB5AED9B4556C /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		FEAE25B57C648B2D9D2212A9 /* libPods-Michi-MichiTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BFCC628859835777B96D8E1 /* libPods-Michi-MichiTests.a */; };
 /* End PBXBuildFile section */
@@ -37,11 +38,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Michi/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Michi/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Michi/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Michi-MichiTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Michi-MichiTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-Michi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Michi.debug.xcconfig"; path = "Target Support Files/Pods-Michi/Pods-Michi.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-Michi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Michi.release.xcconfig"; path = "Target Support Files/Pods-Michi/Pods-Michi.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-Michi-MichiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Michi-MichiTests.debug.xcconfig"; path = "Target Support Files/Pods-Michi-MichiTests/Pods-Michi-MichiTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-Michi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Michi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2026BD755A39C09EE3E17323 /* Pods-Michi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Michi.release.xcconfig"; path = "Target Support Files/Pods-Michi/Pods-Michi.release.xcconfig"; sourceTree = "<group>"; };
+		395DE58D04E843B0086BF57A /* libPods-Michi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Michi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		619BF5FF2BF0FA550013067E /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		619BF6002BF0FA550013067E /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Solid.ttf"; sourceTree = "<group>"; };
 		619BF6012BF0FA550013067E /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -64,6 +62,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Michi/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9BFCC628859835777B96D8E1 /* libPods-Michi-MichiTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Michi-MichiTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACCC785C5D789FD2CDB72AEF /* Pods-Michi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Michi.debug.xcconfig"; path = "Target Support Files/Pods-Michi/Pods-Michi.debug.xcconfig"; sourceTree = "<group>"; };
+		B9A66AA506A585BEA2F0184A /* Pods-Michi-MichiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Michi-MichiTests.debug.xcconfig"; path = "Target Support Files/Pods-Michi-MichiTests/Pods-Michi-MichiTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BBC0C589BB431215A72C04DE /* Pods-Michi-MichiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Michi-MichiTests.release.xcconfig"; path = "Target Support Files/Pods-Michi-MichiTests/Pods-Michi-MichiTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -80,7 +80,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C444458776BB5AED9B4556C /* libPods-Michi.a in Frameworks */,
+				4C444458776BB5AED9B4556C /* BuildFile in Frameworks */,
+				1CC73A9B8DC0C31CA76D00A5 /* libPods-Michi.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,8 +124,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				263CCE8F49C991BE22645A6E /* libPods-Michi.a */,
 				9BFCC628859835777B96D8E1 /* libPods-Michi-MichiTests.a */,
+				395DE58D04E843B0086BF57A /* libPods-Michi.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -190,9 +191,9 @@
 			isa = PBXGroup;
 			children = (
 				ACCC785C5D789FD2CDB72AEF /* Pods-Michi.debug.xcconfig */,
-				4A5AE97F67510C6DA1FE4A20 /* Pods-Michi.release.xcconfig */,
-				58BCF6DD6F05BA63874D1E2B /* Pods-Michi-MichiTests.debug.xcconfig */,
-				30FEFE6CC73B1BE0B773CF66 /* Pods-Michi-MichiTests.release.xcconfig */,
+				2026BD755A39C09EE3E17323 /* Pods-Michi.release.xcconfig */,
+				B9A66AA506A585BEA2F0184A /* Pods-Michi-MichiTests.debug.xcconfig */,
+				BBC0C589BB431215A72C04DE /* Pods-Michi-MichiTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -459,7 +460,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 58BCF6DD6F05BA63874D1E2B /* Pods-Michi-MichiTests.debug.xcconfig */;
+			baseConfigurationReference = B9A66AA506A585BEA2F0184A /* Pods-Michi-MichiTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -486,7 +487,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30FEFE6CC73B1BE0B773CF66 /* Pods-Michi-MichiTests.release.xcconfig */;
+			baseConfigurationReference = BBC0C589BB431215A72C04DE /* Pods-Michi-MichiTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -537,7 +538,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A5AE97F67510C6DA1FE4A20 /* Pods-Michi.release.xcconfig */;
+			baseConfigurationReference = 2026BD755A39C09EE3E17323 /* Pods-Michi.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
