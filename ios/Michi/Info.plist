@@ -12,10 +12,6 @@
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>FontAwesome5_Regular.ttf</string>
 		<string>FontAwesome5_Solid.ttf</string>
-		<string>FontAwesome6_Brands.ttf</string>
-		<string>FontAwesome6_Regular.ttf</string>
-		<string>FontAwesome6_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
 		<string>Foundation.ttf</string>
 		<string>Ionicons.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
@@ -23,6 +19,17 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>WavvePADO-Regular.otf</string>
+		<string>Freesentation-1Thin.ttf</string>
+		<string>Freesentation-2ExtraLight.ttf</string>
+		<string>Freesentation-3Light.ttf</string>
+		<string>Freesentation-4Regular.ttf</string>
+		<string>Freesentation-5Medium.ttf</string>
+		<string>Freesentation-6SemiBold.ttf</string>
+		<string>Freesentation-7Bold.ttf</string>
+		<string>Freesentation-8ExtraBold.ttf</string>
+		<string>Freesentation-9Black.ttf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
@@ -80,34 +87,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>WavvePADO-Regular.otf</string>
-		<string>Freesentation-1Thin.ttf</string>
-		<string>Freesentation-2ExtraLight.ttf</string>
-		<string>Freesentation-3Light.ttf</string>
-		<string>Freesentation-4Regular.ttf</string>
-		<string>Freesentation-5Medium.ttf</string>
-		<string>Freesentation-6SemiBold.ttf</string>
-		<string>Freesentation-7Bold.ttf</string>
-		<string>Freesentation-8ExtraBold.ttf</string>
-		<string>Freesentation-9Black.ttf</string>
-	</array>
 </dict>
 </plist>
