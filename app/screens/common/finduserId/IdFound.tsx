@@ -1,12 +1,15 @@
 import { commonStyles } from "@screens/signup/Common.styled";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRecoilValue } from "recoil";
 import { FindIDRootStackParam } from "@/screens/navigation/user/FindIdNavigation";
 import { idFoundState } from "@/recoil/authAtoms";
 import { SignUpRootStackParam } from "@/screens/navigation/SignUpStackNavigation";
+import { Title } from "@/components/signup/Title";
+import { TextField } from "@/components/signup/TextField";
+import { GradationButton } from "@/components/common/GradationButton";
 
 export function IdFound(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<FindIDRootStackParam>>();
@@ -23,45 +26,40 @@ export function IdFound(): React.JSX.Element {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      {IDFound ? (
-        <>
-          <Text style={styles.title}>아이디를 확인해주세요.</Text>
-          <Text style={styles.label}>아이디</Text>
-          <Text style={styles.value}>{IDFound}</Text>
-          <TouchableOpacity onPress={handlePressReturnButton}>
-            <Text>확인</Text>
-          </TouchableOpacity>
-        </>
-      ) : (
-        <>
-          <Text style={styles.title}>가입 정보가 없습니다.</Text>
-          <Text style={styles.label}>회원가입 하시겠습니까?</Text>
-          <TouchableOpacity onPress={handlePressSignupButton}>
-            <Text>확인</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handlePressReturnButton}>
-            <Text>취소</Text>
-          </TouchableOpacity>
-        </>
-      )}
+      <ScrollView style={commonStyles.scrollBox}>
+        {IDFound ? (
+          <>
+            <Title text="아이디를 확인해주세요." />
+            <TextField label="아이디 ID" value={IDFound} />
+            <TouchableOpacity style={styles.button} onPress={handlePressReturnButton}>
+              <Text>확인</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <Title text="가입 정보가 없습니다." />
+            <TouchableOpacity style={styles.button} onPress={handlePressSignupButton}>
+              <GradationButton text="회원 가입 하기" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handlePressReturnButton}>
+              <Text style={styles.buttonText}>취소</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    color: "black",
-    fontSize: 26,
+  button: {
+    width: "100%",
+    height: 45,
+    backgroundColor: "#000",
   },
 
-  label: {
-    fontSize: 12,
-    marginTop: 30,
-  },
-
-  value: {
-    borderWidth: 1,
-    borderColor: "black",
-    marginVertical: 10,
+  buttonText: {
+    margin: "auto",
+    color: "#fff",
   },
 });

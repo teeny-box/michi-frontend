@@ -1,15 +1,17 @@
 import { GradationButton } from "@/components/common/GradationButton";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Image, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 
 export function Start() {
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
+  const { top } = useSafeAreaInsets();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container, { height: top }]}>
+      <StatusBar backgroundColor="#fff" />
       <Image style={styles.logo} source={require("@assets/images/logo_ver2.png")} />
       <TouchableOpacity style={styles.buttonBox} onPress={() => navigation.navigate("login")}>
         <GradationButton text="로그인" />
@@ -17,7 +19,7 @@ export function Start() {
       <TouchableOpacity style={styles.buttonBox} onPress={() => navigation.navigate("signup")}>
         <GradationButton text="회원가입" />
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#fff",
   },
 
   logo: {

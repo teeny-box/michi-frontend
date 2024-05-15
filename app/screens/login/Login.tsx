@@ -99,17 +99,18 @@ export function Login() {
 }
 
 const styles = StyleSheet.create({
-  logoImage: {
-    width: 180,
-    height: 120,
-    objectFit: "contain",
-    marginLeft: 20,
-  },
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
+  },
+
+  logoImage: {
+    width: 180,
+    height: 120,
+    objectFit: "contain",
+    marginLeft: 20,
   },
 
   scrollBox: {
