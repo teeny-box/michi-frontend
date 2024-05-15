@@ -53,23 +53,23 @@ export function MyPage() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Profile />
         <View style={styles.infoBox}>
-          <ListItem label="출생년도" value={"2000년 생 (만 24세)"} />
-          <ListItem label="전화번호" value={"010-7744-0745"} />
-          <LinkedListItem label="아이디" value={"qwe123"} onPressIn={sendToChangeId} showIcon={true} />
-          <LinkedListItem label="비밀번호" value={"재설정"} onPressIn={sendToChangePassword} showIcon={true} />
+          <ListItem label="출생년도" value={"2000년 생 (만 24세)"} borderBottomColor="#fff" />
+          <ListItem label="전화번호" value={"010-7744-0745"} borderBottomColor="#fff" />
+          <LinkedListItem label="아이디" value={"qwe123"} onPress={sendToChangeId} color="purple" />
+          <LinkedListItem label="비밀번호" value={"재설정"} onPress={sendToChangePassword} color="purple" />
         </View>
 
         <View>
-          <LinkedListItem label="이용약관" onPressIn={sendTo이용약관페이지} />
-          <LinkedListItem label="개인정보 처리방침" onPressIn={sendTo개인정보처리방침페이지} />
-          <ListItem label="앱 버전" value={"1.0.0"} />
+          <LinkedListItem label="이용약관" onPress={sendTo이용약관페이지} />
+          <LinkedListItem label="개인정보 처리방침" onPress={sendTo개인정보처리방침페이지} />
+          <ListItem label="앱 버전" value={"1.0.0"} borderBottomColor="#E8ECF1" />
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPressIn={handlePressLogoutButton}>
+          <TouchableOpacity style={styles.button} onPress={handlePressLogoutButton}>
             <GradationButton text="로그아웃" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPressIn={handlePressWithdrawButton}>
+          <TouchableOpacity style={styles.button} onPress={handlePressWithdrawButton}>
             <Text style={styles.buttonText}>회원탈퇴</Text>
           </TouchableOpacity>
         </View>
@@ -81,12 +81,11 @@ export function MyPage() {
 const styles = StyleSheet.create({
   outBox: {
     flex: 1,
-    padding: 25,
+    paddingHorizontal: 25,
     backgroundColor: "#fff",
   },
 
   infoBox: {
-    marginBottom: 20,
     backgroundColor: "rgba(112, 0, 255, 0.05)",
   },
 
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginTop: 40,
+    marginVertical: 40,
   },
 
   button: {

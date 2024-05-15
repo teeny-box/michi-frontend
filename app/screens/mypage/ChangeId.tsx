@@ -18,7 +18,7 @@ export function ChangeId() {
         <Text style={styles.title}>아이디 변경하기</Text>
         <TextInput value={id} onChangeText={setId} style={styles.input} />
         <Text>사용 가능한 아이디입니다.</Text>
-        <TouchableOpacity style={styles.button} onPressIn={() => navigation.navigate("mypage")}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("mypage")}>
           <Text>확인</Text>
         </TouchableOpacity>
       </View>

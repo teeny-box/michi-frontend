@@ -3,11 +3,19 @@ import { StyleSheet, Text, View } from "react-native";
 type listItemProps = {
   label: string;
   value?: string;
+  borderBottomColor?: string;
 };
 
-export function ListItem({ label, value }: listItemProps) {
+export function ListItem({ label, value, borderBottomColor }: listItemProps) {
+  const borderStyle = borderBottomColor
+    ? {
+        borderBottomColor: borderBottomColor,
+        borderBottomWidth: 1,
+      }
+    : {};
+
   return (
-    <View style={styles.list}>
+    <View style={[styles.list, borderStyle]}>
       <Text style={styles.listTitle}>{label}</Text>
       <Text style={styles.listText}>{value}</Text>
     </View>

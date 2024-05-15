@@ -4,12 +4,12 @@ import { GestureResponderEvent, Image, StyleSheet, Text, TouchableOpacity, View 
 type checkBoxFieldProps = {
   children: React.ReactNode;
   isChecked: boolean;
-  onPressIn: (event: GestureResponderEvent) => void;
+  onPress: (event: GestureResponderEvent) => void;
 };
 
-export function CheckBoxField({ children, isChecked, onPressIn }: checkBoxFieldProps) {
+export function CheckBoxField({ children, isChecked, onPress }: checkBoxFieldProps) {
   return (
-    <TouchableOpacity style={styles.container} onPressIn={onPressIn}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       {isChecked ? <Image source={require("@assets/images/checkbox_purple.png")} /> : <Image source={require("@assets/images/checkbox_gray.png")} />}
       {children}
     </TouchableOpacity>

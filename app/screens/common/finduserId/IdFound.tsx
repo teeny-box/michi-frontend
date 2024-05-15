@@ -28,7 +28,7 @@ export function IdFound(): React.JSX.Element {
           <Text style={styles.title}>아이디를 확인해주세요.</Text>
           <Text style={styles.label}>아이디</Text>
           <Text style={styles.value}>{IDFound}</Text>
-          <TouchableOpacity onPressIn={handlePressReturnButton}>
+          <TouchableOpacity onPress={handlePressReturnButton}>
             <Text>확인</Text>
           </TouchableOpacity>
         </>
@@ -36,10 +36,10 @@ export function IdFound(): React.JSX.Element {
         <>
           <Text style={styles.title}>가입 정보가 없습니다.</Text>
           <Text style={styles.label}>회원가입 하시겠습니까?</Text>
-          <TouchableOpacity onPressIn={handlePressSignupButton}>
+          <TouchableOpacity onPress={handlePressSignupButton}>
             <Text>확인</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPressIn={handlePressReturnButton}>
+          <TouchableOpacity onPress={handlePressReturnButton}>
             <Text>취소</Text>
           </TouchableOpacity>
         </>

@@ -11,10 +11,10 @@ export function Start() {
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.logo} source={require("@assets/images/logo_ver2.png")} />
-      <TouchableOpacity style={styles.buttonBox} onPressIn={() => navigation.navigate("login")}>
+      <TouchableOpacity style={styles.buttonBox} onPress={() => navigation.navigate("login")}>
         <GradationButton text="로그인" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonBox} onPressIn={() => navigation.navigate("signup")}>
+      <TouchableOpacity style={styles.buttonBox} onPress={() => navigation.navigate("signup")}>
         <GradationButton text="회원가입" />
       </TouchableOpacity>
     </SafeAreaView>

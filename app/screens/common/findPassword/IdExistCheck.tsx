@@ -56,7 +56,7 @@ export function IdExistCheck() {
       <TextInput value={id} onChangeText={handleChangeId} style={styles.input} maxLength={20} />
       <Text>{checkMessage}</Text>
       <TouchableOpacity
-        onPressIn={handlePressNextButton}
+        onPress={handlePressNextButton}
         disabled={id.length < 4}
         style={id.length >= 4 ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
         {/* style={commonStyles.nextButton}> */}

@@ -28,7 +28,7 @@ export function CheckInfo(): React.JSX.Element {
         <TextField label="전화번호" value={phoneNumber} />
         <TextField label="출생년도" value={birthYear} />
       </ScrollView>
-      <NextButton onPressIn={handlePressNextButton} />
+      <NextButton onPress={handlePressNextButton} />
     </SafeAreaView>
   );
 }

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export type RootStackParam = {
@@ -10,24 +10,28 @@ export type RootStackParam = {
 export function Profile() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
+  const handlePressChangeProfile = () => {
+    navigation.navigate("changeProfile");
+  };
+
   return (
     <View style={styles.outBox}>
-      <View style={styles.imageBox}>
+      <TouchableOpacity style={styles.imageBox} onPress={handlePressChangeProfile}>
         <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
         <Image source={{ uri: "https://i.pinimg.com/564x/b4/b4/5f/b4b45f38fb15427b0f609f011b44f384.jpg" }} style={styles.userImage} />
-      </View>
-      <View style={styles.nicknameBox}>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.nicknameBox} onPress={handlePressChangeProfile}>
         <Text style={styles.nickname}>맹구콧물띄어쓰기없이</Text>
-        <MaterialCommunityIcons name="account-edit" size={26} onPress={() => navigation.navigate("changeProfile")} />
-      </View>
+        <MaterialCommunityIcons name="account-edit" size={26} />
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   outBox: {
-    flexDirection: "row",
-    marginBottom: 25,
+    marginVertical: 25,
+    alignItems: "center",
   },
   imageBox: {
     width: 80,
@@ -47,8 +51,8 @@ const styles = StyleSheet.create({
     margin: "auto",
   },
   nicknameBox: {
-    alignSelf: "flex-end",
     paddingBottom: 10,
+    marginTop: 16,
     marginLeft: 10,
     flexDirection: "row",
     flexGrow: 1,

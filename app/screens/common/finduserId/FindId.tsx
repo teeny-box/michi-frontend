@@ -90,7 +90,7 @@ export function FindId() {
       {state !== "running" ? (
         <SafeAreaView style={commonStyles.container}>
           <Text style={styles.title}>본인인증을 해주세요</Text>
-          <TouchableOpacity style={styles.button} onPressIn={handlePressCertificationButton}>
+          <TouchableOpacity style={styles.button} onPress={handlePressCertificationButton}>
             <Text>인증하기</Text>
           </TouchableOpacity>
           {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}

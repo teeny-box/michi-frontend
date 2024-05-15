@@ -88,7 +88,7 @@ export function Nickname(): React.JSX.Element {
         <Title text="닉네임을 입력해주세요" />
         <TextInputField label="닉네임" value={nickname} setValue={handleChangeNickname} maxLength={10} message={checkMessage} isAvailable={isAvailable} />
       </ScrollView>
-      <NextButton onPressIn={handlePressNextButton} disabled={!isAvailable} />
+      <NextButton onPress={handlePressNextButton} disabled={!isAvailable} />
     </SafeAreaView>
   );
 }

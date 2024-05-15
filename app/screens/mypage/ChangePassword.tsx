@@ -28,7 +28,7 @@ export function ChangePassword() {
         <TextInput value={id} secureTextEntry={true} onChangeText={setId} style={styles.input} />
         <Text>비밀번호가 일치하지 않습니다.</Text>
 
-        <TouchableOpacity style={styles.button} onPressIn={() => navigation.navigate("mypage")}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("mypage")}>
           <Text>확인</Text>
         </TouchableOpacity>
       </View>
