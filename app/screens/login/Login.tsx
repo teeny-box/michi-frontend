@@ -10,7 +10,7 @@ import { useSetRecoilState } from "recoil";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import { Gradation } from "@/components/common/Gradation";
 import LinearGradient from "react-native-linear-gradient";
-import { TextInputField } from "@/components/signup/TextInputField";
+import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
 
 export function Login() {
@@ -99,17 +99,18 @@ export function Login() {
 }
 
 const styles = StyleSheet.create({
-  logoImage: {
-    width: 180,
-    height: 120,
-    objectFit: "contain",
-    marginLeft: 20,
-  },
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
+  },
+
+  logoImage: {
+    width: 180,
+    height: 120,
+    objectFit: "contain",
+    marginLeft: 20,
   },
 
   scrollBox: {

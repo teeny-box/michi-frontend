@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { commonStyles } from "./Common.styled";
 import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@components/signup/TextInputField";
+import { TextInputField } from "@/components/common/TextInputField";
 import { Title } from "@components/signup/Title";
 import { NextButton } from "@components/signup/NextButton";
 

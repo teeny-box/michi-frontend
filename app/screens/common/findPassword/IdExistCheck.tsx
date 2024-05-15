@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { commonStyles } from "@/screens/signup/Common.styled";
@@ -8,6 +8,9 @@ import { useRecoilState } from "recoil";
 import { idFoundState } from "@/recoil/authAtoms";
 import { userUrl } from "@/utils/apiUrls";
 import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswordNavigation";
+import { TextInputField } from "@/components/common/TextInputField";
+import { Title } from "@/components/signup/Title";
+import { GradationButton } from "@/components/common/GradationButton";
 
 // 영문자로 시작해야 합니다.
 // 영문자, 숫자, 밑줄(_)로만 이루어져야 합니다.
@@ -51,35 +54,32 @@ export function IdExistCheck() {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <Text style={styles.title}>비밀번호를 찾을 아이디 정보를 입력하세요</Text>
-      <Text style={styles.label}>아이디</Text>
-      <TextInput value={id} onChangeText={handleChangeId} style={styles.input} maxLength={20} />
-      <Text>{checkMessage}</Text>
-      <TouchableOpacity
-        onPressIn={handlePressNextButton}
-        disabled={id.length < 4}
-        style={id.length >= 4 ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
-        {/* style={commonStyles.nextButton}> */}
-        <Text>확인</Text>
-      </TouchableOpacity>
+      <ScrollView style={commonStyles.scrollBox}>
+        <Title text="비밀번호를 찾을 아이디 정보를 입력하세요" />
+        <TextInputField label="아이디 ID" value={id} setValue={handleChangeId} placeholder="가입한 아이디를 입력하세요." message={checkMessage} />
+        {id.length < 4 ? (
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>확인</Text>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={handlePressNextButton} style={styles.button}>
+            <GradationButton text="확인" />
+          </TouchableOpacity>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    color: "black",
-    fontSize: 26,
+  button: {
+    width: "100%",
+    height: 45,
+    backgroundColor: "lightgray",
   },
 
-  label: {
-    fontSize: 12,
-    marginTop: 30,
-  },
-
-  input: {
-    borderWidth: 1,
-    borderColor: "black",
-    marginVertical: 10,
+  buttonText: {
+    margin: "auto",
+    color: "#fff",
   },
 });
