@@ -81,16 +81,16 @@ export function Login() {
             <TextInputField label="아이디 ID" value={id} setValue={setId} placeholder="아이디를 입력하세요" />
             <TextInputField label="비밀번호 P/W" value={password} setValue={setPassword} placeholder="비밀번호를 입력하세요" secureTextEntry={true} />
           </View>
-          <TouchableOpacity style={styles.longinButton} onPressIn={handlePressLoginButton}>
+          <TouchableOpacity style={styles.longinButton} onPress={handlePressLoginButton}>
             <GradationButton text="로그인" />
           </TouchableOpacity>
         </View>
       </ScrollView>
       <View style={styles.bottomBox}>
-        <TouchableOpacity onPressIn={handlePressFindID} style={styles.findButton}>
+        <TouchableOpacity onPress={handlePressFindID} style={styles.findButton}>
           <Text>아이디 ID 찾기</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPressIn={handlePressFindPassword}>
+        <TouchableOpacity onPress={handlePressFindPassword}>
           <Text>비밀번호 P/W 찾기</Text>
         </TouchableOpacity>
       </View>

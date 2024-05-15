@@ -101,7 +101,7 @@ export function Id() {
           isAvailable={isAvailable}
         />
       </ScrollView>
-      <NextButton onPressIn={handlePressNextButton} disabled={!isAvailable} />
+      <NextButton onPress={handlePressNextButton} disabled={!isAvailable} />
     </SafeAreaView>
   );
 }

@@ -7,7 +7,17 @@ import { Certification } from "../signup/Certification";
 import { FindIdStackNavigation } from "./user/FindIdNavigation";
 import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
 
-const Stack = createNativeStackNavigator();
+export type MypageRootStackParam = {
+  mypage: undefined;
+  changeId: undefined;
+  changePassword: undefined;
+  changeProfile: undefined;
+  certification: undefined;
+  findId: undefined;
+  findPassword: undefined;
+};
+
+const Stack = createNativeStackNavigator<MypageRootStackParam>();
 
 export function MyPageStackNavigation() {
   const customStackNavigationOptions: NativeStackNavigationOptions = {

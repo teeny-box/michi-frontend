@@ -54,7 +54,7 @@ export function Welcome(): React.JSX.Element {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.nextButton} onPressIn={handlePressNextButton}>
+      <TouchableOpacity style={styles.nextButton} onPress={handlePressNextButton}>
         <GradationButton text="에티켓을 지킬 것을 약속합니다" />
       </TouchableOpacity>
     </SafeAreaView>

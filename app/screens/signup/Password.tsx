@@ -84,7 +84,7 @@ export function Password(): React.JSX.Element {
           secureTextEntry={true}
         />
       </ScrollView>
-      <NextButton onPressIn={handlePressNextButton} disabled={!(isSame && isAvailable)} />
+      <NextButton onPress={handlePressNextButton} disabled={!(isSame && isAvailable)} />
     </SafeAreaView>
   );
 }

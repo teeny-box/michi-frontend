@@ -4,11 +4,11 @@ import { Gradation } from "../common/Gradation";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 type nextButtonProps = {
-  onPressIn: (event: GestureResponderEvent) => void;
+  onPress: (event: GestureResponderEvent) => void;
   disabled?: boolean;
 };
 
-export function NextButton({ onPressIn, disabled }: nextButtonProps) {
+export function NextButton({ onPress, disabled }: nextButtonProps) {
   useEffect(() => {
     if (disabled === null || disabled === undefined) {
       disabled = true;
@@ -22,7 +22,7 @@ export function NextButton({ onPressIn, disabled }: nextButtonProps) {
           <FontAwesome5 name="angle-right" size={44} style={styles.icon} color={"#fff"} />
         </View>
       ) : (
-        <TouchableOpacity onPressIn={onPressIn} style={styles.nextButton}>
+        <TouchableOpacity onPress={onPress} style={styles.nextButton}>
           <Gradation>
             <FontAwesome5 name="angle-right" size={44} style={styles.icon} color={"#fff"} />
           </Gradation>

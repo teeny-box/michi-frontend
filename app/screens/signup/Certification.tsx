@@ -92,13 +92,13 @@ export function Certification() {
                 <Text>인증완료</Text>
               </View>
             ) : (
-              <TouchableOpacity style={styles.button} onPressIn={handlePressCertificationButton}>
+              <TouchableOpacity style={styles.button} onPress={handlePressCertificationButton}>
                 <GradationButton text="인증하기" />
               </TouchableOpacity>
             )}
             {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           </ScrollView>
-          <NextButton onPressIn={handlePressNextButton} disabled={state !== "success"} />
+          <NextButton onPress={handlePressNextButton} disabled={state !== "success"} />
         </SafeAreaView>
       ) : (
         <IMPCertification callback={callback} />

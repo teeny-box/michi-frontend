@@ -87,31 +87,31 @@ export function Terms(): React.JSX.Element {
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
         <Title text="이용약관을 확인해주세요" />
         <View style={styles.checkboxContainer}>
-          <CheckBoxField isChecked={allChecked} onPressIn={handlePressAllChecked}>
+          <CheckBoxField isChecked={allChecked} onPress={handlePressAllChecked}>
             <Text style={styles.t1}>아래 항목에 모두 동의합니다.</Text>
           </CheckBoxField>
           <View style={styles.detailCheckContainer}>
-            <CheckBoxField isChecked={isChecked1} onPressIn={() => setIsChecked1(!isChecked1)}>
+            <CheckBoxField isChecked={isChecked1} onPress={() => setIsChecked1(!isChecked1)}>
               <Text style={styles.t2}>
                 (필수)개인정보(위치정보 포함)의 수집 및 이용에 동의합니다. <Text style={styles.link}>더 보기</Text>
               </Text>
             </CheckBoxField>
-            <CheckBoxField isChecked={isChecked2} onPressIn={() => setIsChecked2(!isChecked2)}>
+            <CheckBoxField isChecked={isChecked2} onPress={() => setIsChecked2(!isChecked2)}>
               <Text style={styles.t2}>
                 (필수)<Text style={styles.link}>위치기반서비스 이용약관</Text>에 동의합니다.
               </Text>
             </CheckBoxField>
-            <CheckBoxField isChecked={isChecked3} onPressIn={() => setIsChecked3(!isChecked3)}>
+            <CheckBoxField isChecked={isChecked3} onPress={() => setIsChecked3(!isChecked3)}>
               <Text style={styles.t2}>
                 (필수)<Text style={styles.link}>이용약관</Text>에 동의합니다.
               </Text>
             </CheckBoxField>
-            <CheckBoxField isChecked={isChecked4} onPressIn={() => setIsChecked4(!isChecked4)}>
+            <CheckBoxField isChecked={isChecked4} onPress={() => setIsChecked4(!isChecked4)}>
               <Text style={styles.t2}>
                 (필수)개인정보의 제3자 제공에 동의합니다. <Text style={styles.link}>더 보기</Text>
               </Text>
             </CheckBoxField>
-            <CheckBoxField isChecked={isChecked5} onPressIn={() => setIsChecked5(!isChecked5)}>
+            <CheckBoxField isChecked={isChecked5} onPress={() => setIsChecked5(!isChecked5)}>
               <Text style={styles.t2}>
                 (필수)개인정보의 국외 이전에 동의합니다. <Text style={styles.link}>더 보기</Text>
               </Text>
@@ -120,7 +120,7 @@ export function Terms(): React.JSX.Element {
         </View>
       </ScrollView>
       {allChecked ? (
-        <TouchableOpacity onPressIn={handlePressSignUpButton} style={styles.signUpButton}>
+        <TouchableOpacity onPress={handlePressSignUpButton} style={styles.signUpButton}>
           <GradationButton text="가입하기" />
         </TouchableOpacity>
       ) : (
