@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { commonStyles } from "./Common.styled";
 import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@components/signup/TextInputField";
+import { TextInputField } from "@/components/common/TextInputField";
 import { Title } from "@components/signup/Title";
 import { NextButton } from "@components/signup/NextButton";
 
@@ -86,7 +86,15 @@ export function Nickname(): React.JSX.Element {
     <SafeAreaView style={commonStyles.container}>
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
         <Title text="닉네임을 입력해주세요" />
-        <TextInputField label="닉네임" value={nickname} setValue={handleChangeNickname} maxLength={10} message={checkMessage} isAvailable={isAvailable} />
+        <TextInputField
+          label="닉네임"
+          value={nickname}
+          setValue={handleChangeNickname}
+          maxLength={10}
+          message={checkMessage}
+          isAvailable={isAvailable}
+          placeholder="사용할 닉네임을 입력하세요"
+        />
       </ScrollView>
       <NextButton onPress={handlePressNextButton} disabled={!isAvailable} />
     </SafeAreaView>

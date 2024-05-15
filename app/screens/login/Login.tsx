@@ -10,7 +10,7 @@ import { useSetRecoilState } from "recoil";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import { Gradation } from "@/components/common/Gradation";
 import LinearGradient from "react-native-linear-gradient";
-import { TextInputField } from "@/components/signup/TextInputField";
+import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
 
 export function Login() {

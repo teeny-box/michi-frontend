@@ -8,7 +8,7 @@ import { idState } from "@/recoil/signupAtoms";
 import { commonStyles } from "./Common.styled";
 import { useEffect, useState } from "react";
 import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@/components/signup/TextInputField";
+import { TextInputField } from "@/components/common/TextInputField";
 import { Title } from "@/components/signup/Title";
 import { NextButton } from "@/components/signup/NextButton";
 
