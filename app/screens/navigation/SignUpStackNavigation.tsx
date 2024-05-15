@@ -22,18 +22,20 @@ const Stack = createNativeStackNavigator<SignUpRootStackParam>();
 export function SignUpStackNavigation() {
   const customStackNavigationOptions: NativeStackNavigationOptions = {
     gestureEnabled: false,
-    title: "",
+    title: "회원가입",
     headerStyle: {
-      backgroundColor: "#209bec",
+      backgroundColor: "#fff",
     },
-    headerTintColor: "#fff",
+    headerTintColor: "#000",
     headerTitleStyle: {
-      fontWeight: "bold",
+      fontSize: 20,
+      fontFamily: "Freesentation-5Medium",
     },
+    headerTransparent: true,
   };
 
   return (
-    <Stack.Navigator initialRouteName="signup_certification" screenOptions={{ headerTransparent: true }}>
+    <Stack.Navigator initialRouteName="signup_certification" screenOptions={customStackNavigationOptions}>
       <Stack.Screen name="signup_certification" component={Certification} />
       <Stack.Screen name="checkInfo" component={CheckInfo} />
       <Stack.Screen name="id" component={Id} />
