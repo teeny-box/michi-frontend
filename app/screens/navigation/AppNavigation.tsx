@@ -7,9 +7,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authUrl, userUrl } from "@/utils/apiUrls";
 import { removeAsyncStorage, setAsyncStorage } from "@/storage/AsyncStorage";
 import SplashScreen from "react-native-splash-screen";
+import { useUpdateAccessToken } from "@/hook/useUpdateAccessToken";
 
 export function AppNavigation() {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const updateAccessToken = useUpdateAccessToken();
   const setUser = useSetRecoilState(userState);
   const resetUser = useResetRecoilState(userState);
   const [loading, setLoading] = useState(true);
@@ -60,27 +62,6 @@ export function AppNavigation() {
       }
     } catch (err) {
       console.error("get user data error : ", err);
-    }
-  };
-
-  const updateAccessToken = async () => {
-    const storageRefreshToken = await AsyncStorage.getItem("accessToken");
-    const res = await fetch(`${authUrl}/refresh-token`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${storageRefreshToken}` },
-      body: JSON.stringify({ accessToken }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      const { accessToken, refreshToken } = data.data;
-      setAccessToken(accessToken);
-      setAsyncStorage("accessToken", accessToken);
-      setAsyncStorage("refreshToken", refreshToken);
-    } else {
-      setAccessToken("");
-      removeAsyncStorage("accessToken");
-      removeAsyncStorage("refreshToken");
     }
   };
 

@@ -11,10 +11,12 @@ import { ListItem } from "@/components/mypage/ListItem";
 import { LinkedListItem } from "@/components/mypage/LinkedListItem";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { authUrl } from "@/utils/apiUrls";
+import { useUpdateAccessToken } from "@/hook/useUpdateAccessToken";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const updateAccessToken = useUpdateAccessToken();
 
   const logout = async () => {
     try {
@@ -27,6 +29,8 @@ export function MyPage() {
         removeAsyncStorage("accessToken");
         removeAsyncStorage("refreshToken");
         return console.log("success");
+      } else if (res.status === 401) {
+        await updateAccessToken();
       }
       console.log("fail");
     } catch (err) {
