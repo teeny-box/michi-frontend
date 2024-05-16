@@ -75,6 +75,14 @@ export function ChangeProfile() {
     }
   };
 
+  const resetImage = () => {
+    setNewProfileImage(userData.profileImage);
+  };
+
+  const setDefaultImage = () => {
+    setNewProfileImage(null);
+  };
+
   const handleChangeProfileImage = async () => {
     if (Platform.OS !== "ios" && Platform.OS !== "android") {
       return;
@@ -90,10 +98,10 @@ export function ChangeProfile() {
 
     if (allGranted) {
       Alert.alert("골라", "", [
-        { text: "카메라로 찍기", onPress: openCamera },
+        // { text: "카메라로 찍기", onPress: openCamera },
         { text: "앨범에서 선택", onPress: getPhotos },
-        { text: "원래대로" },
-        { text: "기본 이미지" },
+        { text: "원래대로", onPress: resetImage },
+        { text: "기본 이미지", onPress: setDefaultImage },
       ]);
     }
   };
@@ -163,7 +171,7 @@ export function ChangeProfile() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
         body: JSON.stringify({
           nickname: newNickname || userData.nickname,
-          profileImage: newProfileImage || userData.profileImage,
+          profileImage: newProfileImage,
         }),
       });
 
@@ -191,16 +199,7 @@ export function ChangeProfile() {
     <SafeAreaView style={styles.outBox}>
       <TouchableOpacity onPress={handleChangeProfileImage} style={styles.imageBox}>
         <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
-        <Image
-          source={
-            newProfileImage
-              ? { uri: newProfileImage }
-              : userData.profileImage
-              ? { uri: userData.profileImage }
-              : require("@assets/images/user_default_image.png")
-          }
-          style={styles.userImage}
-        />
+        <Image source={newProfileImage ? { uri: newProfileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />
       </TouchableOpacity>
       <View style={styles.nicknameBox}>
         <TextInputField
@@ -213,7 +212,7 @@ export function ChangeProfile() {
           placeholder="닉네임을 입력하세요" // 원래 닉네임 보여주기
         />
       </View>
-      {userData.nickname !== newNickname && isAvailable ? (
+      {(userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage ? (
         <TouchableOpacity onPress={handlePressSubmitButton} style={styles.submitButton}>
           <GradationButton text="수정완료" />
         </TouchableOpacity>
