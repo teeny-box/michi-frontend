@@ -1,14 +1,13 @@
-import { tokenState } from "@/recoil/authAtoms";
+import { accessTokenState } from "@/recoil/authAtoms";
 import { setAsyncStorage } from "@/storage/AsyncStorage";
 import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Alert, Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, useWindowDimensions } from "react-native";
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSetRecoilState } from "recoil";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
-import { Gradation } from "@/components/common/Gradation";
 import LinearGradient from "react-native-linear-gradient";
 import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
@@ -18,7 +17,7 @@ export function Login() {
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const setToken = useSetRecoilState(tokenState);
+  const setAccessToken = useSetRecoilState(accessTokenState);
 
   const login = async () => {
     try {
@@ -32,14 +31,13 @@ export function Login() {
       });
 
       if (res.ok) {
+        const data = await res.json();
+        const { accessToken, refreshToken } = data.data;
+        setAccessToken(accessToken);
+        setAsyncStorage("accessToken", accessToken);
+        setAsyncStorage("refreshToken", refreshToken);
         console.log("login success");
-        const authorizationHeader = res.headers.get("Authorization");
-        if (authorizationHeader) {
-          const accessToken = authorizationHeader.split(" ")[1];
-          setToken(accessToken);
-          setAsyncStorage("token", accessToken);
-          return 1;
-        }
+        return 1;
       }
       return 0;
     } catch (err) {
@@ -49,12 +47,12 @@ export function Login() {
   };
 
   const handlePressLoginButton = async () => {
-    // const success = await login();
+    const success = await login();
 
     // --- 개발용 ---
-    const success = true;
-    setToken("qwer");
-    setAsyncStorage("token", "qwer");
+    // const success = true;
+    // setToken("qwer");
+    // setAsyncStorage("token", "qwer");
     // --------------
 
     if (!success) {

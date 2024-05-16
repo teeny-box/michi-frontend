@@ -3,21 +3,35 @@ import { Profile } from "@components/mypage/Profile.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { removeAsyncStorage } from "@/storage/AsyncStorage";
-import { useSetRecoilState } from "recoil";
-import { tokenState } from "@/recoil/authAtoms";
+import { useRecoilState } from "recoil";
+import { accessTokenState } from "@/recoil/authAtoms";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GradationButton } from "@/components/common/GradationButton";
 import { ListItem } from "@/components/mypage/ListItem";
 import { LinkedListItem } from "@/components/mypage/LinkedListItem";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
+import { authUrl } from "@/utils/apiUrls";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const setToken = useSetRecoilState(tokenState);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
-  const logout = () => {
-    setToken("");
-    removeAsyncStorage("token");
+  const logout = async () => {
+    try {
+      const res = await fetch(`${authUrl}/logout`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      if (res.ok) {
+        setAccessToken("");
+        removeAsyncStorage("accessToken");
+        removeAsyncStorage("refreshToken");
+        return console.log("success");
+      }
+      console.log("fail");
+    } catch (err) {
+      console.error("logout error : ", err);
+    }
   };
 
   const removeUser = () => {

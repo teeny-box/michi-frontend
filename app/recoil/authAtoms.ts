@@ -5,8 +5,8 @@ export const userState = atom({
   default: {},
 });
 
-export const tokenState = atom({
-  key: "tokenState",
+export const accessTokenState = atom({
+  key: "accessTokenState",
   default: "",
 });
 
