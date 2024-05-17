@@ -12,6 +12,7 @@ import { accessTokenState, userState } from "@/recoil/authAtoms";
 
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions";
+import { useAccessToken } from "@/hook/useAccessToken";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
@@ -20,7 +21,7 @@ const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 
 
 export function ChangeProfile() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const accessToken = useRecoilValue(accessTokenState);
+  const { updateToken, getTokenFromAsyncStorege } = useAccessToken();
   const [userData, setUserData] = useRecoilState(userState);
   const [newNickname, setNewNickname] = useState<string>(userData.nickname || "");
   const [checkMessage, setCheckMessage] = useState(defaultMessage);
@@ -164,23 +165,25 @@ export function ChangeProfile() {
     setTimer(newTimer);
   };
 
-  const updateUserData = async () => {
+  const updateUserData = async (): Promise<1 | undefined> => {
+    const token = await getTokenFromAsyncStorege();
+
     try {
       const res = await fetch(userUrl, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           nickname: newNickname || userData.nickname,
           profileImage: newProfileImage,
         }),
       });
 
-      const data = await res.json();
-      console.log(data);
-
       if (res.ok) {
         setUserData({ ...userData, nickname: newNickname, profileImage: newProfileImage });
         return 1;
+      } else if (res.status === 401) {
+        const success = await updateToken();
+        if (success) return await updateUserData();
       }
     } catch (err) {
       console.error("update user error : ", err);
@@ -209,7 +212,7 @@ export function ChangeProfile() {
           maxLength={10}
           message={checkMessage}
           isAvailable={userData.nickname !== newNickname ? isAvailable : undefined}
-          placeholder="닉네임을 입력하세요" // 원래 닉네임 보여주기
+          placeholder={userData.nickname || "닉네임을 입력하세요"}
         />
       </View>
       {(userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage ? (

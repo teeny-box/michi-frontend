@@ -7,8 +7,7 @@ import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { userUrl } from "@/utils/apiUrls";
-import { useRecoilValue } from "recoil";
-import { accessTokenState } from "@/recoil/authAtoms";
+import { useAccessToken } from "@/hook/useAccessToken";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.
@@ -17,7 +16,7 @@ const defaultMessage = "* 영어, 숫자, 특수문자를 포함해주세요.\n*
 
 export function ChangePassword(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const accessToken = useRecoilValue(accessTokenState);
+  const { updateToken, getTokenFromAsyncStorege } = useAccessToken();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [currentPasswordMessage, setCurrentPasswordMessage] = useState("");
@@ -61,11 +60,12 @@ export function ChangePassword(): React.JSX.Element {
     passwordValidation(text);
   };
 
-  const updatePassword = async () => {
+  const updatePassword = async (): Promise<1 | undefined> => {
+    const token = await getTokenFromAsyncStorege();
     try {
       const res = await fetch(`${userUrl}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           password: currentPassword,
           newPassword,
@@ -74,6 +74,9 @@ export function ChangePassword(): React.JSX.Element {
 
       if (res.ok) {
         return 1;
+      } else if (res.status === 401) {
+        const success = await updateToken();
+        if (success) return await updatePassword();
       }
     } catch (err) {
       console.error("update password error : ", err);

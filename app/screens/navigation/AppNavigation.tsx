@@ -9,7 +9,7 @@ import { useAccessToken } from "@/hook/useAccessToken";
 
 export function AppNavigation() {
   const accessToken = useRecoilValue(accessTokenState);
-  const { getTokenFromAsyncStorege, updateAccessToken } = useAccessToken();
+  const { getTokenFromAsyncStorege, updateToken } = useAccessToken();
   const setUser = useSetRecoilState(userState);
   const resetUser = useResetRecoilState(userState);
   const [loading, setLoading] = useState(true);
@@ -22,6 +22,7 @@ export function AppNavigation() {
   }, []);
 
   useEffect(() => {
+    console.log("accessToken : ", accessToken);
     if (accessToken) {
       getUserData();
     } else if (accessToken !== null || accessToken !== undefined) {
@@ -34,7 +35,7 @@ export function AppNavigation() {
     if (!loading) {
       setTimeout(() => {
         SplashScreen.hide();
-      }, 100); //스플래시 활성화 시간
+      }, 200); //스플래시 활성화 시간
     }
   }, [loading]);
 
@@ -47,7 +48,7 @@ export function AppNavigation() {
         setLoading(false);
       } else {
         // 엑세스 토큰 재발급 받기
-        await updateAccessToken();
+        await updateToken();
       }
     } catch (err) {
       console.error("get user data error : ", err);

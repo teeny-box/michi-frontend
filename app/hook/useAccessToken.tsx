@@ -12,14 +12,15 @@ export function useAccessToken() {
       const storageAccessToken = await AsyncStorage.getItem("accessToken");
       if (storageAccessToken) {
         setAccessToken(JSON.parse(storageAccessToken));
-        return 1;
+        return JSON.parse(storageAccessToken);
       }
     } catch (err) {
       console.error("get token from AsyncStorage error : ", err);
     }
   };
 
-  const deleteAccessToken = async () => {
+  const deleteToken = async () => {
+    console.log("deleteToken");
     try {
       setAccessToken("");
       await removeAsyncStorage("accessToken");
@@ -29,29 +30,32 @@ export function useAccessToken() {
     }
   };
 
-  const updateAccessToken = async () => {
+  const updateToken = async () => {
+    console.log("updateToken");
     try {
       const storageRefreshToken = await AsyncStorage.getItem("refreshToken");
+      if (!storageRefreshToken) return;
+
       const res = await fetch(`${authUrl}/refresh-token`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${storageRefreshToken}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(storageRefreshToken)}` },
         body: JSON.stringify({ accessToken }),
       });
-      const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
+        const data = await res.json();
         const { accessToken, refreshToken } = data.data;
         setAccessToken(accessToken);
-        setAsyncStorage("accessToken", accessToken);
-        setAsyncStorage("refreshToken", refreshToken);
+        await setAsyncStorage("accessToken", accessToken);
+        await setAsyncStorage("refreshToken", refreshToken);
         return 1;
       } else {
-        deleteAccessToken();
+        await deleteToken();
       }
     } catch (err) {
       console.error("update access token error : ", err);
     }
   };
 
-  return { getTokenFromAsyncStorege, updateAccessToken, deleteAccessToken };
+  return { getTokenFromAsyncStorege, updateToken, deleteToken };
 }

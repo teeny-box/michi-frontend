@@ -2,15 +2,14 @@ import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "rea
 import { Profile } from "@components/mypage/Profile.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { removeAsyncStorage } from "@/storage/AsyncStorage";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { accessTokenState, userState } from "@/recoil/authAtoms";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/recoil/authAtoms";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GradationButton } from "@/components/common/GradationButton";
 import { ListItem } from "@/components/mypage/ListItem";
 import { LinkedListItem } from "@/components/mypage/LinkedListItem";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
-import { authUrl } from "@/utils/apiUrls";
+import { authUrl, userUrl } from "@/utils/apiUrls";
 import { useAccessToken } from "@/hook/useAccessToken";
 import getCurrentAge from "@/utils/getCurrentAge";
 import phoneNumberFormat from "@/utils/phoneNumberFormat";
@@ -18,31 +17,49 @@ import phoneNumberFormat from "@/utils/phoneNumberFormat";
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const { updateAccessToken } = useAccessToken();
+  const { updateToken, deleteToken, getTokenFromAsyncStorege } = useAccessToken();
 
   const logout = async () => {
+    const token = await getTokenFromAsyncStorege();
     try {
       const res = await fetch(`${authUrl}/logout`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
+      console.log("logout accessToken : ", token);
+      const data = await res.json();
+      console.log(data);
+
       if (res.ok) {
-        setAccessToken("");
-        removeAsyncStorage("accessToken");
-        removeAsyncStorage("refreshToken");
-        return console.log("success");
+        await deleteToken();
+        return console.log("logout success");
       } else if (res.status === 401) {
-        await updateAccessToken();
+        const success = await updateToken();
+        if (success) logout();
       }
-      console.log("fail");
     } catch (err) {
       console.error("logout error : ", err);
     }
   };
 
-  const removeUser = () => {
-    // 회원탈퇴
+  const removeUser = async () => {
+    const token = await getTokenFromAsyncStorege();
+    try {
+      const res = await fetch(`${userUrl}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.ok) {
+        await deleteToken();
+        return console.log("remove user success");
+      } else if (res.status === 401) {
+        const success = await updateToken();
+        if (success) removeUser();
+      }
+    } catch (err) {
+      console.error("logout error : ", err);
+    }
   };
 
   const handlePressLogoutButton = () => {
