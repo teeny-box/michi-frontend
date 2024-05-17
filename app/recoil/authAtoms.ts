@@ -15,6 +15,8 @@ type userStateType = {
   updatedAt: null | string;
 };
 
+type tokenType = null | string;
+
 export const userState = atom<userStateType>({
   key: "userState",
   default: {
@@ -33,9 +35,9 @@ export const userState = atom<userStateType>({
   },
 });
 
-export const accessTokenState = atom({
+export const accessTokenState = atom<tokenType>({
   key: "accessTokenState",
-  default: "",
+  default: null,
 });
 
 export const idFoundState = atom({

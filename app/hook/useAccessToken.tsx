@@ -4,8 +4,30 @@ import { useRecoilState } from "recoil";
 import { accessTokenState } from "@/recoil/authAtoms";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export function useUpdateAccessToken() {
+export function useAccessToken() {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+
+  const getTokenFromAsyncStorege = async () => {
+    try {
+      const storageAccessToken = await AsyncStorage.getItem("accessToken");
+      if (storageAccessToken) {
+        setAccessToken(JSON.parse(storageAccessToken));
+        return 1;
+      }
+    } catch (err) {
+      console.error("get token from AsyncStorage error : ", err);
+    }
+  };
+
+  const deleteAccessToken = async () => {
+    try {
+      setAccessToken("");
+      await removeAsyncStorage("accessToken");
+      await removeAsyncStorage("refreshToken");
+    } catch (err) {
+      console.error("delete access token error : ", err);
+    }
+  };
 
   const updateAccessToken = async () => {
     try {
@@ -22,15 +44,14 @@ export function useUpdateAccessToken() {
         setAccessToken(accessToken);
         setAsyncStorage("accessToken", accessToken);
         setAsyncStorage("refreshToken", refreshToken);
+        return 1;
       } else {
-        setAccessToken("");
-        removeAsyncStorage("accessToken");
-        removeAsyncStorage("refreshToken");
+        deleteAccessToken();
       }
     } catch (err) {
       console.error("update access token error : ", err);
     }
   };
 
-  return updateAccessToken;
+  return { getTokenFromAsyncStorege, updateAccessToken, deleteAccessToken };
 }

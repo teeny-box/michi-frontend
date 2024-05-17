@@ -1,43 +1,32 @@
 import { accessTokenState, userState } from "@/recoil/authAtoms";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MainTabNavigation } from "./MainTabNavigation";
 import { StartStackNavigation } from "./StartStackNavigation";
 import { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { authUrl, userUrl } from "@/utils/apiUrls";
-import { removeAsyncStorage, setAsyncStorage } from "@/storage/AsyncStorage";
+import { userUrl } from "@/utils/apiUrls";
 import SplashScreen from "react-native-splash-screen";
-import { useUpdateAccessToken } from "@/hook/useUpdateAccessToken";
+import { useAccessToken } from "@/hook/useAccessToken";
 
 export function AppNavigation() {
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const updateAccessToken = useUpdateAccessToken();
+  const accessToken = useRecoilValue(accessTokenState);
+  const { getTokenFromAsyncStorege, updateAccessToken } = useAccessToken();
   const setUser = useSetRecoilState(userState);
   const resetUser = useResetRecoilState(userState);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getTokenFromAsyncStorege = async () => {
-      try {
-        const storageAccessToken = await AsyncStorage.getItem("accessToken");
-        if (storageAccessToken) {
-          setAccessToken(JSON.parse(storageAccessToken));
-        } else {
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error("get token from AsyncStorage error : ", err);
-      }
-    };
-
-    getTokenFromAsyncStorege();
+    (async () => {
+      const success = await getTokenFromAsyncStorege();
+      if (!success) setLoading(false);
+    })();
   }, []);
 
   useEffect(() => {
     if (accessToken) {
       getUserData();
-    } else {
+    } else if (accessToken !== null || accessToken !== undefined) {
       resetUser();
+      setLoading(false);
     }
   }, [accessToken]);
 

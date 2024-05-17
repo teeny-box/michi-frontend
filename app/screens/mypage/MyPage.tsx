@@ -3,20 +3,23 @@ import { Profile } from "@components/mypage/Profile.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { removeAsyncStorage } from "@/storage/AsyncStorage";
-import { useRecoilState } from "recoil";
-import { accessTokenState } from "@/recoil/authAtoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { accessTokenState, userState } from "@/recoil/authAtoms";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GradationButton } from "@/components/common/GradationButton";
 import { ListItem } from "@/components/mypage/ListItem";
 import { LinkedListItem } from "@/components/mypage/LinkedListItem";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { authUrl } from "@/utils/apiUrls";
-import { useUpdateAccessToken } from "@/hook/useUpdateAccessToken";
+import { useAccessToken } from "@/hook/useAccessToken";
+import getCurrentAge from "@/utils/getCurrentAge";
+import phoneNumberFormat from "@/utils/phoneNumberFormat";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
+  const userData = useRecoilValue(userState);
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const updateAccessToken = useUpdateAccessToken();
+  const { updateAccessToken } = useAccessToken();
 
   const logout = async () => {
     try {
@@ -50,9 +53,9 @@ export function MyPage() {
     Alert.alert("정말 탈퇴 하시겠습니까?", "탈퇴 시 모든 데이터가 삭제되며, 복구할 수 없습니다.", [{ text: "OK", onPress: removeUser }, { text: "Cancle" }]);
   };
 
-  const sendToChangeId = () => {
-    navigation.navigate("changeId");
-  };
+  // const sendToChangeId = () => {
+  //   navigation.navigate("changeId");
+  // };
 
   const sendToChangePassword = () => {
     navigation.navigate("changePassword");
@@ -71,9 +74,13 @@ export function MyPage() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Profile />
         <View style={styles.infoBox}>
-          <ListItem label="출생년도" value={"2000년 생 (만 24세)"} borderBottomColor="#fff" />
-          <ListItem label="전화번호" value={"010-7744-0745"} borderBottomColor="#fff" />
-          <LinkedListItem label="아이디" value={"qwe123"} onPress={sendToChangeId} color="purple" />
+          <ListItem
+            label="출생년도"
+            value={userData.birthYear ? `${userData.birthYear} (만 ${getCurrentAge(userData.birthYear)}세)` : ""}
+            borderBottomColor="#fff"
+          />
+          <ListItem label="전화번호" value={userData.phoneNumber ? phoneNumberFormat(userData.phoneNumber) : ""} borderBottomColor="#fff" />
+          <ListItem label="아이디" value={userData.userId?.slice(0, -2) + "**" || ""} borderBottomColor="#fff" />
           <LinkedListItem label="비밀번호" value={"재설정"} onPress={sendToChangePassword} color="purple" />
         </View>
 
