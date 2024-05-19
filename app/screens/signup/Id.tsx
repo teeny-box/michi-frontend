@@ -33,7 +33,9 @@ export function Id() {
     setIsAvailable(false);
 
     if (!regex.test(text)) {
-      if (/[^a-zA-Z0-9_]/.test(text)) {
+      if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/g.test(text)) {
+        setCheckMessage("* 한글은 사용할 수 없습니다.");
+      } else if (/[^a-zA-Z0-9_]/.test(text)) {
         setCheckMessage("* 밑줄(_)을 제외한 특수문자, 공백은 사용할 수 없습니다.");
       } else if (!/^[a-zA-Z]/.test(text)) {
         setCheckMessage("* 영문자로 시작해야 합니다.");
