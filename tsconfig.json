@@ -7,6 +7,10 @@
       "@components/*": ["components/*"],
       "@screens/*": ["screens/*"],
       "@assets/*": ["assets/*"]
-    }
+    },
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "module": "ES2022"
   }
 }

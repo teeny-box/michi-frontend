@@ -25,7 +25,7 @@ export function AppNavigation() {
     console.log("accessToken : ", accessToken);
     if (accessToken) {
       getUserData();
-    } else if (accessToken !== null || accessToken !== undefined) {
+    } else if (accessToken !== null && accessToken !== undefined) {
       resetUser();
       setLoading(false);
     }
