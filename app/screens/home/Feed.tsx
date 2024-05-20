@@ -6,6 +6,7 @@ import Icon3 from "react-native-vector-icons/FontAwesome";
 import Icon4 from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { GradationProfile } from "@/components/common/GradationProfile";
 
 export type RootStackParam = {
   feedEdit: undefined;
@@ -53,7 +54,7 @@ const onlineUserData = [
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export function Home(): React.JSX.Element {
+export function Feed(): React.JSX.Element {
   const [selectedTab, setSelectedTab] = useState("피드");
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
@@ -85,11 +86,11 @@ export function Home(): React.JSX.Element {
                 <TouchableOpacity key={feed.id}>
                   <View style={styles.feed}>
                     <View style={styles.feedContents}>
-                      <View style={styles.feedProfile}>
-                        <View>
+                      <GradationProfile>
+                        <View style={styles.feedProfile}>
                           <Icon3 name="user-circle-o" size={46} color={"#fff"} />
                         </View>
-                      </View>
+                      </GradationProfile>
                       <View style={styles.feedInfo}>
                         <Text style={styles.feedNickName}>
                           {feed.nickName} <Icon2 name="sparkles-sharp" size={10} color={"#AB94F7"} /> <Text style={styles.feedText}>1시간 전</Text>
@@ -118,11 +119,13 @@ export function Home(): React.JSX.Element {
               <View style={styles.onlineUserContainer}>
                 {onlineUserData.map(user => (
                   <View key={user.id} style={styles.onlineUser}>
-                    <View style={styles.onlineUserProfile}>
-                      <View>
-                        <Icon3 name="user-circle-o" size={76} color={"#fff"} />
+                    <GradationProfile>
+                      <View style={styles.onlineUserProfile}>
+                        <View>
+                          <Icon3 name="user-circle-o" size={76} color={"#fff"} />
+                        </View>
                       </View>
-                    </View>
+                    </GradationProfile>
                     <Text style={styles.onlineUsernickName}>{user.nickName}</Text>
                     <Text style={styles.onlineUserisOnline}>{user.isOnline}</Text>
                   </View>
@@ -199,13 +202,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: SCREEN_HEIGHT / 16,
     width: SCREEN_HEIGHT / 16,
-    marginRight: "3%",
     borderRadius: 100,
-    backgroundColor: "#AB94F7",
   },
   feedInfo: {
     flex: 1,
     justifyContent: "center",
+    marginLeft: "3%",
   },
   feedNickName: {
     fontSize: 12,
@@ -248,7 +250,6 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT / 10,
     width: SCREEN_HEIGHT / 10,
     borderRadius: 100,
-    backgroundColor: "#AB94F7",
   },
   onlineUsernickName: {
     fontWeight: "600",

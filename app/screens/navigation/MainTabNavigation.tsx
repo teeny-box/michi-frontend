@@ -33,6 +33,5 @@ export function MainTabNavigation() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#FFF",
   },
 });

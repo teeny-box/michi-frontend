@@ -7,7 +7,6 @@
 
 import React, { useEffect } from "react";
 import { StatusBar, useColorScheme } from "react-native";
-
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -31,7 +30,6 @@ function App(): React.JSX.Element {
   return (
     <RecoilRoot>
       <SafeAreaProvider>
-        <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} backgroundColor={backgroundStyle.backgroundColor} />
         <NavigationContainer>
           <AppNavigation />
         </NavigationContainer>
