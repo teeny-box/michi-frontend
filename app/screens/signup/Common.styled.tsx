@@ -6,6 +6,7 @@ export const commonStyles = StyleSheet.create({
     paddingHorizontal: 25,
     position: "relative",
     flexGrow: 1,
+    backgroundColor: "#fff",
   },
 
   scrollBox: {

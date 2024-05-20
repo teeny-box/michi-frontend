@@ -8,7 +8,7 @@ import { idState } from "@/recoil/signupAtoms";
 import { commonStyles } from "./Common.styled";
 import { useEffect, useState } from "react";
 import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@/components/signup/TextInputField";
+import { TextInputField } from "@/components/common/TextInputField";
 import { Title } from "@/components/signup/Title";
 import { NextButton } from "@/components/signup/NextButton";
 
@@ -33,7 +33,9 @@ export function Id() {
     setIsAvailable(false);
 
     if (!regex.test(text)) {
-      if (/[^a-zA-Z0-9_]/.test(text)) {
+      if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/g.test(text)) {
+        setCheckMessage("* 한글은 사용할 수 없습니다.");
+      } else if (/[^a-zA-Z0-9_]/.test(text)) {
         setCheckMessage("* 밑줄(_)을 제외한 특수문자, 공백은 사용할 수 없습니다.");
       } else if (!/^[a-zA-Z]/.test(text)) {
         setCheckMessage("* 영문자로 시작해야 합니다.");
@@ -101,7 +103,7 @@ export function Id() {
           isAvailable={isAvailable}
         />
       </ScrollView>
-      <NextButton onPressIn={handlePressNextButton} disabled={!isAvailable} />
+      <NextButton onPress={handlePressNextButton} disabled={!isAvailable} />
     </SafeAreaView>
   );
 }

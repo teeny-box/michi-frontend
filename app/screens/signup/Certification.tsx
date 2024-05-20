@@ -12,6 +12,7 @@ import { authUrl } from "@/utils/apiUrls";
 import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
 import { NextButton } from "@/components/signup/NextButton";
+import getCurrentAge from "@/utils/getCurrentAge";
 
 type stateType = "waiting" | "running" | "success" | "fail";
 
@@ -35,30 +36,27 @@ export function Certification() {
   };
 
   const getPortOne = async (impUid: string): Promise<{ state: stateType }> => {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
+    try {
+      const res = await fetch(`${authUrl}/${impUid}`);
 
-    // try {
-    //   const res = await fetch(`${authUrl}/${impUid}`);
+      if (res.ok) {
+        const data = await res.json();
 
-    //   if (res.ok) {
-    //     const data = await res.json();
-
-    //     if (currentYear - parseInt(data.data.birthYear) > 18) {
-    //       setUserName(data.data.userName);
-    //       setPhoneNumber(data.data.phoneNumber);
-    //       setBirthYear(data.data.birthYear);
-    //       navigation.push("checkInfo");
-    //       return { state: "success" };
-    //     } else {
-    //       Alert.alert("⚠️ 미성년자는 가입할 수 없습니다.", "", [{ text: "OK", style: "cancel" }]);
-    //     }
-    //   }
-    //   return { state: "fail" };
-    // } catch (err) {
-    //   console.error("get portone error : ", err);
-    //   return { state: "fail" };
-    // }
+        if (getCurrentAge(data.data.birthYear) > 18) {
+          setUserName(data.data.userName);
+          setPhoneNumber(data.data.phoneNumber);
+          setBirthYear(data.data.birthYear);
+          navigation.push("checkInfo");
+          return { state: "success" };
+        } else {
+          Alert.alert("⚠️ 미성년자는 가입할 수 없습니다.", "", [{ text: "OK", style: "cancel" }]);
+        }
+      }
+      return { state: "fail" };
+    } catch (err) {
+      console.error("get portone error : ", err);
+      return { state: "fail" };
+    }
 
     setUserName("이진이");
     setPhoneNumber("01077440745");
@@ -92,13 +90,13 @@ export function Certification() {
                 <Text>인증완료</Text>
               </View>
             ) : (
-              <TouchableOpacity style={styles.button} onPressIn={handlePressCertificationButton}>
+              <TouchableOpacity style={styles.button} onPress={handlePressCertificationButton}>
                 <GradationButton text="인증하기" />
               </TouchableOpacity>
             )}
             {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           </ScrollView>
-          <NextButton onPressIn={handlePressNextButton} disabled={state !== "success"} />
+          <NextButton onPress={handlePressNextButton} disabled={state !== "success"} />
         </SafeAreaView>
       ) : (
         <IMPCertification callback={callback} />

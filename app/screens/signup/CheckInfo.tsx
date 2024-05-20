@@ -9,6 +9,8 @@ import { commonStyles } from "./Common.styled";
 import { Title } from "@/components/signup/Title";
 import { TextField } from "@/components/signup/TextField";
 import { NextButton } from "@/components/signup/NextButton";
+import phoneNumberFormat from "@/utils/phoneNumberFormat";
+import getCurrentAge from "@/utils/getCurrentAge";
 
 export function CheckInfo(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
@@ -25,10 +27,10 @@ export function CheckInfo(): React.JSX.Element {
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
         <Title text="인증 정보를 확인해주세요." />
         <TextField label="이름" value={userName} />
-        <TextField label="전화번호" value={phoneNumber} />
-        <TextField label="출생년도" value={birthYear} />
+        <TextField label="전화번호" value={phoneNumberFormat(phoneNumber)} />
+        <TextField label="출생년도" value={`${birthYear} (만 ${getCurrentAge(birthYear)}세)`} />
       </ScrollView>
-      <NextButton onPressIn={handlePressNextButton} />
+      <NextButton onPress={handlePressNextButton} />
     </SafeAreaView>
   );
 }

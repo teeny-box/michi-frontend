@@ -21,22 +21,23 @@ const Stack = createNativeStackNavigator<StartRootStackParam>();
 export function StartStackNavigation() {
   const customStackNavigationOptions: NativeStackNavigationOptions = {
     gestureEnabled: false,
-    title: "",
     headerStyle: {
-      backgroundColor: "#209bec",
+      backgroundColor: "#fff",
     },
-    headerTintColor: "#fff",
+    headerTintColor: "#000",
     headerTitleStyle: {
-      fontWeight: "bold",
+      fontSize: 20,
+      fontFamily: "Freesentation-5Medium",
     },
+    headerTransparent: true,
+    headerShown: false,
   };
 
   return (
-    <Stack.Navigator initialRouteName="start" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="start" screenOptions={customStackNavigationOptions}>
       <Stack.Screen name="start" component={Start} options={{ animation: "fade" }} />
       <Stack.Screen name="login" component={Login} options={{ headerShown: true }} />
       <Stack.Screen name="signup" component={SignUpStackNavigation} />
-      <Stack.Screen name="main" component={MainTabNavigation} />
       <Stack.Screen name="findId_login" component={FindIdStackNavigation} />
       <Stack.Screen name="findPassword_login" component={FindPasswordStackNavigation} />
     </Stack.Navigator>

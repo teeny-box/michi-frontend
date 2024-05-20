@@ -67,7 +67,7 @@ export function ChangePassword(): React.JSX.Element {
       <Text>{checkValidationMessage}</Text>
       <Text style={styles.label}>비밀번호 확인</Text>
       <TextInput value={checkPassword} onChangeText={setCheckPassword} secureTextEntry={true} style={styles.input} />
-      <TouchableOpacity onPressIn={handlePressNextButton} disabled={!isSame} style={isSame ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
+      <TouchableOpacity onPress={handlePressNextButton} disabled={!isSame} style={isSame ? commonStyles.nextButton : commonStyles.nextButtonDisabled}>
         <Text>NEXT</Text>
       </TouchableOpacity>
     </SafeAreaView>

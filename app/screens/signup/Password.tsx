@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { passwordState } from "@/recoil/signupAtoms";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { Title } from "@/components/signup/Title";
-import { TextInputField } from "@/components/signup/TextInputField";
+import { TextInputField } from "@/components/common/TextInputField";
 import { NextButton } from "@/components/signup/NextButton";
 
 // 8자 이상이어야 합니다.
@@ -84,7 +84,7 @@ export function Password(): React.JSX.Element {
           secureTextEntry={true}
         />
       </ScrollView>
-      <NextButton onPressIn={handlePressNextButton} disabled={!(isSame && isAvailable)} />
+      <NextButton onPress={handlePressNextButton} disabled={!(isSame && isAvailable)} />
     </SafeAreaView>
   );
 }

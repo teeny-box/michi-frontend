@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { InputAccessoryView, Platform, StyleSheet, Text, TextInput, View } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 
 type textInputFieldProps = {
@@ -20,7 +20,7 @@ export function TextInputField({ label, value, setValue, message, maxLength, isA
     }
   }, []);
 
-  return (
+  const components = (
     <>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputBox}>
@@ -40,6 +40,8 @@ export function TextInputField({ label, value, setValue, message, maxLength, isA
       {message && <Text style={styles.message}>{message}</Text>}
     </>
   );
+
+  return <>{Platform.OS === "ios" ? <InputAccessoryView>components</InputAccessoryView> : components}</>;
 }
 
 const styles = StyleSheet.create({

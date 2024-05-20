@@ -1,19 +1,23 @@
-import { tokenState } from "@/recoil/authAtoms";
+import { accessTokenState } from "@/recoil/authAtoms";
 import { setAsyncStorage } from "@/storage/AsyncStorage";
 import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSetRecoilState } from "recoil";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
+import LinearGradient from "react-native-linear-gradient";
+import { TextInputField } from "@/components/common/TextInputField";
+import { GradationButton } from "@/components/common/GradationButton";
 
 export function Login() {
+  const { width } = useWindowDimensions();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const setToken = useSetRecoilState(tokenState);
+  const setAccessToken = useSetRecoilState(accessTokenState);
 
   const login = async () => {
     try {
@@ -27,14 +31,13 @@ export function Login() {
       });
 
       if (res.ok) {
+        const data = await res.json();
+        const { accessToken, refreshToken } = data.data;
+        setAccessToken(accessToken);
+        setAsyncStorage("accessToken", accessToken);
+        setAsyncStorage("refreshToken", refreshToken);
         console.log("login success");
-        const authorizationHeader = res.headers.get("Authorization");
-        if (authorizationHeader) {
-          const accessToken = authorizationHeader.split(" ")[1];
-          setToken(accessToken);
-          setAsyncStorage("token", accessToken);
-          return 1;
-        }
+        return 1;
       }
       return 0;
     } catch (err) {
@@ -44,10 +47,13 @@ export function Login() {
   };
 
   const handlePressLoginButton = async () => {
-    // const success = await login();
-    const success = true;
-    setToken("qwer");
-    setAsyncStorage("token", "qwer");
+    const success = await login();
+
+    // --- 개발용 ---
+    // const success = true;
+    // setToken("qwer");
+    // setAsyncStorage("token", "qwer");
+    // --------------
 
     if (!success) {
       Alert.alert("로그인 실패", "아이디 또는 비밀번호를 다시 확인해주세요.", [{ text: "OK" }]);
@@ -64,21 +70,27 @@ export function Login() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}>로그인 페이지</Text>
-        <TextInput value={id} onChangeText={setId} style={styles.input} placeholder="ID" />
-        <TextInput value={password} onChangeText={setPassword} secureTextEntry={true} style={styles.input} placeholder="PASSWORD" />
-        <TouchableOpacity style={styles.longinButton} onPressIn={handlePressLoginButton}>
-          <Text style={styles.longinButtonText}>LOGIN</Text>
-        </TouchableOpacity>
-        <View>
-          <TouchableOpacity onPressIn={handlePressFindID}>
-            <Text>아이디 찾기</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPressIn={handlePressFindPassword}>
-            <Text>비밀번호 찾기</Text>
+      <View style={[styles.bgCircle, { width: width * 1.8, top: -(width / 1.8) }]}></View>
+      <LinearGradient style={styles.bgBottom} colors={["#AA94F7", "#759AF3"]}></LinearGradient>
+      <ScrollView style={styles.scrollBox}>
+        <View style={styles.contentsBox}>
+          <Image source={require("@assets/images/logo_ver2.png")} style={styles.logoImage} />
+          <View style={{ width: "100%" }}>
+            <TextInputField label="아이디 ID" value={id} setValue={setId} placeholder="아이디를 입력하세요" />
+            <TextInputField label="비밀번호 P/W" value={password} setValue={setPassword} placeholder="비밀번호를 입력하세요" secureTextEntry={true} />
+          </View>
+          <TouchableOpacity style={styles.longinButton} onPress={handlePressLoginButton}>
+            <GradationButton text="로그인" />
           </TouchableOpacity>
         </View>
+      </ScrollView>
+      <View style={styles.bottomBox}>
+        <TouchableOpacity onPress={handlePressFindID} style={styles.findButton}>
+          <Text>아이디 ID 찾기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handlePressFindPassword}>
+          <Text>비밀번호 P/W 찾기</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -89,26 +101,57 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    position: "relative",
   },
 
-  title: {
-    color: "black",
-    fontSize: 26,
+  logoImage: {
+    width: 180,
+    height: 120,
+    objectFit: "contain",
+    marginLeft: 20,
   },
 
-  input: {
-    borderWidth: 1,
-    borderColor: "black",
+  scrollBox: {
+    width: "100%",
+    flexGrow: 0,
+  },
+
+  contentsBox: {
+    paddingHorizontal: 25,
+    paddingTop: 80,
+    paddingBottom: 90,
+    alignItems: "center",
+    gap: 22,
+  },
+
+  bottomBox: {
+    flex: 1,
+    flexDirection: "row",
+    gap: 33,
+  },
+
+  findButton: {
+    height: 20,
   },
 
   longinButton: {
     width: 250,
-    padding: 10,
-    backgroundColor: "purple",
+    height: 45,
   },
 
-  longinButtonText: {
-    color: "white",
-    textAlign: "center",
+  bgCircle: {
+    position: "absolute",
+    backgroundColor: "#fff",
+    aspectRatio: 1 / 1,
+    borderRadius: 1000,
+    zIndex: -1,
+  },
+
+  bgBottom: {
+    position: "absolute",
+    width: "100%",
+    height: "40%",
+    bottom: 0,
+    zIndex: -2,
   },
 });

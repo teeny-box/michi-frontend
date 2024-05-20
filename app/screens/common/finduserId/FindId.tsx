@@ -2,13 +2,16 @@ import { idFoundState } from "@/recoil/authAtoms";
 import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { FunctionComponent, useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSetRecoilState } from "recoil";
 import { commonStyles } from "../../signup/Common.styled";
 import { IMPCertification } from "@components/common/IMPCertification";
 import { FindIDRootStackParam } from "@/screens/navigation/user/FindIdNavigation";
+import { headerShowState } from "@/recoil/commonAtoms";
+import { GradationButton } from "@/components/common/GradationButton";
+import { Title } from "@/components/signup/Title";
 
 type stateType = "waiting" | "running" | "fail";
 type idFoundBodyType = {
@@ -21,10 +24,19 @@ export function FindId() {
   const navigation = useNavigation<NativeStackNavigationProp<FindIDRootStackParam>>();
   const [state, setState] = useState<stateType>("waiting");
   const setIdFound = useSetRecoilState(idFoundState);
+  const setHeaderShow = useSetRecoilState(headerShowState);
 
   useEffect(() => {
     setIdFound("");
   }, []);
+
+  useEffect(() => {
+    if (state === "running") {
+      setHeaderShow(false);
+    } else {
+      setHeaderShow(true);
+    }
+  }, [state]);
 
   const getIdFound = async ({ userName, phoneNumber, birthYear }: idFoundBodyType) => {
     try {
@@ -89,20 +101,28 @@ export function FindId() {
     <>
       {state !== "running" ? (
         <SafeAreaView style={commonStyles.container}>
-          <Text style={styles.title}>본인인증을 해주세요</Text>
-          <TouchableOpacity style={styles.button} onPressIn={handlePressCertificationButton}>
-            <Text>인증하기</Text>
-          </TouchableOpacity>
-          {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
+          <ScrollView style={commonStyles.scrollBox}>
+            <Title text="본인인증을 해주세요" />
+            <TouchableOpacity style={styles.button} onPress={handlePressCertificationButton}>
+              <GradationButton text="인증하기" />
+            </TouchableOpacity>
+            {state === "fail" && <Text style={styles.warning}>* 인증에 실패하였습니다. 다시 시도해주세요.</Text>}
+          </ScrollView>
         </SafeAreaView>
       ) : (
-        <IMPCertification callback={callback} />
+        <View style={styles.container}>
+          <IMPCertification callback={callback} />
+        </View>
       )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+
   title: {
     color: "black",
     fontSize: 26,
@@ -115,16 +135,15 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    paddingVertical: 10,
-    backgroundColor: "plum",
-    marginVertical: 4,
-    alignItems: "center",
+    width: "100%",
+    height: 45,
+    backgroundColor: "lightgrey",
   },
 
-  buttonSuccess: {
-    paddingVertical: 10,
-    backgroundColor: "lightgrey",
-    marginVertical: 4,
-    alignItems: "center",
+  warning: {
+    fontFamily: "Freesentation-5Medium",
+    fontSize: 12,
+    color: "#7000FF",
+    marginTop: 10,
   },
 });

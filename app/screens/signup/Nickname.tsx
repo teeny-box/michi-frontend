@@ -8,13 +8,13 @@ import { useRecoilState } from "recoil";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { commonStyles } from "./Common.styled";
 import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@components/signup/TextInputField";
+import { TextInputField } from "@/components/common/TextInputField";
 import { Title } from "@components/signup/Title";
 import { NextButton } from "@components/signup/NextButton";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
-const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
+const regex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
 const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 이상 10자 이내로 입력해주세요.";
 
 export function Nickname(): React.JSX.Element {
@@ -32,7 +32,7 @@ export function Nickname(): React.JSX.Element {
     setIsAvailable(false);
 
     if (!regex.test(text)) {
-      if (/[^a-zA-Z0-9가-힣]/.test(text)) {
+      if (/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/.test(text)) {
         setCheckMessage("* 한글, 영어, 숫자만 사용해주세요.");
       } else {
         setCheckMessage("* 2자 이상 입력해주세요.");
@@ -86,9 +86,17 @@ export function Nickname(): React.JSX.Element {
     <SafeAreaView style={commonStyles.container}>
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
         <Title text="닉네임을 입력해주세요" />
-        <TextInputField label="닉네임" value={nickname} setValue={handleChangeNickname} maxLength={10} message={checkMessage} isAvailable={isAvailable} />
+        <TextInputField
+          label="닉네임"
+          value={nickname}
+          setValue={handleChangeNickname}
+          maxLength={10}
+          message={checkMessage}
+          isAvailable={isAvailable}
+          placeholder="사용할 닉네임을 입력하세요"
+        />
       </ScrollView>
-      <NextButton onPressIn={handlePressNextButton} disabled={!isAvailable} />
+      <NextButton onPress={handlePressNextButton} disabled={!isAvailable} />
     </SafeAreaView>
   );
 }
