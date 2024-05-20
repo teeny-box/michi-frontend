@@ -1,14 +1,18 @@
-import { nicknameState } from "@/recoil/signupAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useRecoilState } from "recoil";
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View, Platform } from "react-native";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
+import { accessTokenState, userState } from "@/recoil/authAtoms";
+
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions";
+import { useAccessToken } from "@/hook/useAccessToken";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
@@ -17,14 +21,91 @@ const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 
 
 export function ChangeProfile() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const [inputNickname, setInputNickname] = useState("원래닉네임");
+  const { updateToken, getTokenFromAsyncStorege } = useAccessToken();
+  const [userData, setUserData] = useRecoilState(userState);
+  const [newNickname, setNewNickname] = useState<string>(userData.nickname || "");
   const [checkMessage, setCheckMessage] = useState(defaultMessage);
-  const [isAvailable, setIsAvailable] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
+  const [newProfileImage, setNewProfileImage] = useState<string | null>(userData.profileImage);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
-  useEffect(() => {
-    if (inputNickname) nicknameValidation(inputNickname);
-  }, []);
+  const uploadProfileImage = async () => {
+    return ""; // return URL or ""
+  };
+
+  const openCamera = async () => {
+    try {
+      const res = await launchCamera({
+        mediaType: "photo",
+        includeBase64: true,
+      });
+      if (res.assets) {
+        const uri = res.assets[0].uri || null;
+        console.log(uri);
+        setNewProfileImage(uri);
+        // const uploadURL = await uploadProfileImage();
+        // if (uploadURL) {
+        //   setNewProfileImage(uploadURL);
+        // } else {
+        //   Alert.alert("이미지 업로드에 실패했습니다.", "잠시 후 다시 시도해주세요.", [{ text: "ok" }]);
+        // }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getPhotos = async () => {
+    try {
+      const res = await launchImageLibrary({
+        mediaType: "photo",
+      });
+      if (res.assets) {
+        const uri = res.assets[0].uri || null;
+        console.log(uri);
+        setNewProfileImage(uri);
+        // const uploadURL = await uploadProfileImage();
+        // if (uploadURL) {
+        //   setNewProfileImage(uploadURL);
+        // } else {
+        //   Alert.alert("이미지 업로드에 실패했습니다.", "잠시 후 다시 시도해주세요.", [{ text: "ok" }]);
+        // }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const resetImage = () => {
+    setNewProfileImage(userData.profileImage);
+  };
+
+  const setDefaultImage = () => {
+    setNewProfileImage(null);
+  };
+
+  const handleChangeProfileImage = async () => {
+    if (Platform.OS !== "ios" && Platform.OS !== "android") {
+      return;
+    }
+
+    const platformPermissions =
+      Platform.OS === "ios" ? [PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.MEDIA_LIBRARY] : [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.READ_MEDIA_IMAGES];
+
+    const granted = await requestMultiple(platformPermissions);
+
+    const allGranted = platformPermissions.reduce((bool, item) => bool && granted[item] === RESULTS.GRANTED, true);
+    console.log(granted, allGranted);
+
+    if (allGranted) {
+      Alert.alert("골라", "", [
+        // { text: "카메라로 찍기", onPress: openCamera },
+        { text: "앨범에서 선택", onPress: getPhotos },
+        { text: "원래대로", onPress: resetImage },
+        { text: "기본 이미지", onPress: setDefaultImage },
+      ]);
+    }
+  };
 
   const nicknameValidation = async (text: string) => {
     setIsAvailable(false);
@@ -37,6 +118,7 @@ export function ChangeProfile() {
       }
       return;
     }
+
     try {
       const res = await fetch(`${userUrl}/nickname-check/${text}`);
       if (res.ok) {
@@ -52,13 +134,20 @@ export function ChangeProfile() {
   };
 
   const handleChangeNickname = (text: string) => {
-    setInputNickname(text);
+    setNewNickname(text);
 
     // 유효성 검사
     if (!text) {
       clearTimeout(timer);
       setCheckMessage(defaultMessage);
       setIsAvailable(false);
+      return;
+    }
+
+    if (text === userData.nickname) {
+      clearTimeout(timer);
+      setCheckMessage(defaultMessage);
+      setIsAvailable(true);
       return;
     }
 
@@ -76,28 +165,57 @@ export function ChangeProfile() {
     setTimer(newTimer);
   };
 
-  const handlePressSubmitButton = () => {
-    navigation.pop();
+  const updateUserData = async (): Promise<1 | undefined> => {
+    const token = await getTokenFromAsyncStorege();
+
+    try {
+      const res = await fetch(userUrl, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          nickname: newNickname || userData.nickname,
+          profileImage: newProfileImage,
+        }),
+      });
+
+      if (res.ok) {
+        setUserData({ ...userData, nickname: newNickname, profileImage: newProfileImage });
+        return 1;
+      } else if (res.status === 401) {
+        const success = await updateToken();
+        if (success) return await updateUserData();
+      }
+    } catch (err) {
+      console.error("update user error : ", err);
+    }
+  };
+
+  const handlePressSubmitButton = async () => {
+    const success = await updateUserData();
+
+    if (success) {
+      navigation.pop();
+    }
   };
 
   return (
     <SafeAreaView style={styles.outBox}>
-      <View style={styles.imageBox}>
+      <TouchableOpacity onPress={handleChangeProfileImage} style={styles.imageBox}>
         <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
-        <Image source={{ uri: "https://i.pinimg.com/564x/b4/b4/5f/b4b45f38fb15427b0f609f011b44f384.jpg" }} style={styles.userImage} />
-      </View>
+        <Image source={newProfileImage ? { uri: newProfileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />
+      </TouchableOpacity>
       <View style={styles.nicknameBox}>
         <TextInputField
           label="닉네임"
-          value={inputNickname}
+          value={newNickname}
           setValue={handleChangeNickname}
           maxLength={10}
           message={checkMessage}
-          isAvailable={isAvailable}
-          placeholder="닉네임을 입력하세요" // 원래 닉네임 보여주기
+          isAvailable={userData.nickname !== newNickname ? isAvailable : undefined}
+          placeholder={userData.nickname || "닉네임을 입력하세요"}
         />
       </View>
-      {isAvailable ? (
+      {(userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage ? (
         <TouchableOpacity onPress={handlePressSubmitButton} style={styles.submitButton}>
           <GradationButton text="수정완료" />
         </TouchableOpacity>

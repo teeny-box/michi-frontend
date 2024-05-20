@@ -1,7 +1,9 @@
+import { userState } from "@/recoil/authAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useRecoilValue } from "recoil";
 
 export type RootStackParam = {
   changeProfile: undefined;
@@ -9,6 +11,7 @@ export type RootStackParam = {
 
 export function Profile() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
+  const userData = useRecoilValue(userState);
 
   const handlePressChangeProfile = () => {
     navigation.navigate("changeProfile");
@@ -18,10 +21,10 @@ export function Profile() {
     <View style={styles.outBox}>
       <TouchableOpacity style={styles.imageBox} onPress={handlePressChangeProfile}>
         <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
-        <Image source={{ uri: "https://i.pinimg.com/564x/b4/b4/5f/b4b45f38fb15427b0f609f011b44f384.jpg" }} style={styles.userImage} />
+        <Image source={userData.profileImage ? { uri: userData.profileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.nicknameBox} onPress={handlePressChangeProfile}>
-        <Text style={styles.nickname}>맹구콧물띄어쓰기없이</Text>
+        <Text style={styles.nickname}>{userData.nickname}</Text>
         <MaterialCommunityIcons name="account-edit" size={26} />
       </TouchableOpacity>
     </View>

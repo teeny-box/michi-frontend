@@ -1,50 +1,59 @@
-import { tokenState, userState } from "@/recoil/authAtoms";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { accessTokenState, userState } from "@/recoil/authAtoms";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MainTabNavigation } from "./MainTabNavigation";
 import { StartStackNavigation } from "./StartStackNavigation";
-import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { userUrl } from "@/utils/apiUrls";
+import SplashScreen from "react-native-splash-screen";
+import { useAccessToken } from "@/hook/useAccessToken";
 
 export function AppNavigation() {
-  const [token, setToken] = useRecoilState(tokenState);
+  const accessToken = useRecoilValue(accessTokenState);
+  const { getTokenFromAsyncStorege, updateToken } = useAccessToken();
   const setUser = useSetRecoilState(userState);
   const resetUser = useResetRecoilState(userState);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getTokenFromAsyncStorege = async () => {
-      try {
-        const storageToken = await AsyncStorage.getItem("token");
-        if (storageToken) {
-          setToken(storageToken);
-        }
-      } catch (err) {
-        console.error("get token from AsyncStorage error : ", err);
-      }
-    };
-
-    getTokenFromAsyncStorege();
+    (async () => {
+      const success = await getTokenFromAsyncStorege();
+      if (!success) setLoading(false);
+    })();
   }, []);
 
   useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const res = await fetch(`${userUrl}`, { headers: { Authorization: `Bearer ${token}` } });
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data.data);
-        }
-      } catch (err) {
-        console.error("get user data error : ", err);
-      }
-    };
-
-    if (token) {
-      // getUserData();
-    } else {
+    console.log("accessToken : ", accessToken);
+    if (accessToken) {
+      getUserData();
+    } else if (accessToken !== null && accessToken !== undefined) {
       resetUser();
+      setLoading(false);
     }
-  }, [token]);
+  }, [accessToken]);
 
-  return <>{token ? <MainTabNavigation /> : <StartStackNavigation />}</>;
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        SplashScreen.hide();
+      }, 200); //스플래시 활성화 시간
+    }
+  }, [loading]);
+
+  const getUserData = async () => {
+    try {
+      const res = await fetch(`${userUrl}`, { headers: { Authorization: `Bearer ${accessToken}` } });
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.data);
+        setLoading(false);
+      } else {
+        // 엑세스 토큰 재발급 받기
+        await updateToken();
+      }
+    } catch (err) {
+      console.error("get user data error : ", err);
+    }
+  };
+
+  return <>{accessToken ? <MainTabNavigation /> : <StartStackNavigation />}</>;
 }

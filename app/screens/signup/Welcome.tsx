@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
 
   textBox: {
     flexShrink: 1,
+    gap: 5,
   },
 
   mainTitle: {
@@ -88,10 +89,11 @@ const styles = StyleSheet.create({
     color: "#141414",
     fontSize: 16,
     fontFamily: "Freesentation-4Regular",
+    marginTop: 10,
   },
 
   middleContainer: {
-    marginVertical: 40,
+    marginVertical: 50,
   },
 
   subBox: {

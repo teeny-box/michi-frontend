@@ -35,7 +35,7 @@ export function MyPageStackNavigation() {
   return (
     <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false }}>
       <Stack.Screen name="mypage" component={MyPage} options={{ headerShown: false }} />
-      <Stack.Screen name="changeId" component={ChangeId} />
+      {/* <Stack.Screen name="changeId" component={ChangeId} /> */}
       <Stack.Screen name="changePassword" component={ChangePassword} />
       <Stack.Screen name="changeProfile" component={ChangeProfile} />
       <Stack.Screen name="certification" component={Certification} />

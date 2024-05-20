@@ -16,7 +16,7 @@ const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 
 
 export function ChangeId() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const [inputId, setInputId] = useState("원래닉네임");
+  const [inputId, setInputId] = useState("");
   const [checkMessage, setCheckMessage] = useState(defaultMessage);
   const [isAvailable, setIsAvailable] = useState(false);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머

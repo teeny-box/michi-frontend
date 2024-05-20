@@ -14,7 +14,7 @@ import { NextButton } from "@components/signup/NextButton";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
-const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
+const regex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
 const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 이상 10자 이내로 입력해주세요.";
 
 export function Nickname(): React.JSX.Element {
@@ -32,7 +32,7 @@ export function Nickname(): React.JSX.Element {
     setIsAvailable(false);
 
     if (!regex.test(text)) {
-      if (/[^a-zA-Z0-9가-힣]/.test(text)) {
+      if (/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/.test(text)) {
         setCheckMessage("* 한글, 영어, 숫자만 사용해주세요.");
       } else {
         setCheckMessage("* 2자 이상 입력해주세요.");

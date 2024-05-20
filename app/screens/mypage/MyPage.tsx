@@ -2,26 +2,64 @@ import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "rea
 import { Profile } from "@components/mypage/Profile.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { removeAsyncStorage } from "@/storage/AsyncStorage";
-import { useSetRecoilState } from "recoil";
-import { tokenState } from "@/recoil/authAtoms";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/recoil/authAtoms";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GradationButton } from "@/components/common/GradationButton";
 import { ListItem } from "@/components/mypage/ListItem";
 import { LinkedListItem } from "@/components/mypage/LinkedListItem";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
+import { authUrl, userUrl } from "@/utils/apiUrls";
+import { useAccessToken } from "@/hook/useAccessToken";
+import getCurrentAge from "@/utils/getCurrentAge";
+import phoneNumberFormat from "@/utils/phoneNumberFormat";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const setToken = useSetRecoilState(tokenState);
+  const userData = useRecoilValue(userState);
+  const { updateToken, deleteToken, getTokenFromAsyncStorege } = useAccessToken();
 
-  const logout = () => {
-    setToken("");
-    removeAsyncStorage("token");
+  const logout = async () => {
+    const token = await getTokenFromAsyncStorege();
+    try {
+      const res = await fetch(`${authUrl}/logout`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log("logout accessToken : ", token);
+      const data = await res.json();
+      console.log(data);
+
+      if (res.ok) {
+        await deleteToken();
+        return console.log("logout success");
+      } else if (res.status === 401) {
+        const success = await updateToken();
+        if (success) logout();
+      }
+    } catch (err) {
+      console.error("logout error : ", err);
+    }
   };
 
-  const removeUser = () => {
-    // 회원탈퇴
+  const removeUser = async () => {
+    const token = await getTokenFromAsyncStorege();
+    try {
+      const res = await fetch(`${userUrl}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.ok) {
+        await deleteToken();
+        return console.log("remove user success");
+      } else if (res.status === 401) {
+        const success = await updateToken();
+        if (success) removeUser();
+      }
+    } catch (err) {
+      console.error("logout error : ", err);
+    }
   };
 
   const handlePressLogoutButton = () => {
@@ -32,9 +70,9 @@ export function MyPage() {
     Alert.alert("정말 탈퇴 하시겠습니까?", "탈퇴 시 모든 데이터가 삭제되며, 복구할 수 없습니다.", [{ text: "OK", onPress: removeUser }, { text: "Cancle" }]);
   };
 
-  const sendToChangeId = () => {
-    navigation.navigate("changeId");
-  };
+  // const sendToChangeId = () => {
+  //   navigation.navigate("changeId");
+  // };
 
   const sendToChangePassword = () => {
     navigation.navigate("changePassword");
@@ -53,9 +91,13 @@ export function MyPage() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Profile />
         <View style={styles.infoBox}>
-          <ListItem label="출생년도" value={"2000년 생 (만 24세)"} borderBottomColor="#fff" />
-          <ListItem label="전화번호" value={"010-7744-0745"} borderBottomColor="#fff" />
-          <LinkedListItem label="아이디" value={"qwe123"} onPress={sendToChangeId} color="purple" />
+          <ListItem
+            label="출생년도"
+            value={userData.birthYear ? `${userData.birthYear} (만 ${getCurrentAge(userData.birthYear)}세)` : ""}
+            borderBottomColor="#fff"
+          />
+          <ListItem label="전화번호" value={userData.phoneNumber ? phoneNumberFormat(userData.phoneNumber) : ""} borderBottomColor="#fff" />
+          <ListItem label="아이디" value={userData.userId?.slice(0, -2) + "**" || ""} borderBottomColor="#fff" />
           <LinkedListItem label="비밀번호" value={"재설정"} onPress={sendToChangePassword} color="purple" />
         </View>
 

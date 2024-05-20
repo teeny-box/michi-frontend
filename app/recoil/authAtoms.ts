@@ -1,13 +1,43 @@
 import { atom } from "recoil";
 
-export const userState = atom({
+type userStateType = {
+  _id: null | string;
+  userId: null | string;
+  nickname: null | string;
+  userName: null | string;
+  birthYear: null | string;
+  phoneNumber: null | string;
+  profileImage: null | string;
+  role: null | string;
+  state: null | string;
+  deletedAt: null | string;
+  createdAt: null | string;
+  updatedAt: null | string;
+};
+
+type tokenType = null | string;
+
+export const userState = atom<userStateType>({
   key: "userState",
-  default: {},
+  default: {
+    _id: null,
+    userId: null,
+    nickname: null,
+    userName: null,
+    birthYear: null,
+    phoneNumber: null,
+    profileImage: null,
+    role: null,
+    state: null,
+    deletedAt: null,
+    createdAt: null,
+    updatedAt: null,
+  },
 });
 
-export const tokenState = atom({
-  key: "tokenState",
-  default: "",
+export const accessTokenState = atom<tokenType>({
+  key: "accessTokenState",
+  default: null,
 });
 
 export const idFoundState = atom({
