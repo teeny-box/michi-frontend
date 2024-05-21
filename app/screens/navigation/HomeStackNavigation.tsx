@@ -1,9 +1,9 @@
 import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home } from "../home/Home";
+import { Feed } from "../home/Feed";
 import { FeedEdit } from "../home/FeedEdit";
 
 export type RootStackParam = {
-    home: undefined;
+    feed: undefined;
     feedEdit: undefined;
   };
 
@@ -12,19 +12,21 @@ const Stack = createNativeStackNavigator();
 export function HomeStackNavigation() {
   const customStackNavigationOptions: NativeStackNavigationOptions = {
     gestureEnabled: false,
-    title: "",
+    title: "피드 작성하기",
+    headerTitle: "",
+    headerLargeStyle: false,
     headerStyle: {
-      backgroundColor: "#209bec",
+      backgroundColor: "#fff",
     },
-    headerTintColor: "#fff",
-    headerTitleStyle: {
-      fontWeight: "bold",
+    headerTintColor: "#111",
+    headerBackTitleStyle: {
+      fontFamily: "Freesentation-5Medium",
     },
   };
 
   return (
-    <Stack.Navigator initialRouteName="home" screenOptions={{ headerTransparent: false }}>
-      <Stack.Screen name="home" component={Home} options={{ headerShown: false }} />
+    <Stack.Navigator initialRouteName="feed" screenOptions={customStackNavigationOptions}>
+      <Stack.Screen name="feed" component={Feed} options={{ headerShown: false }} />
       <Stack.Screen name="feedEdit" component={FeedEdit} />
     </Stack.Navigator>
   );

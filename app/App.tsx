@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar, useColorScheme } from "react-native";
+<<<<<<< HEAD
+import { Colors } from "react-native/Libraries/NewAppScreen";
+=======
 
+>>>>>>> 99ed4e9d6e8ea59714dc7f9e75c94ce7c582f65f
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RecoilRoot } from "recoil";
@@ -30,6 +34,15 @@ function App(): React.JSX.Element {
   };
 
   return (
+<<<<<<< HEAD
+    <RecoilRoot>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <AppNavigation />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </RecoilRoot>
+=======
     <>
       {loading || (
         <RecoilRoot>
@@ -42,6 +55,7 @@ function App(): React.JSX.Element {
         </RecoilRoot>
       )}
     </>
+>>>>>>> 99ed4e9d6e8ea59714dc7f9e75c94ce7c582f65f
   );
 }
 
