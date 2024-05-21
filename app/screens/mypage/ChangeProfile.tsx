@@ -90,7 +90,7 @@ export function ChangeProfile() {
     }
 
     const platformPermissions =
-      Platform.OS === "ios" ? [PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.MEDIA_LIBRARY] : [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.READ_MEDIA_IMAGES];
+      Platform.OS === "ios" ? [PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.PHOTO_LIBRARY] : [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.READ_MEDIA_IMAGES];
 
     const granted = await requestMultiple(platformPermissions);
 

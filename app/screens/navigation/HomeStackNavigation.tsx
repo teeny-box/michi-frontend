@@ -3,9 +3,9 @@ import { Feed } from "../home/Feed";
 import { FeedEdit } from "../home/FeedEdit";
 
 export type RootStackParam = {
-    feed: undefined;
-    feedEdit: undefined;
-  };
+  feed: undefined;
+  feedEdit: undefined;
+};
 
 const Stack = createNativeStackNavigator();
 
