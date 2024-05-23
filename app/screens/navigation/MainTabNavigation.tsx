@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeStackNavigation } from "./HomeStackNavigation";
+import { Home } from "../home/Home";
 import { ChatroomsStackNavigation } from "./ChatroomStack";
 import { MyPageStackNavigation } from "./MyPageStack";
 
@@ -19,16 +19,11 @@ export function MainTabNavigation() {
   };
 
   return (
-    <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="home" component={HomeStackNavigation} />
-      <Tab.Screen name="chatting" component={ChatroomsStackNavigation} />
-      <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
-    </Tab.Navigator>
+      <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false, }}>
+        <Tab.Screen name="home" component={Home} />
+        <Tab.Screen name="chatting" component={ChatroomsStackNavigation} />
+        <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
+      </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-});
