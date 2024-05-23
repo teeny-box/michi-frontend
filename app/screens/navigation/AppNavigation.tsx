@@ -1,11 +1,21 @@
+import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
 import { accessTokenState, userState } from "@/recoil/authAtoms";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MainTabNavigation } from "./MainTabNavigation";
 import { StartStackNavigation } from "./StartStackNavigation";
+import { FeedEdit } from "../home/FeedEdit";
 import { useEffect, useState } from "react";
 import { userUrl } from "@/utils/apiUrls";
 import SplashScreen from "react-native-splash-screen";
 import { useAccessToken } from "@/hook/useAccessToken";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+export type RootStackParam = {
+  main: undefined;
+  feedEdit: undefined;
+};
+
+const Stack = createNativeStackNavigator();
 
 export function AppNavigation() {
   const accessToken = useRecoilValue(accessTokenState);
@@ -55,5 +65,33 @@ export function AppNavigation() {
     }
   };
 
-  return <>{accessToken ? <MainTabNavigation /> : <StartStackNavigation />}</>;
+  return (
+    <>
+      {accessToken ? (
+        <Stack.Navigator initialRouteName="feed" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="main" component={MainTabNavigation} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="feedEdit"
+            component={FeedEdit}
+            options={{
+              headerShown: true,
+              gestureEnabled: false,
+              headerTitle: "",
+              headerBackTitle: "피드 작성하기",
+              headerBackTitleStyle: {
+                fontFamily: "Freesentation-5Medium",
+              },
+              headerLargeStyle: false,
+              headerStyle: {
+                backgroundColor: "#fff",
+              },
+              headerTintColor: "#111",
+            }}
+          />
+        </Stack.Navigator>
+      ) : (
+        <StartStackNavigation />
+      )}
+    </>
+  );
 }

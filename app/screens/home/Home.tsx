@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/FontAwesome";
@@ -54,7 +55,7 @@ const onlineUserData = [
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export function Feed(): React.JSX.Element {
+export function Home(): React.JSX.Element {
   const [selectedTab, setSelectedTab] = useState("피드");
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
