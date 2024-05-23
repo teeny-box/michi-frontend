@@ -1,19 +1,26 @@
 import React from "react";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView, View, Text, StyleSheet, TextInput } from "react-native";
-import Icon from "react-native-vector-icons/Feather";
+import { View, Text, StyleSheet, Platform, ScrollView } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { KeyboardAvoidingView } from "react-native";
+import TextInputComponent from "../../../components/chat/TextInputComponent";
 
-export function Chatting(): React.JSX.Element {
+export function Chatting() {
+  const { top } = useSafeAreaInsets();
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.mainchat}>
-        <Text>메인 채팅</Text>
+    <KeyboardAvoidingView
+      style={[styles.container, { paddingTop: top }]}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 95 : 0}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.mainchat}>
+          <Text>메인 채팅</Text>
+        </View>
+      </ScrollView>
+      <View style={styles.inputContainer}>
+        <TextInputComponent />
       </View>
-      <View style={styles.textInput}>
-        <TextInput placeholder="메시지 보내기..." />
-      </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -22,23 +29,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
-
-  mainchat: {
-    flex: 5,
+  scrollContent: {
+    flexGrow: 1,
   },
-
-  textInput: {
-    flex: 0.3,
-    flexDirection: "row",
-    backgroundColor: "#F2F5F7",
-
-    marginHorizontal: 16,
-    marginVertical: 6,
-    paddingHorizontal: 14,
-
-    borderRadius: 50,
-
+  mainchat: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "flex-start",
+  },
+  inputContainer: {
+    padding: 10,
+    borderWidth: 0,
+    backgroundColor: "#ffffff",
   },
 });
