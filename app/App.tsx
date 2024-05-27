@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar, useColorScheme } from "react-native";
-
+import { Colors } from "react-native/Libraries/NewAppScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RecoilRoot } from "recoil";
 import { AppNavigation } from "./screens/navigation/AppNavigation";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 
 async function enableMocking() {
   if (!__DEV__) {
