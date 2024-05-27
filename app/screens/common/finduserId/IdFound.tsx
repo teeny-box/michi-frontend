@@ -38,9 +38,7 @@ export function IdFound(): React.JSX.Element {
         ) : (
           <>
             <Title text="가입 정보가 없습니다." />
-            <TouchableOpacity style={styles.button} onPress={handlePressSignupButton}>
-              <GradationButton text="회원 가입 하기" />
-            </TouchableOpacity>
+            <GradationButton text="회원 가입 하기" onPress={handlePressSignupButton} />
             <TouchableOpacity style={styles.button} onPress={handlePressReturnButton}>
               <Text style={styles.buttonText}>취소</Text>
             </TouchableOpacity>

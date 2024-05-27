@@ -1,10 +1,7 @@
-import { birthYearState, phoneNumberState } from "@/recoil/signupAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRecoilValue } from "recoil";
-import { commonStyles } from "./Common.styled";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import { GradationButton } from "@/components/common/GradationButton";
 
@@ -54,9 +51,7 @@ export function Welcome(): React.JSX.Element {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.nextButton} onPress={handlePressNextButton}>
-        <GradationButton text="에티켓을 지킬 것을 약속합니다" />
-      </TouchableOpacity>
+      <GradationButton text="에티켓을 지킬 것을 약속합니다" onPress={handlePressNextButton} />
     </SafeAreaView>
   );
 }
@@ -119,14 +114,5 @@ const styles = StyleSheet.create({
     color: "#141414",
     fontSize: 14,
     fontFamily: "Freesentation-1Thin",
-  },
-
-  nextButton: {
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: 45,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 25,
   },
 });

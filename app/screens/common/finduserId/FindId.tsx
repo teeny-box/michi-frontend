@@ -2,8 +2,8 @@ import { idFoundState } from "@/recoil/authAtoms";
 import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { FunctionComponent, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSetRecoilState } from "recoil";
 import { commonStyles } from "../../signup/Common.styled";
@@ -103,9 +103,7 @@ export function FindId() {
         <SafeAreaView style={commonStyles.container}>
           <ScrollView style={commonStyles.scrollBox}>
             <Title text="본인인증을 해주세요" />
-            <TouchableOpacity style={styles.button} onPress={handlePressCertificationButton}>
-              <GradationButton text="인증하기" />
-            </TouchableOpacity>
+            <GradationButton text="인증하기" onPress={handlePressCertificationButton} />
             {state === "fail" && <Text style={styles.warning}>* 인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           </ScrollView>
         </SafeAreaView>
@@ -121,23 +119,6 @@ export function FindId() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-
-  title: {
-    color: "black",
-    fontSize: 26,
-  },
-
-  input: {
-    borderWidth: 1,
-    borderColor: "black",
-    marginVertical: 10,
-  },
-
-  button: {
-    width: "100%",
-    height: 45,
-    backgroundColor: "lightgrey",
   },
 
   warning: {

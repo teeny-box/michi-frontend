@@ -6,6 +6,9 @@ import { ChangeProfile } from "../mypage/ChangeProfile";
 import { Certification } from "../signup/Certification";
 import { FindIdStackNavigation } from "./user/FindIdNavigation";
 import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
+import { useLayoutEffect } from "react";
+import { StyleSheet } from "react-native";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 export type MypageRootStackParam = {
   mypage: undefined;
@@ -19,7 +22,7 @@ export type MypageRootStackParam = {
 
 const Stack = createNativeStackNavigator<MypageRootStackParam>();
 
-export function MyPageStackNavigation() {
+export function MyPageStackNavigation({ navigation, route }: { navigation: any; route: any }) {
   const customStackNavigationOptions: NativeStackNavigationOptions = {
     gestureEnabled: false,
     title: "",
@@ -32,8 +35,19 @@ export function MyPageStackNavigation() {
     },
   };
 
+  useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    console.log(routeName);
+    if (routeName !== "mypage") {
+      //MyPage이외의 화면에 대해 tabBar none을 설정한다.
+      navigation.setOptions({ tabBarStyle: { display: "none" } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: undefined } });
+    }
+  }, [navigation, route]);
+
   return (
-    <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false }}>
+    <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false, gestureEnabled: true }}>
       <Stack.Screen name="mypage" component={MyPage} options={{ headerShown: false }} />
       {/* <Stack.Screen name="changeId" component={ChangeId} /> */}
       <Stack.Screen name="changePassword" component={ChangePassword} />

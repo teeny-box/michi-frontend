@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
@@ -121,15 +121,7 @@ export function ChangePassword(): React.JSX.Element {
           isAvailable={isSame}
           secureTextEntry={true}
         />
-        {currentPassword && isAvailable && isSame ? (
-          <TouchableOpacity onPress={handlePressSubmitButton} style={styles.submitButton}>
-            <GradationButton text="수정완료" />
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.submitButton}>
-            <Text style={styles.submitButtonText}>수정완료</Text>
-          </View>
-        )}
+        <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={currentPassword !== "" || isAvailable || isSame} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -146,19 +138,5 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 50,
     paddingBottom: 80,
-  },
-
-  submitButton: {
-    marginTop: 30,
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: 45,
-  },
-
-  submitButtonText: {
-    color: "#fff",
-    margin: "auto",
-    fontSize: 16,
-    fontFamily: "Freesentation-5Medium",
   },
 });

@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { IMPCertification } from "@/components/common/IMPCertification";
@@ -85,15 +85,7 @@ export function Certification() {
         <SafeAreaView style={commonStyles.container}>
           <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
             <Title text="본인인증을 해주세요" />
-            {state === "success" ? (
-              <View style={styles.buttonSuccess}>
-                <Text>인증완료</Text>
-              </View>
-            ) : (
-              <TouchableOpacity style={styles.button} onPress={handlePressCertificationButton}>
-                <GradationButton text="인증하기" />
-              </TouchableOpacity>
-            )}
+            <GradationButton text="인증하기" onPress={handlePressCertificationButton} disabled={state === "success"} />
             {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           </ScrollView>
           <NextButton onPress={handlePressNextButton} disabled={state !== "success"} />
@@ -104,17 +96,3 @@ export function Certification() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    width: "100%",
-    height: 45,
-  },
-
-  buttonSuccess: {
-    paddingVertical: 10,
-    backgroundColor: "lightgrey",
-    marginVertical: 4,
-    alignItems: "center",
-  },
-});
