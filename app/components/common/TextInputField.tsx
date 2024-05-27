@@ -41,7 +41,8 @@ export function TextInputField({ label, value, setValue, message, maxLength, isA
     </>
   );
 
-  return <>{Platform.OS === "ios" ? <InputAccessoryView>components</InputAccessoryView> : components}</>;
+  // return <>{Platform.OS === "ios" ? <InputAccessoryView>{components}</InputAccessoryView> : components}</>;
+  return components;
 }
 
 const styles = StyleSheet.create({

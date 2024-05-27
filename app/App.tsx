@@ -14,7 +14,7 @@ async function enableMocking() {
 
   await import("../msw.polyfills");
   const { server } = await import("@/mocks/browser");
-  server.listen();
+  server.listen({ onUnhandledRequest: "bypass" });
 }
 
 function App(): React.JSX.Element {
