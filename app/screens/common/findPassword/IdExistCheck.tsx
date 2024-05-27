@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { commonStyles } from "@/screens/signup/Common.styled";
@@ -57,29 +57,8 @@ export function IdExistCheck() {
       <ScrollView style={commonStyles.scrollBox}>
         <Title text="비밀번호를 찾을 아이디 정보를 입력하세요" />
         <TextInputField label="아이디 ID" value={id} setValue={handleChangeId} placeholder="가입한 아이디를 입력하세요." message={checkMessage} />
-        {id.length < 4 ? (
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>확인</Text>
-          </View>
-        ) : (
-          <TouchableOpacity onPress={handlePressNextButton} style={styles.button}>
-            <GradationButton text="확인" />
-          </TouchableOpacity>
-        )}
+        <GradationButton text="확인" onPress={handlePressNextButton} disabled={id.length < 4} />
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    width: "100%",
-    height: 45,
-    backgroundColor: "lightgray",
-  },
-
-  buttonText: {
-    margin: "auto",
-    color: "#fff",
-  },
-});

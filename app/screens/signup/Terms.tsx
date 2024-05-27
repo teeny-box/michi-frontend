@@ -1,8 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import { commonStyles } from "./Common.styled";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilValue } from "recoil";
@@ -119,15 +118,7 @@ export function Terms(): React.JSX.Element {
           </View>
         </View>
       </ScrollView>
-      {allChecked ? (
-        <TouchableOpacity onPress={handlePressSignUpButton} style={styles.signUpButton}>
-          <GradationButton text="가입하기" />
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.signUpButtonDisabled}>
-          <Text style={styles.signUpButtonText}>가입하기</Text>
-        </View>
-      )}
+      <GradationButton text="가입하기" onPress={handlePressSignUpButton} disabled={!allChecked} />
     </SafeAreaView>
   );
 }
@@ -160,29 +151,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Freesentation-6SemiBold",
     textDecorationLine: "underline",
-  },
-
-  signUpButton: {
-    width: "100%",
-    height: 45,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 25,
-  },
-
-  signUpButtonDisabled: {
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: 45,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 25,
-  },
-
-  signUpButtonText: {
-    color: "#fff",
-    margin: "auto",
-    fontSize: 16,
-    fontFamily: "Freesentation-5Medium",
   },
 });

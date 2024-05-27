@@ -1,14 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View, Platform } from "react-native";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { Alert, Image, StyleSheet, TouchableOpacity, View, Platform } from "react-native";
+import { useRecoilState } from "recoil";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
-import { accessTokenState, userState } from "@/recoil/authAtoms";
+import { userState } from "@/recoil/authAtoms";
 
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions";
@@ -215,15 +215,11 @@ export function ChangeProfile() {
           placeholder={userData.nickname || "닉네임을 입력하세요"}
         />
       </View>
-      {(userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage ? (
-        <TouchableOpacity onPress={handlePressSubmitButton} style={styles.submitButton}>
-          <GradationButton text="수정완료" />
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.submitButton}>
-          <Text style={styles.submitButtonText}>수정완료</Text>
-        </View>
-      )}
+      <GradationButton
+        text="수정완료"
+        onPress={handlePressSubmitButton}
+        disabled={!((userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage)}
+      />
     </SafeAreaView>
   );
 }
@@ -259,24 +255,5 @@ const styles = StyleSheet.create({
   nicknameBox: {
     width: "100%",
     marginTop: 30,
-  },
-
-  nickname: {
-    fontSize: 20,
-    lineHeight: 26,
-    fontWeight: "900",
-  },
-
-  submitButton: {
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: 45,
-  },
-
-  submitButtonText: {
-    color: "#fff",
-    margin: "auto",
-    fontSize: 16,
-    fontFamily: "Freesentation-5Medium",
   },
 });

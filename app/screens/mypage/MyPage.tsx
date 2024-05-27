@@ -108,9 +108,7 @@ export function MyPage() {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handlePressLogoutButton}>
-            <GradationButton text="로그아웃" />
-          </TouchableOpacity>
+          <GradationButton text="로그아웃" onPress={handlePressLogoutButton} />
           <TouchableOpacity style={styles.button} onPress={handlePressWithdrawButton}>
             <Text style={styles.buttonText}>회원탈퇴</Text>
           </TouchableOpacity>
@@ -131,12 +129,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(112, 0, 255, 0.05)",
   },
 
-  arrowIcon: {
-    marginLeft: 14,
-  },
-
   buttonContainer: {
     marginVertical: 40,
+    rowGap: 4,
   },
 
   button: {
