@@ -121,7 +121,7 @@ export function ChangePassword(): React.JSX.Element {
           isAvailable={isSame}
           secureTextEntry={true}
         />
-        <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={currentPassword !== "" || isAvailable || isSame} />
+        <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={currentPassword === "" || !isAvailable || !isSame} />
       </ScrollView>
     </SafeAreaView>
   );

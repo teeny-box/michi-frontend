@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { Alert, Image, StyleSheet, TouchableOpacity, View, Platform } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View, Platform } from "react-native";
 import { useRecoilState } from "recoil";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
@@ -95,15 +95,16 @@ export function ChangeProfile() {
     const granted = await requestMultiple(platformPermissions);
 
     const allGranted = platformPermissions.reduce((bool, item) => bool && granted[item] === RESULTS.GRANTED, true);
-    console.log(granted, allGranted);
 
     if (allGranted) {
-      Alert.alert("골라", "", [
-        // { text: "카메라로 찍기", onPress: openCamera },
-        { text: "앨범에서 선택", onPress: getPhotos },
-        { text: "원래대로", onPress: resetImage },
-        { text: "기본 이미지", onPress: setDefaultImage },
-      ]);
+      // Alert.alert("골라", "", [
+      //   // { text: "카메라로 찍기", onPress: openCamera },
+      //   { text: "앨범에서 선택", onPress: getPhotos },
+      //   { text: "원래대로", onPress: resetImage },
+      //   { text: "기본 이미지", onPress: setDefaultImage },
+      // ]);
+
+      navigation.navigate("changeProfileImageModal");
     }
   };
 

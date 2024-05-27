@@ -13,11 +13,13 @@ import { authUrl, userUrl } from "@/utils/apiUrls";
 import { useAccessToken } from "@/hook/useAccessToken";
 import getCurrentAge from "@/utils/getCurrentAge";
 import phoneNumberFormat from "@/utils/phoneNumberFormat";
+import { useAlert } from "@/hook/useAlert";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);
   const { updateToken, deleteToken, getTokenFromAsyncStorege } = useAccessToken();
+  const { setAlertState } = useAlert();
 
   const logout = async () => {
     const token = await getTokenFromAsyncStorege();
@@ -62,12 +64,18 @@ export function MyPage() {
     }
   };
 
-  const handlePressLogoutButton = () => {
-    Alert.alert("로그아웃 하시겠습니까?", "", [{ text: "OK", onPress: logout }, { text: "Cancle" }]);
+  const handlePressLogoutButton = async () => {
+    setAlertState({ open: true, title: "로그아웃 하시겠습니까?", desc: "", onPress: logout, defaultText: "확인" });
   };
 
   const handlePressWithdrawButton = () => {
-    Alert.alert("정말 탈퇴 하시겠습니까?", "탈퇴 시 모든 데이터가 삭제되며, 복구할 수 없습니다.", [{ text: "OK", onPress: removeUser }, { text: "Cancle" }]);
+    setAlertState({
+      open: true,
+      title: "정말 탈퇴 하시겠습니까?",
+      desc: "탈퇴 시 모든 데이터가 삭제되며, 복구할 수 없습니다.",
+      onPress: removeUser,
+      defaultText: "확인",
+    });
   };
 
   // const sendToChangeId = () => {
