@@ -71,7 +71,7 @@ export function Login() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.bgCircle, { width: width * 1.8, top: -(width / 1.8) }]}></View>
-      <LinearGradient style={styles.bgBottom} colors={["#AA94F7", "#759AF3"]}></LinearGradient>
+      <LinearGradient style={styles.bgBottom} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={90} angleCenter={{ x: 0.5, y: 0.5 }}></LinearGradient>
       <ScrollView style={styles.scrollBox}>
         <View style={styles.contentsBox}>
           <Image source={require("@assets/images/logo_ver2.png")} style={styles.logoImage} />
@@ -79,9 +79,7 @@ export function Login() {
             <TextInputField label="아이디 ID" value={id} setValue={setId} placeholder="아이디를 입력하세요" />
             <TextInputField label="비밀번호 P/W" value={password} setValue={setPassword} placeholder="비밀번호를 입력하세요" secureTextEntry={true} />
           </View>
-          <TouchableOpacity style={styles.longinButton} onPress={handlePressLoginButton}>
-            <GradationButton text="로그인" />
-          </TouchableOpacity>
+          <GradationButton text="로그인" onPress={handlePressLoginButton} size="medium" />
         </View>
       </ScrollView>
       <View style={styles.bottomBox}>
@@ -132,11 +130,6 @@ const styles = StyleSheet.create({
 
   findButton: {
     height: 20,
-  },
-
-  longinButton: {
-    width: 250,
-    height: 45,
   },
 
   bgCircle: {

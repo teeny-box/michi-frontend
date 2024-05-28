@@ -4,8 +4,7 @@ import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useRecoilState } from "recoil";
+import { StyleSheet, View } from "react-native";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 
@@ -92,15 +91,7 @@ export function ChangeId() {
           isAvailable={isAvailable}
         />
       </View>
-      {isAvailable ? (
-        <TouchableOpacity onPress={handlePressSubmitButton} style={styles.submitButton}>
-          <GradationButton text="수정완료" />
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.submitButton}>
-          <Text style={styles.submitButtonText}>수정완료</Text>
-        </View>
-      )}
+      <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={isAvailable} />
     </SafeAreaView>
   );
 }
@@ -116,24 +107,5 @@ const styles = StyleSheet.create({
   nicknameBox: {
     width: "100%",
     marginTop: 30,
-  },
-
-  nickname: {
-    fontSize: 20,
-    lineHeight: 26,
-    fontWeight: "900",
-  },
-
-  submitButton: {
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: 45,
-  },
-
-  submitButtonText: {
-    color: "#fff",
-    margin: "auto",
-    fontSize: 16,
-    fontFamily: "Freesentation-5Medium",
   },
 });
