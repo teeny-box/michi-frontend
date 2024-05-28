@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
@@ -92,6 +92,17 @@ export function ChangePassword(): React.JSX.Element {
     }
   };
 
+  useEffect(() => {
+    const disabled = currentPassword === "" || !isAvailable || !isSame;
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable onPress={handlePressSubmitButton} disabled={disabled}>
+          <Text style={[styles.headerRightText, disabled ? { color: "gray" } : { color: "#7000ff" }]}>완료</Text>
+        </Pressable>
+      ),
+    });
+  }, [currentPassword, isAvailable, isSame]);
+
   return (
     <SafeAreaView style={styles.outBox}>
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
@@ -138,5 +149,10 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 50,
     paddingBottom: 80,
+  },
+
+  headerRightText: {
+    fontFamily: "Freesentation-6SemiBold",
+    fontSize: 20,
   },
 });

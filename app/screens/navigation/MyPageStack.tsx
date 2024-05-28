@@ -7,9 +7,10 @@ import { Certification } from "../signup/Certification";
 import { FindIdStackNavigation } from "./user/FindIdNavigation";
 import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
 import { useLayoutEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { getFocusedRouteNameFromRoute, useNavigation } from "@react-navigation/native";
 import { ChangeProfileImageModal } from "../mypage/ChangeProfileImageModal";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type MypageRootStackParam = {
   mypage: undefined;
@@ -29,17 +30,23 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
     gestureEnabled: false,
     title: "",
     headerStyle: {
-      backgroundColor: "#209bec",
+      backgroundColor: "#fff",
     },
-    headerTintColor: "#fff",
+    headerShadowVisible: false,
+    headerTintColor: "#141414",
     headerTitleStyle: {
       fontWeight: "bold",
+      fontFamily: "Freesentation-6SemiBold",
+      fontSize: 20,
+      color: "#141414",
     },
+    headerBackTitleVisible: false,
+    headerTitleAlign: "center",
   };
 
   useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName !== "mypage") {
+    if (routeName !== "mypage" && routeName !== "mypage/tab") {
       //MyPage이외의 화면에 대해 tabBar none을 설정한다.
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
@@ -49,11 +56,11 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
 
   return (
     <>
-      <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false }}>
+      <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false, ...customStackNavigationOptions }}>
         <Stack.Screen name="mypage" component={MyPage} options={{ headerShown: false }} />
         {/* <Stack.Screen name="changeId" component={ChangeId} /> */}
-        <Stack.Screen name="changePassword" component={ChangePassword} />
-        <Stack.Screen name="changeProfile" component={ChangeProfile} />
+        <Stack.Screen name="changePassword" component={ChangePassword} options={{ title: "비밀번호 변경" }} />
+        <Stack.Screen name="changeProfile" component={ChangeProfile} options={{ title: "프로필 수정" }} />
         <Stack.Screen name="certification" component={Certification} />
         <Stack.Screen name="findId" component={FindIdStackNavigation} />
         <Stack.Screen name="findPassword" component={FindPasswordStackNavigation} />

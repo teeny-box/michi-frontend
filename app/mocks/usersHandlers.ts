@@ -50,7 +50,7 @@ export const usersHandlers = [
         data: {
           _id: "663cf57b07ed60294ab367d2",
           userId: "dkdlel2",
-          nickname: "만년이등",
+          nickname: "루피쨩",
           userName: "김이번",
           birthYear: "2001",
           phoneNumber: "01022223333",
