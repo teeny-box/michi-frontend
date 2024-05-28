@@ -8,6 +8,8 @@ import { commonStyles } from "@/screens/signup/Common.styled";
 import { GradationButton } from "@/components/common/GradationButton";
 import { TextInputField } from "@/components/common/TextInputField";
 import { userUrl } from "@/utils/apiUrls";
+import { useRecoilValue } from "recoil";
+import { oneTimeTokenStat } from "@/recoil/authAtoms";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.
@@ -16,8 +18,7 @@ const defaultMessage = "* 영어, 숫자, 특수문자를 포함해주세요.\n*
 
 export function ChangePassword(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [currentPasswordMessage, setCurrentPasswordMessage] = useState("");
+  const oneTimeToken = useRecoilValue(oneTimeTokenStat);
 
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordMessage, setNewPasswordMessage] = useState(defaultMessage);
@@ -60,11 +61,10 @@ export function ChangePassword(): React.JSX.Element {
 
   const updatePassword = async (): Promise<1 | undefined> => {
     try {
-      const res = await fetch(`${userUrl}`, {
+      const res = await fetch(`${userUrl}/password`, {
         method: "PATCH",
-        // headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${oneTimeToken}` },
         body: JSON.stringify({
-          password: currentPassword,
           newPassword,
         }),
       });
@@ -72,8 +72,7 @@ export function ChangePassword(): React.JSX.Element {
       if (res.ok) {
         return 1;
       } else if (res.status === 401) {
-        // const success = await updateToken();
-        // if (success) return await updatePassword();
+        console.log("인증 유효 시간이 만료되었습니다. 본인인증을 다시 진행해주세요.");
       }
     } catch (err) {
       console.error("update password error : ", err);
@@ -83,14 +82,13 @@ export function ChangePassword(): React.JSX.Element {
   const handlePressSubmitButton = async () => {
     const success = await updatePassword();
     if (success) {
-      navigation.pop();
-    } else {
-      setCurrentPasswordMessage("* 현재 비밀번호가 일치하지 않습니다!");
+      // 변경 완료 알림 띄우기
+      navigation.reset({ index: 1, routes: [{ name: "login" }] });
     }
   };
 
   useEffect(() => {
-    const disabled = currentPassword === "" || !isAvailable || !isSame;
+    const disabled = !isAvailable || !isSame;
     navigation.setOptions({
       headerRight: () => (
         <Pressable onPress={handlePressSubmitButton} disabled={disabled}>
@@ -98,7 +96,7 @@ export function ChangePassword(): React.JSX.Element {
         </Pressable>
       ),
     });
-  }, [currentPassword, isAvailable, isSame]);
+  }, [isAvailable, isSame]);
 
   const handlePressNextButton = () => {
     navigation.pop(3);
@@ -107,14 +105,6 @@ export function ChangePassword(): React.JSX.Element {
   return (
     <SafeAreaView style={commonStyles.container}>
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
-        <TextInputField
-          label="현재 비밀번호"
-          value={currentPassword}
-          setValue={setCurrentPassword}
-          message={currentPasswordMessage}
-          placeholder="현재 비밀번호를 입력해주세요."
-          secureTextEntry={true}
-        />
         <TextInputField
           label="새 비밀번호"
           value={newPassword}
@@ -133,7 +123,7 @@ export function ChangePassword(): React.JSX.Element {
           isAvailable={isSame}
           secureTextEntry={true}
         />
-        <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={currentPassword === "" || !isAvailable || !isSame} />
+        <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={!isAvailable || !isSame} />
       </ScrollView>
     </SafeAreaView>
   );

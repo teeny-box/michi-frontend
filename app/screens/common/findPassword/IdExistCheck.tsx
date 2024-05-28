@@ -35,6 +35,8 @@ export function IdExistCheck() {
   const checkIdExist = async () => {
     try {
       const res = await fetch(`${userUrl}/id-exists/${id}`);
+      const data = await res.json();
+      console.log(data);
       if (res.ok) {
         return 1;
       }

@@ -20,7 +20,7 @@ export function IdFound(): React.JSX.Element {
   };
 
   const handlePressSignupButton = () => {
-    navigationStart.replace("signup");
+    navigationStart.reset({ index: 1, routes: [{ name: "signup" }] });
   };
 
   return (
@@ -30,9 +30,7 @@ export function IdFound(): React.JSX.Element {
           <>
             <Title text="아이디를 확인해주세요." />
             <TextField label="아이디 ID" value={IDFound} />
-            <TouchableOpacity style={styles.button} onPress={handlePressReturnButton}>
-              <Text>확인</Text>
-            </TouchableOpacity>
+            <Button onPress={handlePressReturnButton} text="확인" />
           </>
         ) : (
           <>

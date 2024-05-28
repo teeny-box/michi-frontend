@@ -1,4 +1,4 @@
-import { idFoundState } from "@/recoil/authAtoms";
+import { idFoundState, oneTimeTokenStat } from "@/recoil/authAtoms";
 import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -25,35 +25,23 @@ export function FindPassword() {
   const [state, setState] = useState<stateType>("waiting");
   const id = useRecoilValue(idFoundState);
   const setHeaderShow = useSetRecoilState(headerShowState);
+  const setOneTimeToken = useSetRecoilState(oneTimeTokenStat);
 
-  const passwordCheck = async ({ userName, phoneNumber, birthYear }: passwordFoundBodyType) => {
+  const getPortOneAndPasswordCheck = async (impUid: string) => {
     try {
-      const res = await fetch(`${authUrl}/verification/${id}`, {
+      const res = await fetch(`${authUrl}/verification/password`, {
         method: "POST",
-        headers: { "Content-Type": "applycation/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userName,
-          phoneNumber,
-          birthYear,
+          impUid: impUid,
+          userId: id,
         }),
       });
 
       if (res.ok) {
+        const token = res.headers.get("authorization")?.split(" ")[1];
+        setOneTimeToken(token || "");
         return 1;
-      }
-      return 0;
-    } catch (err) {
-      console.error("ID found error : ", err);
-      return 0;
-    }
-  };
-
-  const getPortOne = async (impUid: string) => {
-    try {
-      const res = await fetch(`${authUrl}/${impUid}`);
-      if (res.ok) {
-        const data = await res.json();
-        return await passwordCheck(data.data);
       }
       return 0;
     } catch (err) {
@@ -69,7 +57,7 @@ export function FindPassword() {
       return;
     }
 
-    getPortOne(res.imp_uid).then(apiRes => {
+    getPortOneAndPasswordCheck(res.imp_uid).then(apiRes => {
       if (apiRes) {
         navigation.push("changePassword");
         setState("waiting");
@@ -100,7 +88,6 @@ export function FindPassword() {
             <GradationButton text="인증하기" onPress={handlePressCertificationButton} />
             {state === "fail" && <Text style={styles.warning}>* 인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           </ScrollView>
-          {state === "fail" && <Text>인증에 실패하였습니다. 다시 시도해주세요.</Text>}
         </SafeAreaView>
       ) : (
         <View style={styles.container}>
