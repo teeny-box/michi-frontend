@@ -1,7 +1,7 @@
 import { headerShowState } from "@/recoil/commonAtoms";
 import { ChangePassword } from "@/screens/common/findPassword/ChangePassword";
+import { FindPassword } from "@/screens/common/findPassword/FindPassword";
 import { IdExistCheck } from "@/screens/common/findPassword/IdExistCheck";
-import { IdFound } from "@/screens/common/finduserId/IdFound";
 import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
 
@@ -22,11 +22,14 @@ export function FindPasswordStackNavigation() {
     headerStyle: {
       backgroundColor: "#fff",
     },
-    headerTintColor: "#000",
+    headerTintColor: "#141414",
     headerTitleStyle: {
+      fontWeight: "bold",
+      fontFamily: "Freesentation-6SemiBold",
       fontSize: 20,
-      fontFamily: "Freesentation-5Medium",
+      color: "#141414",
     },
+    headerBackTitleVisible: false,
     headerTransparent: true,
     headerShown: true,
   };
@@ -34,7 +37,7 @@ export function FindPasswordStackNavigation() {
   return (
     <Stack.Navigator initialRouteName="idCheck" screenOptions={customStackNavigationOptions}>
       <Stack.Screen name="idCheck" component={IdExistCheck} />
-      <Stack.Screen name="findPassword" component={IdFound} options={{ headerShown: headerShow }} />
+      <Stack.Screen name="findPassword" component={FindPassword} options={{ headerShown: headerShow }} />
       <Stack.Screen name="changePassword" component={ChangePassword} />
     </Stack.Navigator>
   );

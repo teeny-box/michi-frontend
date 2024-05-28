@@ -7,7 +7,7 @@ import { Certification } from "../signup/Certification";
 import { FindIdStackNavigation } from "./user/FindIdNavigation";
 import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
 import { useLayoutEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { getFocusedRouteNameFromRoute, useNavigation } from "@react-navigation/native";
 import { ChangeProfileImageModal } from "../mypage/ChangeProfileImageModal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -46,7 +46,8 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
 
   useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName !== "mypage" && routeName !== "mypage/tab") {
+    console.log(route, routeName);
+    if (routeName !== "mypage" && routeName !== "mypage/tab" && routeName !== undefined) {
       //MyPage이외의 화면에 대해 tabBar none을 설정한다.
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
@@ -56,6 +57,7 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
 
   return (
     <>
+      <StatusBar backgroundColor={"#fff"} />
       <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false, ...customStackNavigationOptions }}>
         <Stack.Screen name="mypage" component={MyPage} options={{ headerShown: false }} />
         {/* <Stack.Screen name="changeId" component={ChangeId} /> */}
@@ -70,7 +72,6 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
           options={{ presentation: "containedTransparentModal", animation: "fade", headerShown: false }}
         />
       </Stack.Navigator>
-      {/* <ChangeProfileImageModal /> */}
     </>
   );
 }

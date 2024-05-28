@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
-import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
+import { Animated, TouchableOpacity, StatusBar, StyleSheet, Text, View, Pressable } from "react-native";
 import { Asset, launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { changeProfileImageState } from "@/recoil/mypageAtoms";
@@ -119,21 +119,22 @@ export function ChangeProfileImageModal() {
 
   return (
     <>
+      <StatusBar backgroundColor={"rgba(0, 0, 0, 0.3)"} />
       <View style={styles.modalScreen}>
         <Pressable style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0, 0, 0, 0.3)" }]} onPress={closeModal} />
         <Animated.View style={[styles.modalBox, { transform: [{ translateY }] }]}>
-          <Pressable onPress={openCamera} style={styles.listItem}>
+          <TouchableOpacity onPress={openCamera} style={styles.listItem}>
             <Text style={styles.listText}>카메라로 찍기</Text>
-          </Pressable>
-          <Pressable onPress={getPhotos} style={styles.listItem}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={getPhotos} style={styles.listItem}>
             <Text style={styles.listText}>앨범에서 선택</Text>
-          </Pressable>
-          <Pressable onPress={resetImage} style={styles.listItem}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={resetImage} style={styles.listItem}>
             <Text style={styles.listText}>원래대로</Text>
-          </Pressable>
-          <Pressable onPress={setDefaultImage} style={styles.listItem}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={setDefaultImage} style={styles.listItem}>
             <Text style={styles.listText}>기본 이미지</Text>
-          </Pressable>
+          </TouchableOpacity>
         </Animated.View>
       </View>
     </>
