@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Alert, SafeAreaView } from "react-native";
+import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TextInput, Alert, SafeAreaView, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -11,21 +11,24 @@ export type RootStackParam = {
 };
 
 const goAlert = () =>
-     Alert.alert(                    // 말그대로 Alert를 띄운다
-      "해당 피드를",                    // 첫번째 text: 타이틀 제목
-      "삭제하시겠어요?",                         // 두번째 text: 그 밑에 작은 제목
-      [                              // 버튼 배열
-        {
-          text: "아니요",                              // 버튼 제목
-          onPress: () => console.log("아니라는데"),     //onPress 이벤트시 콘솔창에 로그를 찍는다
-          style: "cancel"
-        },
-        { text: "네", onPress: () => console.log("그렇다는데") }, //버튼 제목
-                                                               // 이벤트 발생시 로그를 찍는다
-      ],
-      { cancelable: false }
-    );
+  Alert.alert(
+    // 말그대로 Alert를 띄운다
+    "해당 피드를", // 첫번째 text: 타이틀 제목
+    "삭제하시겠어요?", // 두번째 text: 그 밑에 작은 제목
+    [
+      // 버튼 배열
+      {
+        text: "아니요", // 버튼 제목
+        onPress: () => console.log("아니라는데"), //onPress 이벤트시 콘솔창에 로그를 찍는다
+        style: "cancel",
+      },
+      { text: "네", onPress: () => console.log("그렇다는데") }, //버튼 제목
+      // 이벤트 발생시 로그를 찍는다
+    ],
+    { cancelable: false },
+  );
 
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export function FeedEdit(): React.JSX.Element {
   const [title, setTitle] = useState("");
@@ -35,29 +38,31 @@ export function FeedEdit(): React.JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.body}>
-        <TextInput value={title} onChangeText={setTitle} style={styles.titleInput} placeholder="제목을 입력하세요." placeholderTextColor={"#111"} />
-        <Text style={styles.titleInputInfo}>*제목 글자 수 26자 이내</Text>
-        <TextInput
-          editable
-          multiline
-          numberOfLines={12}
-          maxLength={500}
-          value={contents}
-          onChangeText={setContents}
-          style={styles.contentsInput}
-          placeholder="내용을 입력하세요."
-        />
-      </View>
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.editBtn} onPress={goAlert}>
-          <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
-            <Text style={styles.editBtnText}>
-              작성하기 <Icon name="angle-right" size={20} />
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <View style={styles.body}>
+          <TextInput value={title} onChangeText={setTitle} style={styles.titleInput} placeholder="제목을 입력하세요." placeholderTextColor={"#111"} />
+          <Text style={styles.titleInputInfo}>*제목 글자 수 26자 이내</Text>
+          <TextInput
+            editable
+            multiline
+            numberOfLines={12}
+            maxLength={500}
+            value={contents}
+            onChangeText={setContents}
+            style={styles.contentsInput}
+            placeholder="내용을 입력하세요."
+          />
+        </View>
+        <View style={styles.footer}>
+          <TouchableOpacity style={styles.editBtn} onPress={goAlert}>
+            <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
+              <Text style={styles.editBtnText}>
+                작성하기 <Icon name="angle-right" size={20} />
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -69,9 +74,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
   },
-  body: {
-    flex: 3,
+  scrollView: {
+    flex: 1,
     width: "86%",
+  },
+  body: {
+    height: SCREEN_HEIGHT * 0.7,
     backgroundColor: "#fff",
   },
   titleInput: {
@@ -93,11 +101,10 @@ const styles = StyleSheet.create({
     borderBottomColor: "#9597A4",
   },
   footer: {
-    flex: 1,
-    width: "86%",
+    height: SCREEN_HEIGHT * 0.5,
   },
   editBtn: {
-    flex: 0.3,
+    height: 50,
     backgroundColor: "#AB94F7",
   },
   linearGradient: {

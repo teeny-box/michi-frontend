@@ -68,7 +68,7 @@ export function AppNavigation() {
   return (
     <>
       {accessToken ? (
-        <Stack.Navigator initialRouteName="feed" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="main" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="main" component={MainTabNavigation} options={{ headerShown: false }} />
           <Stack.Screen
             name="feedEdit"
