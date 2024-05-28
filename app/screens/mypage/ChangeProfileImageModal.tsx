@@ -8,6 +8,8 @@ import { changeProfileImageState } from "@/recoil/mypageAtoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "@/recoil/authAtoms";
 import { imagesUrl } from "@/utils/apiUrls";
+import Toast from "react-native-toast-message";
+import { decode } from "base64-arraybuffer";
 
 export function ChangeProfileImageModal() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
@@ -18,34 +20,41 @@ export function ChangeProfileImageModal() {
 
   const uploadProfileImage = async (file: Asset) => {
     if (file.fileSize && file.fileSize > 1024 * 1024 * 5) {
-      console.log("사진은 최대 5MB까지 업로드 가능합니다.");
-      // toast 처리하기
+      Toast.show({ text1: "사진은 최대 5MB까지 업로드 가능합니다." });
       return;
     }
 
+    if (!file.base64) {
+      Toast.show({ text1: "사진 업로드에 실패했습니다." });
+      return;
+    }
+
+    // get presignedURL
     const res = await fetch(imagesUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ filename: file.fileName }),
+      body: JSON.stringify({ filename: file.fileName, fileSize: file.fileSize }),
     });
     const data = await res.json();
-    console.log(data);
 
     if (!res.ok) {
       console.error(data);
       return false;
     }
 
+    // Upload
+    const arrayBuffer = decode(file.base64);
+
     const uploadRes = await fetch(data.data.signedUrl, {
       method: "PUT",
-      headers: { "Content-Type": file.type || "image/png" },
-      body: file.base64,
+      headers: { "Content-Type": "image/jpeg" },
+      body: arrayBuffer,
     });
 
     if (uploadRes.ok) {
-      setNewProfileImage(data.public_url);
+      setNewProfileImage(data.data.publicUrl);
     } else {
-      // Alert.alert("이미지 업로드에 실패했습니다.", "잠시 후 다시 시도해주세요.", [{ text: "ok" }]);
+      Toast.show({ text1: "사진 업로드에 실패했습니다. 다시 시도해주세요." });
       console.log("image upload failed");
     }
   };
@@ -59,7 +68,6 @@ export function ChangeProfileImageModal() {
       });
       if (res.assets?.length) {
         const file = res.assets[0];
-        console.log(file.fileName);
         await uploadProfileImage(file);
       }
     } catch (err) {

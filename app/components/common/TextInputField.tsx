@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { InputAccessoryView, Platform, StyleSheet, Text, TextInput, View } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 type textInputFieldProps = {
   label: string;
@@ -11,9 +12,10 @@ type textInputFieldProps = {
   isAvailable?: boolean;
   placeholder?: string;
   secureTextEntry?: boolean;
+  error?: boolean;
 };
 
-export function TextInputField({ label, value, setValue, message, maxLength, isAvailable, placeholder, secureTextEntry }: textInputFieldProps) {
+export function TextInputField({ label, value, setValue, message, maxLength, isAvailable, placeholder, secureTextEntry, error }: textInputFieldProps) {
   useEffect(() => {
     if (isAvailable === null || isAvailable === undefined) {
       isAvailable = true;
@@ -36,8 +38,9 @@ export function TextInputField({ label, value, setValue, message, maxLength, isA
         {isAvailable !== null &&
           isAvailable !== undefined &&
           (isAvailable ? <Entypo name="check" size={22} color="#7000FF" /> : <Entypo name="cross" size={28} color="#DD0000" />)}
+        {error && <MaterialIcons name="error-outline" size={24} color={"#DD0000"} />}
       </View>
-      {message && <Text style={styles.message}>{message}</Text>}
+      {message && <Text style={[styles.message, error && { color: "#DD0000" }]}>{message}</Text>}
     </>
   );
 

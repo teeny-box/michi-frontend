@@ -14,6 +14,7 @@ import { useAccessToken } from "@/hook/useAccessToken";
 import getCurrentAge from "@/utils/getCurrentAge";
 import phoneNumberFormat from "@/utils/phoneNumberFormat";
 import { useAlert } from "@/hook/useAlert";
+import Toast from "react-native-toast-message";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
@@ -91,6 +92,7 @@ export function MyPage() {
   };
 
   const sendTo개인정보처리방침페이지 = () => {
+    Toast.show({ text1: "Toast 테스트중입니다. 놀라지마세요!" });
     navigation.navigate("mypage");
   };
 

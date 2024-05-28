@@ -13,6 +13,7 @@ import { userState } from "@/recoil/authAtoms";
 import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions";
 import { useAccessToken } from "@/hook/useAccessToken";
 import { changeProfileImageState } from "@/recoil/mypageAtoms";
+import Toast from "react-native-toast-message";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
@@ -137,6 +138,7 @@ export function ChangeProfile() {
 
     if (success) {
       navigation.pop();
+      Toast.show({ text1: "프로필이 변경되었습니다." });
     }
   };
 

@@ -1,17 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, Vibration } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { userUrl } from "@/utils/apiUrls";
 import { useAccessToken } from "@/hook/useAccessToken";
+import Toast from "react-native-toast-message";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.
-const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!?@#$%^&*]).{8,}$/;
 const defaultMessage = "* 영어, 숫자, 특수문자를 포함해주세요.\n* 8자 이상 입력해주세요.";
 
 export function ChangePassword(): React.JSX.Element {
@@ -71,12 +72,14 @@ export function ChangePassword(): React.JSX.Element {
           newPassword,
         }),
       });
+      const data = await res.json();
+      console.log(data);
 
       if (res.ok) {
         return 1;
-      } else if (res.status === 401) {
-        const success = await updateToken();
-        if (success) return await updatePassword();
+      } else if (res.status === 401 && data.errorCode === "1010") {
+        // const success = await updateToken();
+        // if (success) return await updatePassword();
       }
     } catch (err) {
       console.error("update password error : ", err);
@@ -84,11 +87,13 @@ export function ChangePassword(): React.JSX.Element {
   };
 
   const handlePressSubmitButton = async () => {
+    setNewPasswordMessage("");
     const success = await updatePassword();
     if (success) {
       navigation.pop();
+      Toast.show({ text1: "비밀번호가 변경되었습니다." });
     } else {
-      setCurrentPasswordMessage("* 현재 비밀번호가 일치하지 않습니다!");
+      setCurrentPasswordMessage("* 현재 비밀번호가 일치하지 않습니다.");
     }
   };
 
@@ -113,6 +118,7 @@ export function ChangePassword(): React.JSX.Element {
           message={currentPasswordMessage}
           placeholder="현재 비밀번호를 입력해주세요."
           secureTextEntry={true}
+          error={currentPasswordMessage !== ""}
         />
         <TextInputField
           label="새 비밀번호"
