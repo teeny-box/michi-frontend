@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/recoil/authAtoms";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GradationButton } from "@/components/common/GradationButton";
 import { ListItem } from "@/components/mypage/ListItem";
 import { LinkedListItem } from "@/components/mypage/LinkedListItem";
@@ -16,10 +16,10 @@ import phoneNumberFormat from "@/utils/phoneNumberFormat";
 import { useAlert } from "@/hook/useAlert";
 import Toast from "react-native-toast-message";
 import { Button } from "@/components/common/Button";
-import Entypo from "react-native-vector-icons/Entypo";
 import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 export function MyPage() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);
   const { updateToken, deleteToken, getAccessTokenFromAsyncStorage } = useAccessToken();
@@ -114,7 +114,7 @@ export function MyPage() {
   };
 
   return (
-    <SafeAreaView style={styles.outBox}>
+    <View style={[styles.outBox, { paddingTop: top }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Profile />
         <View style={styles.infoBox}>
@@ -139,7 +139,7 @@ export function MyPage() {
           <Button text="회원탈퇴" onPress={handlePressWithdrawButton} />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSetRecoilState } from "recoil";
 import { commonStyles } from "../../signup/Common.styled";
 import { IMPCertification } from "@components/common/IMPCertification";
@@ -22,6 +22,7 @@ type idFoundBodyType = {
 };
 
 export function FindId() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<FindIDRootStackParam>>();
   const [state, setState] = useState<stateType>("waiting");
   const setIdFound = useSetRecoilState(idFoundState);
@@ -105,13 +106,13 @@ export function FindId() {
   return (
     <>
       {state !== "running" ? (
-        <SafeAreaView style={commonStyles.container}>
+        <View style={[commonStyles.container, { paddingTop: top }]}>
           <ScrollView style={commonStyles.scrollBox}>
             <Title text="본인인증을 해주세요" />
             <GradationButton text="인증하기" onPress={handlePressCertificationButton} />
             {state === "fail" && <Text style={styles.warning}>* 인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           </ScrollView>
-        </SafeAreaView>
+        </View>
       ) : (
         <View style={styles.container}>
           <IMPCertification callback={callback} />

@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { commonStyles } from "./Common.styled";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilValue } from "recoil";
@@ -13,8 +13,10 @@ import { GradationButton } from "@/components/common/GradationButton";
 import { useLoadingScreen } from "@/hook/useLoadingScreen";
 import Toast from "react-native-toast-message";
 import { useAlert } from "@/hook/useAlert";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function Terms(): React.JSX.Element {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const userId = useRecoilValue(idState);
   const password = useRecoilValue(passwordState);
@@ -86,7 +88,7 @@ export function Terms(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
         <Title text="이용약관을 확인해주세요" />
         <View style={styles.checkboxContainer}>
@@ -123,7 +125,7 @@ export function Terms(): React.JSX.Element {
         </View>
       </ScrollView>
       <GradationButton text="가입하기" onPress={handlePressSignUpButton} disabled={!allChecked} />
-    </SafeAreaView>
+    </View>
   );
 }
 

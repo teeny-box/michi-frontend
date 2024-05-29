@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StartRootStackParam } from "@/screens/navigation/StartStackNavigation";
 import { commonStyles } from "@/screens/signup/Common.styled";
 import { GradationButton } from "@/components/common/GradationButton";
@@ -20,6 +20,7 @@ const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
 const defaultMessage = "* 영어, 숫자, 특수문자를 포함해주세요.\n* 8자 이상 입력해주세요.";
 
 export function ChangePassword(): React.JSX.Element {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const oneTimeToken = useRecoilValue(oneTimeTokenState);
   const { setAlertState } = useAlert();
@@ -107,7 +108,7 @@ export function ChangePassword(): React.JSX.Element {
   }, [isAvailable, isSame]);
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         <TextInputField
           label="새 비밀번호"
@@ -129,7 +130,7 @@ export function ChangePassword(): React.JSX.Element {
         />
         <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={!isAvailable || !isSame} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

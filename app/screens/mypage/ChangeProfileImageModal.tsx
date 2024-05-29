@@ -11,8 +11,10 @@ import { imagesUrl } from "@/utils/apiUrls";
 import Toast from "react-native-toast-message";
 import { decode } from "base64-arraybuffer";
 import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function ChangeProfileImageModal() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const setNewProfileImage = useSetRecoilState(changeProfileImageState);
   const userData = useRecoilValue(userState);
@@ -137,7 +139,7 @@ export function ChangeProfileImageModal() {
   return (
     <>
       <StatusBar backgroundColor={"rgba(0, 0, 0, 0.3)"} />
-      <View style={styles.modalScreen}>
+      <View style={[styles.modalScreen, { paddingTop: top }]}>
         <Pressable style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0, 0, 0, 0.3)" }]} onPress={closeModal} />
         <Animated.View style={[styles.modalBox, { transform: [{ translateY }] }]}>
           <TouchableOpacity onPress={openCamera} style={styles.listItem}>

@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ScrollView, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import { commonStyles } from "@/screens/signup/Common.styled";
 import { useRecoilState } from "recoil";
@@ -21,6 +21,7 @@ import { StartRootStackParam } from "@/screens/navigation/StartStackNavigation";
 const regex = /^[a-zA-Z][a-zA-Z0-9_]*$/;
 
 export function IdExistCheck() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<FindPasswordRootStackParam>>();
   const navigationStart = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const [id, setId] = useRecoilState(idFoundState);
@@ -81,12 +82,12 @@ export function IdExistCheck() {
   }, []);
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView style={commonStyles.scrollBox}>
         <Title text="비밀번호를 찾을 아이디 정보를 입력하세요" />
         <TextInputField label="아이디 ID" value={id} setValue={handleChangeId} placeholder="가입한 아이디를 입력하세요." message={checkMessage} />
         <GradationButton text="확인" onPress={handlePressNextButton} disabled={id.length < 4} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

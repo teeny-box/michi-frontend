@@ -1,11 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import { GradationButton } from "@/components/common/GradationButton";
 
 export function Welcome(): React.JSX.Element {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
 
   const handlePressNextButton = () => {
@@ -13,7 +14,7 @@ export function Welcome(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <View style={styles.topContainer}>
         <Image source={require("@assets/images/logo_chatBubble.png")} />
         <View style={styles.textBox}>
@@ -52,7 +53,7 @@ export function Welcome(): React.JSX.Element {
         </View>
       </View>
       <GradationButton text="에티켓을 지킬 것을 약속합니다" onPress={handlePressNextButton} />
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -1,12 +1,12 @@
-import { accessTokenState, idFoundState } from "@/recoil/authAtoms";
+import { accessTokenState } from "@/recoil/authAtoms";
 import { setAsyncStorage } from "@/storage/AsyncStorage";
 import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { useState } from "react";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSetRecoilState } from "recoil";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import LinearGradient from "react-native-linear-gradient";
 import { TextInputField } from "@/components/common/TextInputField";
@@ -16,6 +16,7 @@ import { useLoadingScreen } from "@/hook/useLoadingScreen";
 import Toast from "react-native-toast-message";
 
 export function Login() {
+  const { top } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const [id, setId] = useState("");
@@ -83,7 +84,7 @@ export function Login() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <View style={[styles.bgCircle, { width: width * 1.8, top: -(width / 1.8) }]}></View>
       <LinearGradient style={styles.bgBottom} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={90} angleCenter={{ x: 0.5, y: 0.5 }}></LinearGradient>
       <ScrollView style={styles.scrollBox}>
@@ -104,7 +105,7 @@ export function Login() {
           <Text>비밀번호 P/W 찾기</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
