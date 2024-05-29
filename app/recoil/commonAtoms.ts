@@ -27,3 +27,8 @@ export const alertState = atom<alertStateType>({
     cancelText: "",
   },
 });
+
+export const loadingState = atom({
+  key: "loadingState",
+  default: false,
+});

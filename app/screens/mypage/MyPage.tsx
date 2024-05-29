@@ -1,4 +1,4 @@
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Profile } from "@components/mypage/Profile.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -17,11 +17,13 @@ import { useAlert } from "@/hook/useAlert";
 import Toast from "react-native-toast-message";
 import { Button } from "@/components/common/Button";
 import Entypo from "react-native-vector-icons/Entypo";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);
   const { updateToken, deleteToken, getAccessTokenFromAsyncStorage } = useAccessToken();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
   const { setAlertState } = useAlert();
 
   const logout = async () => {
@@ -68,7 +70,14 @@ export function MyPage() {
   };
 
   const handlePressLogoutButton = async () => {
-    setAlertState({ open: true, title: "로그아웃 하시겠습니까?", desc: "", onPress: logout, defaultText: "확인", cancelText: "취소" });
+    setAlertState({
+      open: true,
+      title: "로그아웃 하시겠습니까?",
+      desc: "해당 기기에서만 로그아웃 됩니다.",
+      onPress: logout,
+      defaultText: "확인",
+      cancelText: "취소",
+    });
   };
 
   const handlePressWithdrawButton = () => {
@@ -78,6 +87,7 @@ export function MyPage() {
       desc: "탈퇴 시 모든 데이터가 삭제되며, 복구할 수 없습니다.",
       onPress: removeUser,
       defaultText: "확인",
+      cancelText: "취소",
     });
   };
 
@@ -90,6 +100,10 @@ export function MyPage() {
   };
 
   const sendTo이용약관페이지 = () => {
+    openLoadingScreen();
+    setTimeout(() => {
+      closeLoadingScreen();
+    }, 5000);
     navigation.navigate("mypage");
   };
 
@@ -121,7 +135,7 @@ export function MyPage() {
 
         <View style={styles.buttonContainer}>
           <GradationButton text="로그아웃" onPress={handlePressLogoutButton} />
-          <Button text="회원탈퇴" onPress={handlePressWithdrawButton} rightIcon={<Entypo name="chevron-right" color={"white"} size={16} />} />
+          <Button text="회원탈퇴" onPress={handlePressWithdrawButton} />
         </View>
       </ScrollView>
     </SafeAreaView>

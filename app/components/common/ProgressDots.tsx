@@ -6,7 +6,7 @@ type ProgressDotsProps = {
   color?: "white" | "main";
 };
 
-const ProgressDots: React.FC<ProgressDotsProps> = ({ duration = 1000, color }) => {
+const ProgressDots: React.FC<ProgressDotsProps> = ({ duration = 500, color }) => {
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
   const dot3 = useRef(new Animated.Value(0)).current;

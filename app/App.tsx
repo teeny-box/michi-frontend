@@ -6,8 +6,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RecoilRoot } from "recoil";
 import { AppNavigation } from "@screens/navigation/AppNavigation";
 import { Alert } from "@components/common/Alert";
-import Toast from "react-native-toast-message";
 import { ToastCustom } from "./components/common/ToastCustom";
+import { Loading } from "./screens/common/Loading";
 
 async function enableMocking() {
   if (!__DEV__) {
@@ -42,6 +42,7 @@ function App(): React.JSX.Element {
             </NavigationContainer>
             <Alert />
             <ToastCustom />
+            <Loading />
           </SafeAreaProvider>
         </RecoilRoot>
       )}
