@@ -42,7 +42,7 @@ export function FindId() {
     try {
       const res = await fetch(`${authUrl}/verification`, {
         method: "POST",
-        headers: { "Content-Type": "applycation/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userName,
           phoneNumber,

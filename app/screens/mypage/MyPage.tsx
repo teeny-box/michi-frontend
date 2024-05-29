@@ -1,4 +1,4 @@
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Profile } from "@components/mypage/Profile.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -13,14 +13,21 @@ import { authUrl, userUrl } from "@/utils/apiUrls";
 import { useAccessToken } from "@/hook/useAccessToken";
 import getCurrentAge from "@/utils/getCurrentAge";
 import phoneNumberFormat from "@/utils/phoneNumberFormat";
+import { useAlert } from "@/hook/useAlert";
+import Toast from "react-native-toast-message";
+import { Button } from "@/components/common/Button";
+import Entypo from "react-native-vector-icons/Entypo";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);
-  const { updateToken, deleteToken, getTokenFromAsyncStorege } = useAccessToken();
+  const { updateToken, deleteToken, getAccessTokenFromAsyncStorage } = useAccessToken();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
+  const { setAlertState } = useAlert();
 
   const logout = async () => {
-    const token = await getTokenFromAsyncStorege();
+    const token = await getAccessTokenFromAsyncStorage();
     try {
       const res = await fetch(`${authUrl}/logout`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -43,7 +50,7 @@ export function MyPage() {
   };
 
   const removeUser = async () => {
-    const token = await getTokenFromAsyncStorege();
+    const token = await getAccessTokenFromAsyncStorage();
     try {
       const res = await fetch(`${userUrl}`, {
         method: "DELETE",
@@ -62,12 +69,26 @@ export function MyPage() {
     }
   };
 
-  const handlePressLogoutButton = () => {
-    Alert.alert("로그아웃 하시겠습니까?", "", [{ text: "OK", onPress: logout }, { text: "Cancle" }]);
+  const handlePressLogoutButton = async () => {
+    setAlertState({
+      open: true,
+      title: "로그아웃 하시겠습니까?",
+      desc: "해당 기기에서만 로그아웃 됩니다.",
+      onPress: logout,
+      defaultText: "확인",
+      cancelText: "취소",
+    });
   };
 
   const handlePressWithdrawButton = () => {
-    Alert.alert("정말 탈퇴 하시겠습니까?", "탈퇴 시 모든 데이터가 삭제되며, 복구할 수 없습니다.", [{ text: "OK", onPress: removeUser }, { text: "Cancle" }]);
+    setAlertState({
+      open: true,
+      title: "정말 탈퇴 하시겠습니까?",
+      desc: "탈퇴 시 모든 데이터가 삭제되며, 복구할 수 없습니다.",
+      onPress: removeUser,
+      defaultText: "확인",
+      cancelText: "취소",
+    });
   };
 
   // const sendToChangeId = () => {
@@ -79,10 +100,15 @@ export function MyPage() {
   };
 
   const sendTo이용약관페이지 = () => {
+    openLoadingScreen();
+    setTimeout(() => {
+      closeLoadingScreen();
+    }, 5000);
     navigation.navigate("mypage");
   };
 
   const sendTo개인정보처리방침페이지 = () => {
+    Toast.show({ text1: "Toast 테스트중입니다. 놀라지마세요!" });
     navigation.navigate("mypage");
   };
 
@@ -109,9 +135,7 @@ export function MyPage() {
 
         <View style={styles.buttonContainer}>
           <GradationButton text="로그아웃" onPress={handlePressLogoutButton} />
-          <TouchableOpacity style={styles.button} onPress={handlePressWithdrawButton}>
-            <Text style={styles.buttonText}>회원탈퇴</Text>
-          </TouchableOpacity>
+          <Button text="회원탈퇴" onPress={handlePressWithdrawButton} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -131,20 +155,6 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     marginVertical: 40,
-    rowGap: 4,
-  },
-
-  button: {
-    height: 45,
-    backgroundColor: "#000",
-    marginVertical: 4,
-    alignItems: "center",
-  },
-
-  buttonText: {
-    color: "#fff",
-    margin: "auto",
-    fontSize: 16,
-    fontFamily: "Freesentation-5Medium",
+    rowGap: 8,
   },
 });

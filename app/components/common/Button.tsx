@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 45,
     backgroundColor: "#141414",
+    flex: 1,
   },
 
   innerBox: {

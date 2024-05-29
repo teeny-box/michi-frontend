@@ -11,6 +11,7 @@ import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import LinearGradient from "react-native-linear-gradient";
 import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
+import { useAlert } from "@/hook/useAlert";
 
 export function Login() {
   const { width } = useWindowDimensions();
@@ -18,6 +19,7 @@ export function Login() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const setAccessToken = useSetRecoilState(accessTokenState);
+  const { setAlertState } = useAlert();
 
   const login = async () => {
     try {
@@ -49,14 +51,8 @@ export function Login() {
   const handlePressLoginButton = async () => {
     const success = await login();
 
-    // --- 개발용 ---
-    // const success = true;
-    // setToken("qwer");
-    // setAsyncStorage("token", "qwer");
-    // --------------
-
     if (!success) {
-      Alert.alert("로그인 실패", "아이디 또는 비밀번호를 다시 확인해주세요.", [{ text: "OK" }]);
+      setAlertState({ open: true, title: "로그인 실패", desc: "아이디 또는 비밀번호를 다시 확인해주세요.", defaultText: "확인" });
     }
   };
 

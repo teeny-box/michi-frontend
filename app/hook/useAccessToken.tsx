@@ -7,13 +7,22 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export function useAccessToken() {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
-  const getTokenFromAsyncStorege = async () => {
+  const getAccessTokenFromAsyncStorage = async () => {
     try {
       const storageAccessToken = await AsyncStorage.getItem("accessToken");
+      return storageAccessToken && JSON.parse(storageAccessToken);
+    } catch (err) {
+      console.error("get token from AsyncStorage error : ", err);
+    }
+  };
+
+  const updateAccessTokenFromAsyncStorage = async () => {
+    try {
+      const storageAccessToken = await getAccessTokenFromAsyncStorage();
       if (storageAccessToken) {
-        setAccessToken(JSON.parse(storageAccessToken));
-        return JSON.parse(storageAccessToken);
+        setAccessToken(storageAccessToken);
       }
+      return storageAccessToken;
     } catch (err) {
       console.error("get token from AsyncStorage error : ", err);
     }
@@ -57,5 +66,5 @@ export function useAccessToken() {
     }
   };
 
-  return { getTokenFromAsyncStorege, updateToken, deleteToken };
+  return { getAccessTokenFromAsyncStorage, updateAccessTokenFromAsyncStorage, updateToken, deleteToken };
 }

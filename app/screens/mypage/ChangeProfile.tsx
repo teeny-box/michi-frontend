@@ -1,18 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect, useState } from "react";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { Alert, Image, StyleSheet, TouchableOpacity, View, Platform } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View, Platform, Pressable, Text, Keyboard } from "react-native";
 import { useRecoilState } from "recoil";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { userState } from "@/recoil/authAtoms";
 
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions";
 import { useAccessToken } from "@/hook/useAccessToken";
+import { changeProfileImageState } from "@/recoil/mypageAtoms";
+import Toast from "react-native-toast-message";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
@@ -21,70 +22,18 @@ const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 
 
 export function ChangeProfile() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const { updateToken, getTokenFromAsyncStorege } = useAccessToken();
+  const { updateToken, getAccessTokenFromAsyncStorage } = useAccessToken();
   const [userData, setUserData] = useRecoilState(userState);
   const [newNickname, setNewNickname] = useState<string>(userData.nickname || "");
   const [checkMessage, setCheckMessage] = useState(defaultMessage);
   const [isAvailable, setIsAvailable] = useState(true);
-  const [newProfileImage, setNewProfileImage] = useState<string | null>(userData.profileImage);
+  const [newProfileImage, setNewProfileImage] = useRecoilState(changeProfileImageState);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
-  const uploadProfileImage = async () => {
-    return ""; // return URL or ""
-  };
-
-  const openCamera = async () => {
-    try {
-      const res = await launchCamera({
-        mediaType: "photo",
-        includeBase64: true,
-      });
-      if (res.assets) {
-        const uri = res.assets[0].uri || null;
-        console.log(uri);
-        setNewProfileImage(uri);
-        // const uploadURL = await uploadProfileImage();
-        // if (uploadURL) {
-        //   setNewProfileImage(uploadURL);
-        // } else {
-        //   Alert.alert("이미지 업로드에 실패했습니다.", "잠시 후 다시 시도해주세요.", [{ text: "ok" }]);
-        // }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const getPhotos = async () => {
-    try {
-      const res = await launchImageLibrary({
-        mediaType: "photo",
-      });
-      if (res.assets) {
-        const uri = res.assets[0].uri || null;
-        console.log(uri);
-        setNewProfileImage(uri);
-        // const uploadURL = await uploadProfileImage();
-        // if (uploadURL) {
-        //   setNewProfileImage(uploadURL);
-        // } else {
-        //   Alert.alert("이미지 업로드에 실패했습니다.", "잠시 후 다시 시도해주세요.", [{ text: "ok" }]);
-        // }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const resetImage = () => {
-    setNewProfileImage(userData.profileImage);
-  };
-
-  const setDefaultImage = () => {
-    setNewProfileImage(null);
-  };
+  const { top } = useSafeAreaInsets();
 
   const handleChangeProfileImage = async () => {
+    Keyboard.dismiss();
     if (Platform.OS !== "ios" && Platform.OS !== "android") {
       return;
     }
@@ -95,15 +44,9 @@ export function ChangeProfile() {
     const granted = await requestMultiple(platformPermissions);
 
     const allGranted = platformPermissions.reduce((bool, item) => bool && granted[item] === RESULTS.GRANTED, true);
-    console.log(granted, allGranted);
 
     if (allGranted) {
-      Alert.alert("골라", "", [
-        // { text: "카메라로 찍기", onPress: openCamera },
-        { text: "앨범에서 선택", onPress: getPhotos },
-        { text: "원래대로", onPress: resetImage },
-        { text: "기본 이미지", onPress: setDefaultImage },
-      ]);
+      navigation.navigate("changeProfileImageModal");
     }
   };
 
@@ -166,7 +109,7 @@ export function ChangeProfile() {
   };
 
   const updateUserData = async (): Promise<1 | undefined> => {
-    const token = await getTokenFromAsyncStorege();
+    const token = await getAccessTokenFromAsyncStorage();
 
     try {
       const res = await fetch(userUrl, {
@@ -195,11 +138,27 @@ export function ChangeProfile() {
 
     if (success) {
       navigation.pop();
+      Toast.show({ text1: "프로필이 변경되었습니다." });
     }
   };
 
+  useEffect(() => {
+    setNewProfileImage(userData.profileImage);
+  }, [userData]);
+
+  useEffect(() => {
+    const disabled = !((userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage);
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable onPress={handlePressSubmitButton} disabled={disabled}>
+          <Text style={[styles.headerRightText, disabled ? { color: "gray" } : { color: "#7000ff" }]}>완료</Text>
+        </Pressable>
+      ),
+    });
+  }, [newNickname, newProfileImage]);
+
   return (
-    <SafeAreaView style={styles.outBox}>
+    <View style={[styles.outBox, { paddingTop: top, backgroundColor: "#fff" }]}>
       <TouchableOpacity onPress={handleChangeProfileImage} style={styles.imageBox}>
         <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
         <Image source={newProfileImage ? { uri: newProfileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />
@@ -220,7 +179,7 @@ export function ChangeProfile() {
         onPress={handlePressSubmitButton}
         disabled={!((userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage)}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -255,5 +214,10 @@ const styles = StyleSheet.create({
   nicknameBox: {
     width: "100%",
     marginTop: 30,
+  },
+
+  headerRightText: {
+    fontFamily: "Freesentation-6SemiBold",
+    fontSize: 20,
   },
 });

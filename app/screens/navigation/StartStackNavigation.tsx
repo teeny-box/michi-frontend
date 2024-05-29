@@ -5,6 +5,7 @@ import { SignUpStackNavigation } from "./SignUpStackNavigation";
 import { MainTabNavigation } from "./MainTabNavigation";
 import { FindIdStackNavigation } from "./user/FindIdNavigation";
 import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
+import { StatusBar } from "react-native";
 
 export type StartRootStackParam = {
   start: undefined;
@@ -21,25 +22,19 @@ const Stack = createNativeStackNavigator<StartRootStackParam>();
 export function StartStackNavigation() {
   const customStackNavigationOptions: NativeStackNavigationOptions = {
     gestureEnabled: false,
-    headerStyle: {
-      backgroundColor: "#fff",
-    },
-    headerTintColor: "#000",
-    headerTitleStyle: {
-      fontSize: 20,
-      fontFamily: "Freesentation-5Medium",
-    },
-    headerTransparent: true,
     headerShown: false,
   };
 
   return (
-    <Stack.Navigator initialRouteName="start" screenOptions={customStackNavigationOptions}>
-      <Stack.Screen name="start" component={Start} options={{ animation: "fade" }} />
-      <Stack.Screen name="login" component={Login} options={{ headerShown: true }} />
-      <Stack.Screen name="signup" component={SignUpStackNavigation} />
-      <Stack.Screen name="findId_login" component={FindIdStackNavigation} />
-      <Stack.Screen name="findPassword_login" component={FindPasswordStackNavigation} />
-    </Stack.Navigator>
+    <>
+      <StatusBar backgroundColor={"#fff"} />
+      <Stack.Navigator initialRouteName="start" screenOptions={customStackNavigationOptions}>
+        <Stack.Screen name="start" component={Start} options={{ animation: "fade" }} />
+        <Stack.Screen name="login" component={Login} />
+        <Stack.Screen name="signup" component={SignUpStackNavigation} />
+        <Stack.Screen name="findId_login" component={FindIdStackNavigation} />
+        <Stack.Screen name="findPassword_login" component={FindPasswordStackNavigation} />
+      </Stack.Navigator>
+    </>
   );
 }
