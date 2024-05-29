@@ -43,10 +43,12 @@ export function MyPage() {
       } else if (res.status === 401 && data.errorCode === "1010") {
         const success = await updateToken();
         if (success) logout();
+        return;
       }
     } catch (err) {
       console.error("logout error : ", err);
     }
+    Toast.show({ text1: "로그아웃 실패. 잠시 후 다시 시도해주세요." });
   };
 
   const removeUser = async () => {
@@ -64,10 +66,12 @@ export function MyPage() {
       } else if (res.status === 401 && data.errorCode === "1010") {
         const success = await updateToken();
         if (success) removeUser();
+        return;
       }
     } catch (err) {
       console.error("logout error : ", err);
     }
+    Toast.show({ text1: "회원 탈퇴 실패. 잠시 후 다시 시도해주세요." });
   };
 
   const handlePressLogoutButton = async () => {
