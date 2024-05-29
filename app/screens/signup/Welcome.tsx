@@ -58,10 +58,12 @@ export function Welcome(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 60,
+    paddingTop: 60,
+    paddingBottom: 30,
     paddingHorizontal: 25,
     position: "relative",
     flexGrow: 1,
+    backgroundColor: "white",
   },
 
   topContainer: {

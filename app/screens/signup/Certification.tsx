@@ -13,6 +13,8 @@ import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
 import { NextButton } from "@/components/signup/NextButton";
 import getCurrentAge from "@/utils/getCurrentAge";
+import { useAlert } from "@/hook/useAlert";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 type stateType = "waiting" | "running" | "success" | "fail";
 
@@ -22,6 +24,8 @@ export function Certification() {
   const setUserName = useSetRecoilState(userNameState);
   const setPhoneNumber = useSetRecoilState(phoneNumberState);
   const setBirthYear = useSetRecoilState(birthYearState);
+  const { setAlertState } = useAlert();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   useEffect(() => {
     if (state !== "success") {
@@ -35,7 +39,8 @@ export function Certification() {
     setState("running");
   };
 
-  const getPortOne = async (impUid: string): Promise<{ state: stateType }> => {
+  const getPortOne = async (impUid: string): Promise<true | undefined> => {
+    openLoadingScreen();
     try {
       const res = await fetch(`${authUrl}/${impUid}`);
 
@@ -47,22 +52,14 @@ export function Certification() {
           setPhoneNumber(data.data.phoneNumber);
           setBirthYear(data.data.birthYear);
           navigation.push("checkInfo");
-          return { state: "success" };
-        } else {
-          Alert.alert("⚠️ 미성년자는 가입할 수 없습니다.", "", [{ text: "OK", style: "cancel" }]);
+          return true;
         }
       }
-      return { state: "fail" };
     } catch (err) {
       console.error("get portone error : ", err);
-      return { state: "fail" };
+    } finally {
+      closeLoadingScreen();
     }
-
-    setUserName("이진이");
-    setPhoneNumber("01077440745");
-    setBirthYear("2000");
-    navigation.push("checkInfo");
-    return { state: "success" };
   };
 
   const callback = async (res: any) => {
@@ -72,7 +69,12 @@ export function Certification() {
       return;
     }
     const apiRes = await getPortOne(res.imp_uid);
-    setState(apiRes.state);
+    if (apiRes) {
+      setState("success");
+    } else {
+      setState("fail");
+      setAlertState({ open: true, title: "미성년자는 가입할 수 없습니다.", defaultText: "확인" });
+    }
   };
 
   const handlePressNextButton = () => {

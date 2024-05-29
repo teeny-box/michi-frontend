@@ -45,7 +45,7 @@ export const idFoundState = atom({
   default: "",
 });
 
-export const oneTimeTokenStat = atom({
+export const oneTimeTokenState = atom({
   key: "oneTimeTokenState",
   default: "",
 });

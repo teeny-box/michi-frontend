@@ -14,6 +14,7 @@ import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions"
 import { useAccessToken } from "@/hook/useAccessToken";
 import { changeProfileImageState } from "@/recoil/mypageAtoms";
 import Toast from "react-native-toast-message";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
@@ -31,6 +32,7 @@ export function ChangeProfile() {
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
   const { top } = useSafeAreaInsets();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   const handleChangeProfileImage = async () => {
     Keyboard.dismiss();
@@ -109,6 +111,7 @@ export function ChangeProfile() {
   };
 
   const updateUserData = async (): Promise<1 | undefined> => {
+    openLoadingScreen();
     const token = await getAccessTokenFromAsyncStorage();
 
     try {
@@ -120,9 +123,10 @@ export function ChangeProfile() {
           profileImage: newProfileImage,
         }),
       });
+      const data = await res.json();
 
       if (res.ok) {
-        setUserData({ ...userData, nickname: newNickname, profileImage: newProfileImage });
+        setUserData(data.data);
         return 1;
       } else if (res.status === 401) {
         const success = await updateToken();
@@ -130,6 +134,8 @@ export function ChangeProfile() {
       }
     } catch (err) {
       console.error("update user error : ", err);
+    } finally {
+      closeLoadingScreen();
     }
   };
 

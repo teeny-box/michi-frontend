@@ -9,7 +9,10 @@ import { GradationButton } from "@/components/common/GradationButton";
 import { TextInputField } from "@/components/common/TextInputField";
 import { userUrl } from "@/utils/apiUrls";
 import { useRecoilValue } from "recoil";
-import { oneTimeTokenStat } from "@/recoil/authAtoms";
+import { oneTimeTokenState } from "@/recoil/authAtoms";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import Toast from "react-native-toast-message";
+import { useAlert } from "@/hook/useAlert";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.
@@ -18,7 +21,9 @@ const defaultMessage = "* 영어, 숫자, 특수문자를 포함해주세요.\n*
 
 export function ChangePassword(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
-  const oneTimeToken = useRecoilValue(oneTimeTokenStat);
+  const oneTimeToken = useRecoilValue(oneTimeTokenState);
+  const { setAlertState } = useAlert();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordMessage, setNewPasswordMessage] = useState(defaultMessage);
@@ -60,6 +65,7 @@ export function ChangePassword(): React.JSX.Element {
   };
 
   const updatePassword = async (): Promise<1 | undefined> => {
+    openLoadingScreen();
     try {
       const res = await fetch(`${userUrl}/password`, {
         method: "PATCH",
@@ -71,19 +77,21 @@ export function ChangePassword(): React.JSX.Element {
 
       if (res.ok) {
         return 1;
-      } else if (res.status === 401) {
-        console.log("인증 유효 시간이 만료되었습니다. 본인인증을 다시 진행해주세요.");
       }
     } catch (err) {
       console.error("update password error : ", err);
+    } finally {
+      closeLoadingScreen();
     }
   };
 
   const handlePressSubmitButton = async () => {
     const success = await updatePassword();
     if (success) {
-      // 변경 완료 알림 띄우기
+      Toast.show({ text1: "비밀번호 변경 완료" });
       navigation.reset({ index: 1, routes: [{ name: "login" }] });
+    } else {
+      setAlertState({ open: true, title: "비밀번호 번경 실패", desc: "잠시 후 다시 시도해주세요.", defaultText: "확인" });
     }
   };
 
@@ -97,10 +105,6 @@ export function ChangePassword(): React.JSX.Element {
       ),
     });
   }, [isAvailable, isSame]);
-
-  const handlePressNextButton = () => {
-    navigation.pop(3);
-  };
 
   return (
     <SafeAreaView style={commonStyles.container}>

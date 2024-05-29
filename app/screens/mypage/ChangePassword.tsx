@@ -9,6 +9,7 @@ import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { userUrl } from "@/utils/apiUrls";
 import { useAccessToken } from "@/hook/useAccessToken";
 import Toast from "react-native-toast-message";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.
@@ -18,6 +19,7 @@ const defaultMessage = "* 영어, 숫자, 특수문자를 포함해주세요.\n*
 export function ChangePassword(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const { updateToken, getAccessTokenFromAsyncStorage } = useAccessToken();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [currentPasswordMessage, setCurrentPasswordMessage] = useState("");
@@ -62,6 +64,7 @@ export function ChangePassword(): React.JSX.Element {
   };
 
   const updatePassword = async (): Promise<1 | undefined> => {
+    openLoadingScreen();
     const token = await getAccessTokenFromAsyncStorage();
     try {
       const res = await fetch(`${userUrl}`, {
@@ -78,11 +81,15 @@ export function ChangePassword(): React.JSX.Element {
       if (res.ok) {
         return 1;
       } else if (res.status === 401 && data.errorCode === "1010") {
-        // const success = await updateToken();
-        // if (success) return await updatePassword();
+        const success = await updateToken();
+        if (success) return await updatePassword();
+      } else if (res.status === 401 && data.errorCode === "1013") {
+        setCurrentPasswordMessage("* 현재 비밀번호가 일치하지 않습니다.");
       }
     } catch (err) {
       console.error("update password error : ", err);
+    } finally {
+      closeLoadingScreen();
     }
   };
 
@@ -93,7 +100,7 @@ export function ChangePassword(): React.JSX.Element {
       navigation.pop();
       Toast.show({ text1: "비밀번호가 변경되었습니다." });
     } else {
-      setCurrentPasswordMessage("* 현재 비밀번호가 일치하지 않습니다.");
+      Toast.show({ text1: "비밀번호 변경에 실패하였습니다." });
     }
   };
 

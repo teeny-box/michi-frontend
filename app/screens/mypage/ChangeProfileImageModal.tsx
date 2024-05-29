@@ -10,6 +10,7 @@ import { userState } from "@/recoil/authAtoms";
 import { imagesUrl } from "@/utils/apiUrls";
 import Toast from "react-native-toast-message";
 import { decode } from "base64-arraybuffer";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 export function ChangeProfileImageModal() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
@@ -17,45 +18,53 @@ export function ChangeProfileImageModal() {
   const userData = useRecoilValue(userState);
   const [openModal, setOpenModal] = useState(true);
   const translateY = useRef(new Animated.Value(400)).current; // 초기 위치를 아래쪽으로 설정
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   const uploadProfileImage = async (file: Asset) => {
-    if (file.fileSize && file.fileSize > 1024 * 1024 * 5) {
-      Toast.show({ text1: "사진은 최대 5MB까지 업로드 가능합니다." });
-      return;
-    }
+    openLoadingScreen();
+    try {
+      if (file.fileSize && file.fileSize > 1024 * 1024 * 5) {
+        Toast.show({ text1: "사진은 최대 5MB까지 업로드 가능합니다." });
+        return;
+      }
 
-    if (!file.base64) {
-      Toast.show({ text1: "사진 업로드에 실패했습니다." });
-      return;
-    }
+      if (!file.base64) {
+        Toast.show({ text1: "사진 업로드에 실패했습니다." });
+        return;
+      }
 
-    // get presignedURL
-    const res = await fetch(imagesUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ filename: file.fileName, fileSize: file.fileSize }),
-    });
-    const data = await res.json();
+      // get presignedURL
+      const res = await fetch(imagesUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.fileName, fileSize: file.fileSize }),
+      });
+      const data = await res.json();
 
-    if (!res.ok) {
-      console.error(data);
-      return false;
-    }
+      if (!res.ok) {
+        console.error(data);
+        return false;
+      }
 
-    // Upload
-    const arrayBuffer = decode(file.base64);
+      // Upload
+      const arrayBuffer = decode(file.base64);
 
-    const uploadRes = await fetch(data.data.signedUrl, {
-      method: "PUT",
-      headers: { "Content-Type": "image/jpeg" },
-      body: arrayBuffer,
-    });
+      const uploadRes = await fetch(data.data.signedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": "image/jpeg" },
+        body: arrayBuffer,
+      });
 
-    if (uploadRes.ok) {
-      setNewProfileImage(data.data.publicUrl);
-    } else {
-      Toast.show({ text1: "사진 업로드에 실패했습니다. 다시 시도해주세요." });
-      console.log("image upload failed");
+      if (uploadRes.ok) {
+        setNewProfileImage(data.data.publicUrl);
+      } else {
+        Toast.show({ text1: "사진 업로드에 실패했습니다. 다시 시도해주세요." });
+        console.log("image upload failed");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      closeLoadingScreen();
     }
   };
 

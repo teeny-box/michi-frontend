@@ -41,8 +41,8 @@ function App(): React.JSX.Element {
               <AppNavigation />
             </NavigationContainer>
             <Alert />
-            <ToastCustom />
             <Loading />
+            <ToastCustom />
           </SafeAreaProvider>
         </RecoilRoot>
       )}

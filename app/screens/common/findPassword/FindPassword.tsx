@@ -1,4 +1,4 @@
-import { idFoundState, oneTimeTokenStat } from "@/recoil/authAtoms";
+import { idFoundState, oneTimeTokenState } from "@/recoil/authAtoms";
 import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -12,6 +12,7 @@ import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswo
 import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
 import { headerShowState } from "@/recoil/commonAtoms";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 type stateType = "waiting" | "running" | "fail";
 type passwordFoundBodyType = {
@@ -25,7 +26,8 @@ export function FindPassword() {
   const [state, setState] = useState<stateType>("waiting");
   const id = useRecoilValue(idFoundState);
   const setHeaderShow = useSetRecoilState(headerShowState);
-  const setOneTimeToken = useSetRecoilState(oneTimeTokenStat);
+  const setOneTimeToken = useSetRecoilState(oneTimeTokenState);
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   const getPortOneAndPasswordCheck = async (impUid: string) => {
     try {
@@ -57,6 +59,7 @@ export function FindPassword() {
       return;
     }
 
+    openLoadingScreen();
     getPortOneAndPasswordCheck(res.imp_uid).then(apiRes => {
       if (apiRes) {
         navigation.push("changePassword");
@@ -65,6 +68,7 @@ export function FindPassword() {
         setState("fail");
       }
     });
+    closeLoadingScreen();
   };
 
   const handlePressCertificationButton = () => {

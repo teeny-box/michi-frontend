@@ -40,7 +40,7 @@ export function MyPage() {
       if (res.ok) {
         await deleteToken();
         return console.log("logout success");
-      } else if (res.status === 401) {
+      } else if (res.status === 401 && data.errorCode === "1010") {
         const success = await updateToken();
         if (success) logout();
       }
@@ -56,11 +56,12 @@ export function MyPage() {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+      const data = await res.json();
 
       if (res.ok) {
         await deleteToken();
         return console.log("remove user success");
-      } else if (res.status === 401) {
+      } else if (res.status === 401 && data.errorCode === "1010") {
         const success = await updateToken();
         if (success) removeUser();
       }
@@ -73,7 +74,7 @@ export function MyPage() {
     setAlertState({
       open: true,
       title: "로그아웃 하시겠습니까?",
-      desc: "해당 기기에서만 로그아웃 됩니다.",
+      desc: "현재 기기에서만 로그아웃 됩니다.",
       onPress: logout,
       defaultText: "확인",
       cancelText: "취소",
