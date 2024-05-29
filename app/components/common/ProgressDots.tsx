@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Animated } from "react-native";
 
-interface ProgressDotsProps {
+type ProgressDotsProps = {
   duration?: number;
-  initialDelay?: number;
-}
+  color?: "white" | "main";
+};
 
-const ProgressDots: React.FC<ProgressDotsProps> = ({ duration = 1000, initialDelay = 0 }) => {
+const ProgressDots: React.FC<ProgressDotsProps> = ({ duration = 1000, color }) => {
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
   const dot3 = useRef(new Animated.Value(0)).current;
@@ -62,7 +62,7 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ duration = 1000, initialDel
     };
 
     animateDots();
-  }, [dot1, dot2, dot3, duration, initialDelay]);
+  }, [dot1, dot2, dot3, duration]);
 
   const getDotStyle = (dot: Animated.Value) => ({
     opacity: dot,
@@ -78,9 +78,9 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ duration = 1000, initialDel
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.dot, getDotStyle(dot1)]} />
-      <Animated.View style={[styles.dot, getDotStyle(dot2)]} />
-      <Animated.View style={[styles.dot, getDotStyle(dot3)]} />
+      <Animated.View style={[styles.dot, color === "main" && { backgroundColor: "#7000ff" }, getDotStyle(dot1)]} />
+      <Animated.View style={[styles.dot, color === "main" && { backgroundColor: "#7000ff" }, getDotStyle(dot2)]} />
+      <Animated.View style={[styles.dot, color === "main" && { backgroundColor: "#7000ff" }, getDotStyle(dot3)]} />
     </View>
   );
 };

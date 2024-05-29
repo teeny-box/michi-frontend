@@ -17,7 +17,7 @@ const defaultMessage = "* 영어, 숫자, 특수문자를 포함해주세요.\n*
 
 export function ChangePassword(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const { updateToken, getTokenFromAsyncStorege } = useAccessToken();
+  const { updateToken, getAccessTokenFromAsyncStorage } = useAccessToken();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [currentPasswordMessage, setCurrentPasswordMessage] = useState("");
@@ -62,7 +62,7 @@ export function ChangePassword(): React.JSX.Element {
   };
 
   const updatePassword = async (): Promise<1 | undefined> => {
-    const token = await getTokenFromAsyncStorege();
+    const token = await getAccessTokenFromAsyncStorage();
     try {
       const res = await fetch(`${userUrl}`, {
         method: "PATCH",

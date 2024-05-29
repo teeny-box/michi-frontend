@@ -15,15 +15,17 @@ import getCurrentAge from "@/utils/getCurrentAge";
 import phoneNumberFormat from "@/utils/phoneNumberFormat";
 import { useAlert } from "@/hook/useAlert";
 import Toast from "react-native-toast-message";
+import { Button } from "@/components/common/Button";
+import Entypo from "react-native-vector-icons/Entypo";
 
 export function MyPage() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);
-  const { updateToken, deleteToken, getTokenFromAsyncStorege } = useAccessToken();
+  const { updateToken, deleteToken, getAccessTokenFromAsyncStorage } = useAccessToken();
   const { setAlertState } = useAlert();
 
   const logout = async () => {
-    const token = await getTokenFromAsyncStorege();
+    const token = await getAccessTokenFromAsyncStorage();
     try {
       const res = await fetch(`${authUrl}/logout`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -46,7 +48,7 @@ export function MyPage() {
   };
 
   const removeUser = async () => {
-    const token = await getTokenFromAsyncStorege();
+    const token = await getAccessTokenFromAsyncStorage();
     try {
       const res = await fetch(`${userUrl}`, {
         method: "DELETE",
@@ -66,7 +68,7 @@ export function MyPage() {
   };
 
   const handlePressLogoutButton = async () => {
-    setAlertState({ open: true, title: "로그아웃 하시겠습니까?", desc: "", onPress: logout, defaultText: "확인" });
+    setAlertState({ open: true, title: "로그아웃 하시겠습니까?", desc: "", onPress: logout, defaultText: "확인", cancelText: "취소" });
   };
 
   const handlePressWithdrawButton = () => {
@@ -119,9 +121,7 @@ export function MyPage() {
 
         <View style={styles.buttonContainer}>
           <GradationButton text="로그아웃" onPress={handlePressLogoutButton} />
-          <TouchableOpacity style={styles.button} onPress={handlePressWithdrawButton}>
-            <Text style={styles.buttonText}>회원탈퇴</Text>
-          </TouchableOpacity>
+          <Button text="회원탈퇴" onPress={handlePressWithdrawButton} rightIcon={<Entypo name="chevron-right" color={"white"} size={16} />} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -141,20 +141,6 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     marginVertical: 40,
-    rowGap: 4,
-  },
-
-  button: {
-    height: 45,
-    backgroundColor: "#000",
-    marginVertical: 4,
-    alignItems: "center",
-  },
-
-  buttonText: {
-    color: "#fff",
-    margin: "auto",
-    fontSize: 16,
-    fontFamily: "Freesentation-5Medium",
+    rowGap: 8,
   },
 });

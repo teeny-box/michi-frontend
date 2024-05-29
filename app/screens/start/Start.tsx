@@ -10,12 +10,14 @@ export function Start() {
   const { top } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, { paddingTop: top }]}>
+    <>
       <StatusBar backgroundColor="#fff" />
-      <Image style={styles.logo} source={require("@assets/images/logo_ver2.png")} />
-      <GradationButton text="로그인" onPress={() => navigation.navigate("login")} size="medium" />
-      <GradationButton text="회원가입" onPress={() => navigation.navigate("signup")} size="medium" />
-    </View>
+      <View style={[styles.container, { paddingTop: top }]}>
+        <Image style={styles.logo} source={require("@assets/images/logo_ver2.png")} />
+        <GradationButton text="로그인" onPress={() => navigation.navigate("login")} size="medium" />
+        <GradationButton text="회원가입" onPress={() => navigation.navigate("signup")} size="medium" />
+      </View>
+    </>
   );
 }
 

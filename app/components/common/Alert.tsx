@@ -13,7 +13,7 @@ export function Alert() {
 
   const onPressDefaultButton = async () => {
     setLoading(true);
-    await onPress();
+    await onPress?.();
     closeAlert();
     setLoading(false);
   };
@@ -33,8 +33,8 @@ export function Alert() {
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.description}>{desc}</Text>
             <View style={styles.buttonBox}>
-              <Button text={cancelText || "취소"} color="gray" onPress={onPressCancelButton} />
-              <Button text={defaultText || "확인"} onPress={onPressDefaultButton} />
+              {cancelText && <Button text={cancelText} color="gray" onPress={onPressCancelButton} />}
+              {defaultText && <Button text={defaultText} onPress={onPressDefaultButton} />}
             </View>
           </View>
         )}
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
     textAlign: "center",
+    paddingBottom: 10,
   },
 
   buttonBox: {

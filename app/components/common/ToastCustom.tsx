@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.8)",
     borderRadius: 8,
 
-    // shadowColor: "#ff0000",
+    // shadowColor: "#000000",
     // // ios
     // shadowOffset: {
     //   width: 0,

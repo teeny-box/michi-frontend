@@ -22,7 +22,7 @@ const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 
 
 export function ChangeProfile() {
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
-  const { updateToken, getTokenFromAsyncStorege } = useAccessToken();
+  const { updateToken, getAccessTokenFromAsyncStorage } = useAccessToken();
   const [userData, setUserData] = useRecoilState(userState);
   const [newNickname, setNewNickname] = useState<string>(userData.nickname || "");
   const [checkMessage, setCheckMessage] = useState(defaultMessage);
@@ -109,7 +109,7 @@ export function ChangeProfile() {
   };
 
   const updateUserData = async (): Promise<1 | undefined> => {
-    const token = await getTokenFromAsyncStorege();
+    const token = await getAccessTokenFromAsyncStorage();
 
     try {
       const res = await fetch(userUrl, {

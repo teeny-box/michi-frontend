@@ -4,7 +4,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 type textInputFieldProps = {
-  label: string;
+  label?: string;
   value: string;
   setValue: (text: string) => void;
   message?: string;
