@@ -1,5 +1,6 @@
 const phoneNumberFormat = (phoneNumber: string) => {
   let phone = "";
+  phoneNumber = phoneNumber.replace(/[^0-9]/g, "");
 
   if (phoneNumber.length < 1) {
     phone = "";

@@ -26,11 +26,14 @@ export function SignUpStackNavigation() {
     headerStyle: {
       backgroundColor: "#fff",
     },
-    headerTintColor: "#000",
+    headerTintColor: "#141414",
     headerTitleStyle: {
+      fontWeight: "bold",
+      fontFamily: "Freesentation-6SemiBold",
       fontSize: 20,
-      fontFamily: "Freesentation-5Medium",
+      color: "#141414",
     },
+    headerBackTitleVisible: false,
     headerTransparent: true,
   };
 

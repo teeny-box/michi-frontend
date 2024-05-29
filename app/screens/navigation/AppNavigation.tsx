@@ -19,14 +19,14 @@ const Stack = createNativeStackNavigator();
 
 export function AppNavigation() {
   const accessToken = useRecoilValue(accessTokenState);
-  const { getTokenFromAsyncStorege, updateToken } = useAccessToken();
+  const { updateAccessTokenFromAsyncStorage, updateToken } = useAccessToken();
   const setUser = useSetRecoilState(userState);
   const resetUser = useResetRecoilState(userState);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const success = await getTokenFromAsyncStorege();
+      const success = await updateAccessTokenFromAsyncStorage();
       if (!success) setLoading(false);
     })();
   }, []);
