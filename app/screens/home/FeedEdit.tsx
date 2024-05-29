@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import LinearGradient from "react-native-linear-gradient";
 
 export type RootStackParam = {
-  feed: undefined;
+  homeMain: undefined;
 };
 
 const goAlert = () =>

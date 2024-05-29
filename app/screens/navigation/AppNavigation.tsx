@@ -65,33 +65,5 @@ export function AppNavigation() {
     }
   };
 
-  return (
-    <>
-      {accessToken ? (
-        <Stack.Navigator initialRouteName="main" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="main" component={MainTabNavigation} options={{ headerShown: false }} />
-          <Stack.Screen
-            name="feedEdit"
-            component={FeedEdit}
-            options={{
-              headerShown: true,
-              gestureEnabled: false,
-              headerTitle: "",
-              headerBackTitle: "피드 작성하기",
-              headerBackTitleStyle: {
-                fontFamily: "Freesentation-5Medium",
-              },
-              headerLargeStyle: false,
-              headerStyle: {
-                backgroundColor: "#fff",
-              },
-              headerTintColor: "#111",
-            }}
-          />
-        </Stack.Navigator>
-      ) : (
-        <StartStackNavigation />
-      )}
-    </>
-  );
+  return <>{accessToken ? <MainTabNavigation /> : <StartStackNavigation />}</>;
 }

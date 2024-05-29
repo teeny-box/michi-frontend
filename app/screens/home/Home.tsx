@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback, Pressable } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Modal,
+  Image,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  Pressable,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/FontAwesome";
@@ -56,12 +68,15 @@ const onlineUserData = [
   // Add more data as needed
 ];
 
+
+
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export function Home(): React.JSX.Element {
   const [selectedTab, setSelectedTab] = useState("피드");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isUnderModalVisible, setIsUnderModalVisible] = useState<boolean>(false);
+  const { top, bottom } = useSafeAreaInsets();
 
   const onPressModalOpen = () => {
     console.log("모달을 여는 중입니다.");
@@ -85,6 +100,7 @@ export function Home(): React.JSX.Element {
 
   return (
     <View style={styles.container}>
+      <View style={[styles.safeArea, { height: top }]}></View>
       <View style={styles.homeHeader}>
         <View style={styles.randomChatBtn}>
           <Text style={styles.randomChatText}>실시간</Text>
@@ -93,6 +109,7 @@ export function Home(): React.JSX.Element {
             <Icon name="doubleright" size={28} />
           </Text>
         </View>
+        <Image source={require("@assets/images/logo_home.png")} style={styles.homeLogo} />
       </View>
       <View style={styles.homeTabBox}>
         <TouchableOpacity style={styles.homeTab} onPress={() => setSelectedTab("피드")}>
@@ -161,55 +178,55 @@ export function Home(): React.JSX.Element {
           </View>
         )}
       </View>
-        <Modal animationType="fade" visible={isModalVisible} transparent={true}>
-            <View style={styles.modalOverlay}>
-              <View style={styles.modalView}>
-                <View style={styles.modalBtnContainer}>
-                  <Icon5 name="x" size={26} color={"#7000ff"} onPress={onPressModalClose} />
-                </View>
-                <View style={styles.modalHeader}>
+      <Modal animationType="fade" visible={isModalVisible} transparent={true}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalView}>
+            <View style={styles.modalBtnContainer}>
+              <Icon5 name="x" size={26} color={"#7000ff"} onPress={onPressModalClose} />
+            </View>
+            <View style={styles.modalHeader}>
+              <View style={styles.modalProfileBox}>
+                <GradationProfile>
                   <View style={styles.modalProfileBox}>
-                    <GradationProfile>
-                      <View style={styles.modalProfileBox}>
-                        <Icon3 name="user-circle-o" size={90} color={"#fff"} />
-                      </View>
-                    </GradationProfile>
-                    <View style={styles.modalNicknameBox}>
-                      <Text style={styles.modalNicknameText}>낚곱새의여왕</Text>
-                      <Text style={styles.modalIsloginText}>접속중</Text>
-                    </View>
+                    <Icon3 name="user-circle-o" size={90} color={"#fff"} />
                   </View>
+                </GradationProfile>
+                <View style={styles.modalNicknameBox}>
+                  <Text style={styles.modalNicknameText}>낚곱새의여왕</Text>
+                  <Text style={styles.modalIsloginText}>접속중</Text>
                 </View>
-                <View style={styles.modalBody}>
-                  <Text>
-                    <Icon2 name="sparkles-sharp" size={12} color={"#AB94F7"} /> 1시간전
-                  </Text>
-                  <Text style={styles.modalTitle}>나 낚곱새의 여왕이 말하노니 제목은 26자까지 가능하노라</Text>
-                  <View style={styles.modalContents}>
-                    <ScrollView>
-                      <Text style={styles.modalContentsText}>
-                        그것이 문제로다. 밥넣어도 맛있고 면 넣어도 맛있는데 둘 다 먹기엔 내 배가 작아서 하나만 선택할 수 있다는 사실이 너무나도 서럽다. 누가
-                        와서 나의 고민을 최종 컨펌해달라. 같이 밥먹으면 더 좋고 ^_^ 내용이 많이 길어진다면 화면을 위로 밀어서 내용을 더 볼 수 있게 스크롤을
-                        사용해도 좋을 거
-                        같아요채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기기채팅하기채팅하기
-                      </Text>
-                    </ScrollView>
-                  </View>
-                </View>
-                <TouchableOpacity style={styles.modalFooter}>
-                  <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
-                    <Text style={styles.modalFooterBtnText}>
-                      채팅하기 <Icon6 name="angle-right" size={22} />
-                    </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
               </View>
             </View>
-        </Modal>
+            <View style={styles.modalBody}>
+              <Text>
+                <Icon2 name="sparkles-sharp" size={12} color={"#AB94F7"} /> 1시간전
+              </Text>
+              <Text style={styles.modalTitle}>나 낚곱새의 여왕이 말하노니 제목은 26자까지 가능하노라</Text>
+              <View style={styles.modalContents}>
+                <ScrollView>
+                  <Text style={styles.modalContentsText}>
+                    그것이 문제로다. 밥넣어도 맛있고 면 넣어도 맛있는데 둘 다 먹기엔 내 배가 작아서 하나만 선택할 수 있다는 사실이 너무나도 서럽다. 누가 와서
+                    나의 고민을 최종 컨펌해달라. 같이 밥먹으면 더 좋고 ^_^ 내용이 많이 길어진다면 화면을 위로 밀어서 내용을 더 볼 수 있게 스크롤을 사용해도 좋을
+                    거
+                    같아요채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기채팅하기기채팅하기채팅하기
+                  </Text>
+                </ScrollView>
+              </View>
+            </View>
+            <TouchableOpacity style={styles.modalFooter}>
+              <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
+                <Text style={styles.modalFooterBtnText}>
+                  채팅하기 <Icon6 name="angle-right" size={22} />
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <Modal animationType="slide" visible={isUnderModalVisible} transparent={true}>
         <TouchableWithoutFeedback onPress={onPressUnderModalClose}>
           <View style={styles.underModalOverlay}>
-            <View style={styles.UnderModalView}>
+            <View style={[styles.UnderModalView, { marginBottom: bottom }]}>
               <TouchableOpacity style={styles.UnderModalBtn1}>
                 <Text>수정</Text>
               </TouchableOpacity>
@@ -229,9 +246,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  safeArea: {
+    backgroundColor: "#7000FF",
+  },
   homeHeader: {
     flex: 2,
+    flexDirection: "row",
     width: "100%",
+    alignItems: "flex-end",
     backgroundColor: "#7000FF",
   },
   randomChatBtn: {
@@ -243,8 +265,13 @@ const styles = StyleSheet.create({
   },
   randomChatText: {
     color: "#fff",
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "600",
+  },
+  homeLogo: {
+    width: "23%",
+    height: "80%",
+    marginRight: "5%",
   },
   homeTabBox: {
     flex: 1,
@@ -453,7 +480,7 @@ const styles = StyleSheet.create({
   },
   UnderModalView: {
     flex: 1,
-    marginTop: SCREEN_HEIGHT * 0.9,
+    marginTop: SCREEN_HEIGHT * 0.88,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
