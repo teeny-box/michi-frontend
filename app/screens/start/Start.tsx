@@ -6,8 +6,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 
 export function Start() {
-  const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const { top } = useSafeAreaInsets();
+  const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
 
   return (
     <>

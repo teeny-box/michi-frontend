@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
 import { StyleSheet, View } from "react-native";
@@ -14,6 +14,7 @@ const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
 const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 이상 10자 이내로 입력해주세요.";
 
 export function ChangeId() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const [inputId, setInputId] = useState("");
   const [checkMessage, setCheckMessage] = useState(defaultMessage);
@@ -79,7 +80,7 @@ export function ChangeId() {
   };
 
   return (
-    <SafeAreaView style={styles.outBox}>
+    <View style={[styles.outBox, { paddingTop: top }]}>
       <View style={styles.nicknameBox}>
         <TextInputField
           label="아이디 ID"
@@ -92,7 +93,7 @@ export function ChangeId() {
         />
       </View>
       <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={isAvailable} />
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
 import { Image, StyleSheet, TouchableOpacity, View, Platform, Pressable, Text, Keyboard } from "react-native";
@@ -14,6 +14,7 @@ import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions"
 import { useAccessToken } from "@/hook/useAccessToken";
 import { changeProfileImageState } from "@/recoil/mypageAtoms";
 import Toast from "react-native-toast-message";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
@@ -21,6 +22,7 @@ const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
 const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 이상 10자 이내로 입력해주세요.";
 
 export function ChangeProfile() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const { updateToken, getAccessTokenFromAsyncStorage } = useAccessToken();
   const [userData, setUserData] = useRecoilState(userState);
@@ -30,7 +32,7 @@ export function ChangeProfile() {
   const [newProfileImage, setNewProfileImage] = useRecoilState(changeProfileImageState);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
-  const { top } = useSafeAreaInsets();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   const handleChangeProfileImage = async () => {
     Keyboard.dismiss();
@@ -109,6 +111,7 @@ export function ChangeProfile() {
   };
 
   const updateUserData = async (): Promise<1 | undefined> => {
+    openLoadingScreen();
     const token = await getAccessTokenFromAsyncStorage();
 
     try {
@@ -120,9 +123,10 @@ export function ChangeProfile() {
           profileImage: newProfileImage,
         }),
       });
+      const data = await res.json();
 
       if (res.ok) {
-        setUserData({ ...userData, nickname: newNickname, profileImage: newProfileImage });
+        setUserData(data.data);
         return 1;
       } else if (res.status === 401) {
         const success = await updateToken();
@@ -130,6 +134,8 @@ export function ChangeProfile() {
       }
     } catch (err) {
       console.error("update user error : ", err);
+    } finally {
+      closeLoadingScreen();
     }
   };
 
@@ -158,7 +164,7 @@ export function ChangeProfile() {
   }, [newNickname, newProfileImage]);
 
   return (
-    <View style={[styles.outBox, { paddingTop: top, backgroundColor: "#fff" }]}>
+    <View style={[styles.outBox, { paddingTop: top }]}>
       <TouchableOpacity onPress={handleChangeProfileImage} style={styles.imageBox}>
         <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
         <Image source={newProfileImage ? { uri: newProfileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />

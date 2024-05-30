@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { commonStyles } from "./Common.styled";
 import { useRecoilState } from "recoil";
 import { passwordState } from "@/recoil/signupAtoms";
@@ -17,6 +17,7 @@ const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
 const defaultMessage = "* 영어, 숫자, 특수문자를 포함해주세요.\n* 8자 이상 입력해주세요.";
 
 export function Password(): React.JSX.Element {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [newPassword, setNewPassword] = useRecoilState(passwordState);
   const [checkPassword, setCheckPassword] = useState("");
@@ -62,7 +63,7 @@ export function Password(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
         <Title text="비밀번호를 입력하세요" />
         <TextInputField
@@ -85,6 +86,6 @@ export function Password(): React.JSX.Element {
         />
       </ScrollView>
       <NextButton onPress={handlePressNextButton} disabled={!(isSame && isAvailable)} />
-    </SafeAreaView>
+    </View>
   );
 }
