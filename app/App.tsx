@@ -8,6 +8,7 @@ import { AppNavigation } from "@screens/navigation/AppNavigation";
 import { Alert } from "@components/common/Alert";
 import { ToastCustom } from "./components/common/ToastCustom";
 import { Loading } from "./screens/common/Loading";
+import messaging from "@react-native-firebase/messaging";
 
 async function enableMocking() {
   if (!__DEV__) {
@@ -25,7 +26,15 @@ function App(): React.JSX.Element {
 
   useEffect(() => {
     enableMocking().then(() => setLoading(false));
+
+    getToken();
   }, []);
+
+  const getToken = async () => {
+    const fcmToken = await messaging().getToken();
+    console.log("디바이스 토큰값");
+    console.log(fcmToken);
+  };
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
