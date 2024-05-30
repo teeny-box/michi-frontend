@@ -1,10 +1,10 @@
-import { idFoundState, oneTimeTokenStat } from "@/recoil/authAtoms";
+import { idFoundState, oneTimeTokenState } from "@/recoil/authAtoms";
 import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { commonStyles } from "../../signup/Common.styled";
 import { IMPCertification } from "@components/common/IMPCertification";
@@ -12,20 +12,18 @@ import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswo
 import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
 import { headerShowState } from "@/recoil/commonAtoms";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 type stateType = "waiting" | "running" | "fail";
-type passwordFoundBodyType = {
-  userName: string;
-  phoneNumber: string;
-  birthYear: string;
-};
 
 export function FindPassword() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<FindPasswordRootStackParam>>();
   const [state, setState] = useState<stateType>("waiting");
   const id = useRecoilValue(idFoundState);
   const setHeaderShow = useSetRecoilState(headerShowState);
-  const setOneTimeToken = useSetRecoilState(oneTimeTokenStat);
+  const setOneTimeToken = useSetRecoilState(oneTimeTokenState);
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   const getPortOneAndPasswordCheck = async (impUid: string) => {
     try {
@@ -57,6 +55,7 @@ export function FindPassword() {
       return;
     }
 
+    openLoadingScreen();
     getPortOneAndPasswordCheck(res.imp_uid).then(apiRes => {
       if (apiRes) {
         navigation.push("changePassword");
@@ -65,6 +64,7 @@ export function FindPassword() {
         setState("fail");
       }
     });
+    closeLoadingScreen();
   };
 
   const handlePressCertificationButton = () => {
@@ -82,13 +82,13 @@ export function FindPassword() {
   return (
     <>
       {state !== "running" ? (
-        <SafeAreaView style={commonStyles.container}>
+        <View style={[commonStyles.container, { paddingTop: top }]}>
           <ScrollView style={commonStyles.scrollBox}>
             <Title text="본인인증을 해주세요" />
             <GradationButton text="인증하기" onPress={handlePressCertificationButton} />
             {state === "fail" && <Text style={styles.warning}>* 인증에 실패하였습니다. 다시 시도해주세요.</Text>}
           </ScrollView>
-        </SafeAreaView>
+        </View>
       ) : (
         <View style={styles.container}>
           <IMPCertification callback={callback} />

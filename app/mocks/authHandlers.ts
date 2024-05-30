@@ -1,9 +1,10 @@
-import { http, HttpResponse, StrictRequest } from "msw";
+import { delay, http, HttpResponse, StrictRequest } from "msw";
 
 const root = "http://127.0.0.1:8081/auth";
 
 export const authHandlers = [
-  http.get(`${root}/:imp`, () => {
+  http.get(`${root}/:imp`, async () => {
+    await delay(1000);
     return HttpResponse.json(
       {
         code: 200,
@@ -18,7 +19,8 @@ export const authHandlers = [
     );
   }),
 
-  http.post(`${root}`, () => {
+  http.post(`${root}`, async () => {
+    await delay(1000);
     return HttpResponse.json(
       {
         code: 201,
@@ -30,6 +32,7 @@ export const authHandlers = [
   }),
 
   http.post(`${root}/login`, async ({ request }: { request: StrictRequest<{ userId: string; password: string }> }) => {
+    await delay(1000);
     const { userId, password } = await request.json();
 
     if (userId === "dkdlel1" && password === "qlalfqjsgh1!") {
@@ -69,17 +72,34 @@ export const authHandlers = [
     );
   }),
 
-  http.post(`${root}/verification/:id`, () => {
+  http.post(`${root}/verification`, async () => {
+    await delay(1000);
     return HttpResponse.json(
       {
         code: 200,
-        message: "비밀번호 변경이 가능합니다.",
+        message: "아이디를 찾았습니다.",
+        data: "dkdlel1",
       },
       { status: 200 },
     );
   }),
 
-  http.get(`${root}/logout`, () => {
+  http.post(`${root}/verification/password`, async () => {
+    await delay(1000);
+    return HttpResponse.json(
+      {
+        code: 200,
+        message: "비밀번호 변경이 가능합니다.",
+      },
+      {
+        status: 200,
+        headers: { Authorization: "Bearer 일회용토큰" },
+      },
+    );
+  }),
+
+  http.get(`${root}/logout`, async () => {
+    await delay(1000);
     return HttpResponse.json(
       {
         code: 200,
@@ -89,7 +109,8 @@ export const authHandlers = [
     );
   }),
 
-  http.delete(`${root}/refresh-token`, async ({ request }: { request: StrictRequest<{ accessToken: string }> }) => {
+  http.post(`${root}/refresh-token`, async ({ request }: { request: StrictRequest<{ accessToken: string }> }) => {
+    await delay(1000);
     const { accessToken } = await request.json();
     if (accessToken === "accessToken1") {
       return HttpResponse.json(

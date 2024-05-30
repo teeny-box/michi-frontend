@@ -38,7 +38,7 @@ export function FindPasswordStackNavigation() {
     <Stack.Navigator initialRouteName="idCheck" screenOptions={customStackNavigationOptions}>
       <Stack.Screen name="idCheck" component={IdExistCheck} />
       <Stack.Screen name="findPassword" component={FindPassword} options={{ headerShown: headerShow }} />
-      <Stack.Screen name="changePassword" component={ChangePassword} />
+      <Stack.Screen name="changePassword" component={ChangePassword} options={{ title: "비밀번호 변경" }} />
     </Stack.Navigator>
   );
 }

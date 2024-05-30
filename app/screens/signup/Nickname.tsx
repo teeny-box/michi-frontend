@@ -2,8 +2,8 @@ import { nicknameState } from "@/recoil/signupAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRecoilState } from "recoil";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { commonStyles } from "./Common.styled";
@@ -18,6 +18,7 @@ const regex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
 const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 이상 10자 이내로 입력해주세요.";
 
 export function Nickname(): React.JSX.Element {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [nickname, setNickname] = useRecoilState(nicknameState);
   const [checkMessage, setCheckMessage] = useState(defaultMessage);
@@ -83,7 +84,7 @@ export function Nickname(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
         <Title text="닉네임을 입력해주세요" />
         <TextInputField
@@ -97,6 +98,6 @@ export function Nickname(): React.JSX.Element {
         />
       </ScrollView>
       <NextButton onPress={handlePressNextButton} disabled={!isAvailable} />
-    </SafeAreaView>
+    </View>
   );
 }

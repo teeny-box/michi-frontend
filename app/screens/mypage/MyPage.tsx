@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/recoil/authAtoms";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GradationButton } from "@/components/common/GradationButton";
 import { ListItem } from "@/components/mypage/ListItem";
 import { LinkedListItem } from "@/components/mypage/LinkedListItem";
@@ -16,10 +16,10 @@ import phoneNumberFormat from "@/utils/phoneNumberFormat";
 import { useAlert } from "@/hook/useAlert";
 import Toast from "react-native-toast-message";
 import { Button } from "@/components/common/Button";
-import Entypo from "react-native-vector-icons/Entypo";
 import { useLoadingScreen } from "@/hook/useLoadingScreen";
 
 export function MyPage() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);
   const { updateToken, deleteToken, getAccessTokenFromAsyncStorage } = useAccessToken();
@@ -40,13 +40,15 @@ export function MyPage() {
       if (res.ok) {
         await deleteToken();
         return console.log("logout success");
-      } else if (res.status === 401) {
+      } else if (res.status === 401 && data.errorCode === "1010") {
         const success = await updateToken();
         if (success) logout();
+        return;
       }
     } catch (err) {
       console.error("logout error : ", err);
     }
+    Toast.show({ text1: "로그아웃 실패. 잠시 후 다시 시도해주세요." });
   };
 
   const removeUser = async () => {
@@ -56,24 +58,27 @@ export function MyPage() {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+      const data = await res.json();
 
       if (res.ok) {
         await deleteToken();
         return console.log("remove user success");
-      } else if (res.status === 401) {
+      } else if (res.status === 401 && data.errorCode === "1010") {
         const success = await updateToken();
         if (success) removeUser();
+        return;
       }
     } catch (err) {
       console.error("logout error : ", err);
     }
+    Toast.show({ text1: "회원 탈퇴 실패. 잠시 후 다시 시도해주세요." });
   };
 
   const handlePressLogoutButton = async () => {
     setAlertState({
       open: true,
       title: "로그아웃 하시겠습니까?",
-      desc: "해당 기기에서만 로그아웃 됩니다.",
+      desc: "현재 기기에서만 로그아웃 됩니다.",
       onPress: logout,
       defaultText: "확인",
       cancelText: "취소",
@@ -113,7 +118,7 @@ export function MyPage() {
   };
 
   return (
-    <SafeAreaView style={styles.outBox}>
+    <View style={[styles.outBox, { paddingTop: top }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Profile />
         <View style={styles.infoBox}>
@@ -138,7 +143,7 @@ export function MyPage() {
           <Button text="회원탈퇴" onPress={handlePressWithdrawButton} />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

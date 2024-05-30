@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    columnGap: 4,
   },
 
   text: {

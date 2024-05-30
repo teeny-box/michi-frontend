@@ -4,24 +4,29 @@ import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSetRecoilState } from "recoil";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import LinearGradient from "react-native-linear-gradient";
 import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
 import { useAlert } from "@/hook/useAlert";
+import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import Toast from "react-native-toast-message";
 
 export function Login() {
+  const { top } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const setAccessToken = useSetRecoilState(accessTokenState);
   const { setAlertState } = useAlert();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
   const login = async () => {
+    openLoadingScreen();
     try {
       const res = await fetch(`${authUrl}/login`, {
         method: "POST",
@@ -45,11 +50,25 @@ export function Login() {
     } catch (err) {
       console.error("login error : ", err);
       return 0;
+    } finally {
+      closeLoadingScreen();
     }
   };
 
   const handlePressLoginButton = async () => {
+    if (!id) {
+      Toast.show({ text1: "아이디를 입력해주세요." });
+      return;
+    }
+    if (!password) {
+      Toast.show({ text1: "비밀번호를 입력해주세요." });
+      return;
+    }
+
     const success = await login();
+
+    setId("");
+    setPassword("");
 
     if (!success) {
       setAlertState({ open: true, title: "로그인 실패", desc: "아이디 또는 비밀번호를 다시 확인해주세요.", defaultText: "확인" });
@@ -65,7 +84,7 @@ export function Login() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <View style={[styles.bgCircle, { width: width * 1.8, top: -(width / 1.8) }]}></View>
       <LinearGradient style={styles.bgBottom} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={90} angleCenter={{ x: 0.5, y: 0.5 }}></LinearGradient>
       <ScrollView style={styles.scrollBox}>
@@ -86,7 +105,7 @@ export function Login() {
           <Text>비밀번호 P/W 찾기</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -139,7 +158,7 @@ const styles = StyleSheet.create({
   bgBottom: {
     position: "absolute",
     width: "100%",
-    height: "40%",
+    height: "100%",
     bottom: 0,
     zIndex: -2,
   },

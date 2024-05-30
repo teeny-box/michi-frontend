@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilState } from "recoil";
 import { idState } from "@/recoil/signupAtoms";
@@ -19,6 +19,7 @@ const regex = /^[a-zA-Z][a-zA-Z0-9_]{3,19}$/;
 const defaultMessage = "* 영어, 숫자, 밑줄(_)만 사용해주세요.\n* 4자 이상 20자 이내로 입력해주세요.";
 
 export function Id() {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [id, setId] = useRecoilState(idState);
   const [checkMessage, setCheckMessage] = useState(defaultMessage);
@@ -90,7 +91,7 @@ export function Id() {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
         <Title text="아이디를 입력해주세요" />
         <TextInputField
@@ -104,6 +105,6 @@ export function Id() {
         />
       </ScrollView>
       <NextButton onPress={handlePressNextButton} disabled={!isAvailable} />
-    </SafeAreaView>
+    </View>
   );
 }
