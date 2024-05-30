@@ -1,3 +1,5 @@
+#import <Firebase.h>
+
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
@@ -13,7 +15,12 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
-  [RNSplashScreen show]; 
+  
+  if ([FIRApp defaultApp] == nil) {
+     [FIRApp configure];
+   }
+  
+  [RNSplashScreen show];
 
   return YES;
 }
