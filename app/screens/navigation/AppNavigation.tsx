@@ -3,7 +3,6 @@ import { accessTokenState, userState } from "@/recoil/authAtoms";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MainTabNavigation } from "./MainTabNavigation";
 import { StartStackNavigation } from "./StartStackNavigation";
-import { FeedEdit } from "../home/FeedEdit";
 import { useEffect, useState } from "react";
 import { userUrl } from "@/utils/apiUrls";
 import SplashScreen from "react-native-splash-screen";

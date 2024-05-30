@@ -13,18 +13,23 @@ import {
   Pressable,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/FontAwesome";
 import Icon4 from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon5 from "react-native-vector-icons/Feather";
 import Icon6 from "react-native-vector-icons/FontAwesome5";
+
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GradationProfile } from "@/components/common/GradationProfile";
 import LinearGradient from "react-native-linear-gradient";
+import { postsUrl } from "@/utils/apiUrls";
+import { useAccessToken } from "@/hook/useAccessToken";
 
 export type RootStackParam = {
+  feedCreat: undefined;
   feedEdit: undefined;
 };
 
@@ -68,15 +73,38 @@ const onlineUserData = [
   // Add more data as needed
 ];
 
-
-
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export function Home(): React.JSX.Element {
   const [selectedTab, setSelectedTab] = useState("피드");
+  const [postsData, setPostsData] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isUnderModalVisible, setIsUnderModalVisible] = useState<boolean>(false);
   const { top, bottom } = useSafeAreaInsets();
+  const { getAccessTokenFromAsyncStorage } = useAccessToken();
+
+  useEffect(() => {
+    getpostsData();
+  }, []);
+
+  const getpostsData = async () => {
+    const token = await getAccessTokenFromAsyncStorage();
+    try {
+      const res = await fetch(`${postsUrl}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      console.log(data);
+
+      if (res.status === 200) {
+        setPostsData(data);
+      } else {
+        console.error("데이터를 가져오는데 실패했습니다.", data);
+      }
+    } catch (err) {
+      console.error("getposts error : ", err);
+    }
+  };
 
   const onPressModalOpen = () => {
     console.log("모달을 여는 중입니다.");
@@ -143,13 +171,13 @@ export function Home(): React.JSX.Element {
                       </View>
                     </View>
                     <View>
-                      <Icon name="ellipsis1" size={28} color={"#7000FF"} onPress={onPressUnderModalOpen} />
+                      <Icon name="ellipsis1" size={28} color={"#7000FF"} onPress={onPressUnderModalOpen} onPressIn={() => navigation.navigate("feedEdit")} />
                     </View>
                   </View>
                 </TouchableHighlight>
               ))}
             </ScrollView>
-            <TouchableOpacity style={styles.writeBtn} onPressIn={() => navigation.navigate("feedEdit")}>
+            <TouchableOpacity style={styles.writeBtn} onPressIn={() => navigation.navigate("feedCreat")}>
               <Icon4 name="square-edit-outline" size={32} color={"#fff"} />
             </TouchableOpacity>
           </View>
@@ -270,8 +298,9 @@ const styles = StyleSheet.create({
   },
   homeLogo: {
     width: "23%",
-    height: "80%",
+    height: "88%",
     marginRight: "5%",
+    marginBottom: "1%",
   },
   homeTabBox: {
     flex: 1,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TextInput, Alert, SafeAreaView, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -33,37 +33,14 @@ const goAlert = () =>
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export function FeedEdit(): React.JSX.Element {
+export function FeedCreat(): React.JSX.Element {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const { getAccessTokenFromAsyncStorage } = useAccessToken();
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
-  useEffect(() => {
-    getpostData();
-  }, []);
-
-  const getpostData = async () => {
-    const token = await getAccessTokenFromAsyncStorage();
-    try {
-      const res = await fetch(`${postsUrl}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      console.log(data);
-
-      if (res.status === 200) {
-        setPostsData(data);
-      } else {
-        console.error("데이터를 가져오는데 실패했습니다.", data);
-      }
-    } catch (err) {
-      console.error("getposts error : ", err);
-    }
-  };
-
-  const editPostsData = async () => {
+  const addpostsData = async () => {
     const token = await getAccessTokenFromAsyncStorage();
     const postData = {
       title: "제목",
@@ -72,7 +49,7 @@ export function FeedEdit(): React.JSX.Element {
 
     try {
       const res = await fetch(`${postsUrl}`, {
-        method: "PATCH",
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -108,10 +85,10 @@ export function FeedEdit(): React.JSX.Element {
           />
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.editBtn} onPress={editPostData}>
+          <TouchableOpacity style={styles.editBtn} onPress={addpostsData}>
             <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
               <Text style={styles.editBtnText}>
-                수정하기 <Icon name="angle-right" size={20} />
+                작성하기 <Icon name="angle-right" size={20} />
               </Text>
             </LinearGradient>
           </TouchableOpacity>

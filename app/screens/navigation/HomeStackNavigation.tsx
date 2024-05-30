@@ -2,11 +2,13 @@ import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import { StyleSheet } from "react-native";
+import { FeedCreat } from "../home/FeedCreat";
 import { FeedEdit } from "../home/FeedEdit";
 import { Home } from "../home/Home";
 
 export type HomeRootStackParam = {
   homeMain: undefined;
+  feedCreat: undefined;
   feedEdit: undefined;
 };
 
@@ -40,13 +42,31 @@ export function HomeStackNavigation({ navigation, route }: { navigation: any; ro
     <Stack.Navigator initialRouteName="homeMain" screenOptions={{ headerTransparent: false, gestureEnabled: true }}>
       <Stack.Screen name="homeMain" component={Home} options={{ headerShown: false }} />
       <Stack.Screen
+        name="feedCreat"
+        component={FeedCreat}
+        options={{
+          headerShown: true,
+          gestureEnabled: false,
+          headerTitle: "",
+          headerBackTitle: "피드 작성하기",
+          headerBackTitleStyle: {
+            fontFamily: "Freesentation-5Medium",
+          },
+          headerLargeStyle: false,
+          headerStyle: {
+            backgroundColor: "#fff",
+          },
+          headerTintColor: "#111",
+        }}
+      />
+      <Stack.Screen
         name="feedEdit"
         component={FeedEdit}
         options={{
           headerShown: true,
           gestureEnabled: false,
           headerTitle: "",
-          headerBackTitle: "피드 작성하기",
+          headerBackTitle: "피드 수정하기",
           headerBackTitleStyle: {
             fontFamily: "Freesentation-5Medium",
           },
