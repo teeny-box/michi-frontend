@@ -24,6 +24,9 @@ jobs:
         run: chmod +x ./android/gradlew
         shell: bash
 
+      - name: Install dependencies
+        run: yarn install # 또는 npm install
+
       - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 michi_android_key.keystore로 저장한다.
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/michi_android_key.keystore
