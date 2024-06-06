@@ -1,0 +1,47 @@
+name: Android - Build & upload to Firebase App Distribution
+
+on:
+  push:
+    branches: [ dev ] # dev 브런치에 push가 올 때 이벤트 트리거
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # 이후의 jobs들은 ubuntu의 최신버전에서 실행한다.
+
+    env:
+      ENV_CONTENTS: ${{ secrets.ENV_CONTENTS }} # scerets에서 환경변수 값 변수(ENV_CONTENTS)로 설정
+      GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }} # scerets에서 구글 제이슨 값 변수(GOOGLE_SERVICES_JSON)로 설정
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: set up JDK 17 # 깃허브 runner에서 돌아가는 환경은 java 17버전으로 설정한다.
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Grant Permission for gradlew # gradlew 에 대한 퍼미션을 허용한다.
+        run: chmod +x ./android/gradlew
+        shell: bash
+
+      - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 michi_android_key.keystore로 저장한다.
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/michi_android_key.keystore
+          
+      - name: Create google-services.json # 환경변수(GOOGLE_SERVICES_JSON) 값의 내용을 기반으로 `android/app/google-services.json`를 만든다.
+        run: echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
+
+      - name: Create .env # (ENV_CONTENTS)를 기반으로 .env를 만든다.
+        run: |
+          echo "$ENV_CONTENTS" > .env
+
+      - name: Build release # APK를 빌드한다.
+        run: cd android && ./gradlew assembleRelease && cd ../
+
+      - name: Upload to Firebase App Distribution # 파이어베이스에 앱 디스트리 뷰션에 배포한다.
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: michi-team
+          file: android/app/build/outputs/apk/debug/app-debug.apk
