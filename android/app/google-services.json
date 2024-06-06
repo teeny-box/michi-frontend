@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "924793155258",
-    "project_id": "michi-ios",
-    "storage_bucket": "michi-ios.appspot.com"
+    "project_number": "910043889239",
+    "project_id": "michifcm-9584e",
+    "storage_bucket": "michifcm-9584e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:924793155258:android:2fb1b60d2cf7d6ef161c83",
+        "mobilesdk_app_id": "1:910043889239:android:f00bb44f293b44fe532d12",
         "android_client_info": {
           "package_name": "com.michi"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBW0o6W0AsmHpZHbZGW9UkjVKc7XjCaLoA"
+          "current_key": "AIzaSyBSnZ7w0r-fg8E7zVIMi-DXSoTZMIXkRaI"
         }
       ],
       "services": {
