@@ -19,7 +19,6 @@ export function IMPCertification({ callback }: CertificationPropsType) {
   return (
     <IMP.Certification
       userCode={"imp18262154"} // 가맹점 식별코드
-      // loading={<Text>loading...</Text>} // 로딩 컴포넌트
       data={data} // 본인인증 데이터
       callback={callback} // 본인인증 종료 후 콜백
     />

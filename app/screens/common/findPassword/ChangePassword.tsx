@@ -13,6 +13,7 @@ import { oneTimeTokenState } from "@/recoil/authAtoms";
 import { useLoadingScreen } from "@/hook/useLoadingScreen";
 import Toast from "react-native-toast-message";
 import { useAlert } from "@/hook/useAlert";
+import { Title } from "@/components/signup/Title";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.
@@ -70,7 +71,7 @@ export function ChangePassword(): React.JSX.Element {
     try {
       const res = await fetch(`${userUrl}/password`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${oneTimeToken}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${oneTimeToken.token}` },
         body: JSON.stringify({
           newPassword,
         }),
@@ -96,8 +97,28 @@ export function ChangePassword(): React.JSX.Element {
     }
   };
 
+  const timeFormat = (time: number): string => {
+    let min = Math.floor(time / 60000);
+    let sec = (time % 60000) / 1000;
+    if (time < 0) return "";
+    return `${min < 10 ? "0" : ""}${min}:${sec < 10 ? "0" : ""}${sec}`;
+  };
+
   useEffect(() => {
-    const disabled = !isAvailable || !isSame;
+    if (oneTimeToken.time <= 0) {
+      setAlertState({
+        open: true,
+        title: "비밀번호 변경 실패",
+        desc: "인증 유효 시간이 초과되었습니다. 다시 인증해주세요.",
+        defaultText: "인증하기",
+        cancelText: "취소",
+        onPress: () => navigation.pop(),
+      });
+    }
+  }, [oneTimeToken.time]);
+
+  useEffect(() => {
+    const disabled = !isAvailable || !isSame || oneTimeToken.time <= 0;
     navigation.setOptions({
       headerRight: () => (
         <Pressable onPress={handlePressSubmitButton} disabled={disabled}>
@@ -105,11 +126,13 @@ export function ChangePassword(): React.JSX.Element {
         </Pressable>
       ),
     });
-  }, [isAvailable, isSame]);
+  }, [isAvailable, isSame, oneTimeToken.time]);
 
   return (
     <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
+        <Title text="새 비밀번호를 입력해주세요" marginBottom={15} />
+        <Text style={styles.message}>변경 유효 시간 {timeFormat(oneTimeToken.time)} 남았습니다.</Text>
         <TextInputField
           label="새 비밀번호"
           value={newPassword}
@@ -128,7 +151,7 @@ export function ChangePassword(): React.JSX.Element {
           isAvailable={isSame}
           secureTextEntry={true}
         />
-        <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={!isAvailable || !isSame} />
+        <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={!isAvailable || !isSame || oneTimeToken.time <= 0} />
       </ScrollView>
     </View>
   );
@@ -150,5 +173,13 @@ const styles = StyleSheet.create({
   headerRightText: {
     fontFamily: "Freesentation-6SemiBold",
     fontSize: 20,
+  },
+
+  message: {
+    color: "#7000FF",
+    fontSize: 12,
+    fontFamily: "Freesentation-5Medium",
+    lineHeight: 12,
+    marginBottom: 40,
   },
 });
