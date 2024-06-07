@@ -17,7 +17,7 @@ import Toast from "react-native-toast-message";
 
 export function Login() {
   const { top } = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
@@ -85,7 +85,7 @@ export function Login() {
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>
-      <View style={[styles.bgCircle, { width: width * 1.8, top: -(width / 1.8) }]}></View>
+      <View style={[styles.bgCircle, { width: width * 2, bottom: height / 4 }]}></View>
       <LinearGradient style={styles.bgBottom} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={90} angleCenter={{ x: 0.5, y: 0.5 }}></LinearGradient>
       <ScrollView style={styles.scrollBox}>
         <View style={styles.contentsBox}>
