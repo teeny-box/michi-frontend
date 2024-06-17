@@ -1,7 +1,8 @@
 import { userState } from "@/recoil/authAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useRecoilValue } from "recoil";
 
@@ -12,16 +13,27 @@ export type RootStackParam = {
 export function Profile() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
   const userData = useRecoilValue(userState);
+  const [profileImage, setProfileImage] = useState<ImageSourcePropType>(require("@assets/images/user_default_image.png"));
 
   const handlePressChangeProfile = () => {
     navigation.navigate("changeProfile");
   };
 
+  useEffect(() => {
+    userData.profileImage && setProfileImage({ uri: userData.profileImage });
+  }, []);
+
   return (
     <View style={styles.outBox}>
       <TouchableOpacity style={styles.imageBox} onPress={handlePressChangeProfile}>
         <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
-        <Image source={userData.profileImage ? { uri: userData.profileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />
+        <Image
+          source={profileImage}
+          onError={() => {
+            setProfileImage(require("@assets/images/user_default_image.png"));
+          }}
+          style={styles.userImage}
+        />
       </TouchableOpacity>
       <TouchableOpacity style={styles.nicknameBox} onPress={handlePressChangeProfile}>
         <Text style={styles.nickname}>{userData.nickname}</Text>

@@ -59,6 +59,7 @@ export function ChangeProfileImageModal() {
 
       if (uploadRes.ok) {
         setNewProfileImage(data.data.publicUrl);
+        console.log(data.data.publicUrl);
       } else {
         Toast.show({ text1: "사진 업로드에 실패했습니다. 다시 시도해주세요." });
         console.log("image upload failed");
@@ -95,7 +96,6 @@ export function ChangeProfileImageModal() {
       });
       if (res.assets?.length) {
         const file = res.assets[0];
-        console.log(file.fileName);
         await uploadProfileImage(file);
       }
     } catch (err) {
