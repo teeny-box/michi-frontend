@@ -13,8 +13,8 @@ import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
 import { NextButton } from "@/components/signup/NextButton";
 import getCurrentAge from "@/utils/getCurrentAge";
-import { useAlert } from "@/hook/useAlert";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useAlert } from "@/hooks/useAlert";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 
 type stateType = "waiting" | "running" | "success" | "fail";
 
@@ -38,6 +38,7 @@ export function Certification() {
 
   const handlePressCertificationButton = () => {
     setState("running");
+    navigation.setOptions({ headerShown: false });
   };
 
   const getPortOne = async (impUid: string): Promise<true | undefined> => {
@@ -76,6 +77,7 @@ export function Certification() {
       setState("fail");
       setAlertState({ open: true, title: "미성년자는 가입할 수 없습니다.", defaultText: "확인" });
     }
+    navigation.setOptions({ headerShown: true });
   };
 
   const handlePressNextButton = () => {

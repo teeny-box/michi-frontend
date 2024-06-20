@@ -1,6 +1,6 @@
 import { Modal, StyleSheet, Text, View } from "react-native";
 import { Button } from "@components/common/Button";
-import { useAlert } from "@/hook/useAlert";
+import { useAlert } from "@/hooks/useAlert";
 import { useRecoilValue } from "recoil";
 import { alertState } from "@/recoil/commonAtoms";
 import { useState } from "react";

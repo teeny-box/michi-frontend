@@ -33,6 +33,7 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+google-services.json
 
 # node.js
 #
@@ -77,3 +78,4 @@ yarn.lock
 # env
 .env
 *.env
+*.env.*

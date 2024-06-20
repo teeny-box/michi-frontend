@@ -10,13 +10,13 @@ import { ListItem } from "@/components/mypage/ListItem";
 import { LinkedListItem } from "@/components/mypage/LinkedListItem";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { authUrl, userUrl } from "@/utils/apiUrls";
-import { useAccessToken } from "@/hook/useAccessToken";
+import { useAccessToken } from "@/hooks/useAccessToken";
 import getCurrentAge from "@/utils/getCurrentAge";
 import phoneNumberFormat from "@/utils/phoneNumberFormat";
-import { useAlert } from "@/hook/useAlert";
+import { useAlert } from "@/hooks/useAlert";
 import Toast from "react-native-toast-message";
 import { Button } from "@/components/common/Button";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 
 export function MyPage() {
   const { top } = useSafeAreaInsets();

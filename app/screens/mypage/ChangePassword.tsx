@@ -7,9 +7,9 @@ import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 import { userUrl } from "@/utils/apiUrls";
-import { useAccessToken } from "@/hook/useAccessToken";
+import { useAccessToken } from "@/hooks/useAccessToken";
 import Toast from "react-native-toast-message";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.

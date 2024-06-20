@@ -9,9 +9,11 @@ import { Alert } from "@components/common/Alert";
 import { ToastCustom } from "./components/common/ToastCustom";
 import { Loading } from "./screens/common/Loading";
 import messaging from "@react-native-firebase/messaging";
+import { APP_ENV } from "@env";
 
 async function enableMocking() {
-  if (!__DEV__) {
+  console.log("APP_ENV : ", APP_ENV);
+  if (APP_ENV !== "development") {
     return;
   }
 

@@ -1,11 +1,12 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleProp, StyleSheet, StyleSheetProperties, Text } from "react-native";
 
 type TextProps = {
   text: string;
+  marginBottom?: number;
 };
 
-export function Title({ text }: TextProps) {
-  return <Text style={styles.title}>{text}</Text>;
+export function Title({ text, marginBottom = 30 }: TextProps) {
+  return <Text style={[styles.title, { marginBottom: marginBottom }]}>{text}</Text>;
 }
 
 const styles = StyleSheet.create({
@@ -13,6 +14,5 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 30,
     fontFamily: "WavvePADO-Regular",
-    marginBottom: 30,
   },
 });

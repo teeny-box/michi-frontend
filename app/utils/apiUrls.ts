@@ -1,6 +1,5 @@
-const baseURL = "http://127.0.0.1:8081";
-// 8081 : msw
+import { BASE_URL } from "@env";
 
-export const authUrl = `${baseURL}/auth`;
-export const userUrl = `${baseURL}/users`;
-export const imagesUrl = `${baseURL}/images`;
+export const authUrl = `${BASE_URL}/auth`;
+export const userUrl = `${BASE_URL}/users`;
+export const imagesUrl = `${BASE_URL}/images`;
