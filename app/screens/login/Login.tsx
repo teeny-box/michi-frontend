@@ -11,8 +11,8 @@ import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import LinearGradient from "react-native-linear-gradient";
 import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
-import { useAlert } from "@/hook/useAlert";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useAlert } from "@/hooks/useAlert";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import Toast from "react-native-toast-message";
 
 export function Login() {

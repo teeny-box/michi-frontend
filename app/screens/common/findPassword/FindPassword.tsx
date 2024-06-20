@@ -12,7 +12,7 @@ import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswo
 import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
 import { headerShowState } from "@/recoil/commonAtoms";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import { NextButton } from "@/components/signup/NextButton";
 
 type stateType = "waiting" | "running" | "fail" | "success";

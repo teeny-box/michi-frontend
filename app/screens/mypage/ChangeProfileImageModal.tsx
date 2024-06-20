@@ -10,7 +10,7 @@ import { userState } from "@/recoil/authAtoms";
 import { imagesUrl } from "@/utils/apiUrls";
 import Toast from "react-native-toast-message";
 import { decode } from "base64-arraybuffer";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function ChangeProfileImageModal() {

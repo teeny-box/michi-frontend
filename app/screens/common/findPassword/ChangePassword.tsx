@@ -10,9 +10,9 @@ import { TextInputField } from "@/components/common/TextInputField";
 import { userUrl } from "@/utils/apiUrls";
 import { useRecoilValue } from "recoil";
 import { oneTimeTokenState } from "@/recoil/authAtoms";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import Toast from "react-native-toast-message";
-import { useAlert } from "@/hook/useAlert";
+import { useAlert } from "@/hooks/useAlert";
 import { Title } from "@/components/signup/Title";
 
 // 8자 이상이어야 합니다.

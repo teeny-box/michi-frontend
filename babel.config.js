@@ -10,7 +10,7 @@ module.exports = {
           "@": "./app",
           "@assets": "./app/assets",
           "@components": "./app/components",
-          "@hook": "./app/hook",
+          "@hooks": "./app/hooks",
           "@mocks": "./app/mocks",
           "@recoil": "./app/recoil",
           "@screens": "./app/screens",

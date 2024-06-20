@@ -12,7 +12,7 @@ import { FindIDRootStackParam } from "@/screens/navigation/user/FindIdNavigation
 import { headerShowState } from "@/recoil/commonAtoms";
 import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 
 type stateType = "waiting" | "running" | "fail";
 type idFoundBodyType = {

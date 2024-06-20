@@ -13,8 +13,8 @@ import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
 import { NextButton } from "@/components/signup/NextButton";
 import getCurrentAge from "@/utils/getCurrentAge";
-import { useAlert } from "@/hook/useAlert";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
+import { useAlert } from "@/hooks/useAlert";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 
 type stateType = "waiting" | "running" | "success" | "fail";
 
