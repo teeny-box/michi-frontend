@@ -79,7 +79,7 @@ export function AppNavigation() {
               headerTitle: "",
               headerBackTitle: "피드 작성하기",
               headerBackTitleStyle: {
-                fontFamily: "Freesentation-5Medium",
+                fontFamily: "NotoSansKR-Medium",
               },
               headerLargeStyle: false,
               headerStyle: {

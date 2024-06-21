@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   nickname: {
     color: "#141414",
     fontSize: 24,
-    fontFamily: "WavvePADO-Regular",
+    fontFamily: "JalnanGothic",
     lineHeight: 26,
   },
 });

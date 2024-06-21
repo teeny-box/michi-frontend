@@ -4,10 +4,36 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
+import { useResetRecoilState } from "recoil";
+import { birthYearState, certificationState, idState, nicknameState, passwordState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
+import { useEffect } from "react";
 
 export function Start() {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
+
+  // reset user data state
+  const resetUserId = useResetRecoilState(idState);
+  const resetPassword = useResetRecoilState(passwordState);
+  const resetNickname = useResetRecoilState(nicknameState);
+  const resetUserName = useResetRecoilState(userNameState);
+  const resetPhoneNumber = useResetRecoilState(phoneNumberState);
+  const resetBirthYear = useResetRecoilState(birthYearState);
+  const resetCertificationState = useResetRecoilState(certificationState);
+
+  useEffect(() => {
+    resetAllState();
+  }, []);
+
+  const resetAllState = () => {
+    resetUserId();
+    resetPassword();
+    resetNickname();
+    resetUserName();
+    resetPhoneNumber();
+    resetBirthYear();
+    resetCertificationState();
+  };
 
   return (
     <>

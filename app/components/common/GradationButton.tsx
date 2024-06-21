@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     height: 45,
-    backgroundColor: "#E8ECF1",
+    backgroundColor: "##9597A4",
   },
 
   innerBox: {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 
   text: {
     color: "#fff",
-    fontSize: 16,
-    fontFamily: "Freesentation-5Medium",
+    fontSize: 14,
+    fontFamily: "NotoSansKR-Medium",
   },
 });

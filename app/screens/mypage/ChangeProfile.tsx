@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   },
 
   headerRightText: {
-    fontFamily: "Freesentation-6SemiBold",
+    fontFamily: "NotoSansKR-SemiBold",
     fontSize: 20,
   },
 });

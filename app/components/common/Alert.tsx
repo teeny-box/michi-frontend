@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 24,
-    fontFamily: "WavvePADO-Regular",
+    fontFamily: "JalnanGothic",
     textAlign: "center",
     color: "#141414",
   },

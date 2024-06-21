@@ -35,8 +35,7 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
     headerShadowVisible: false,
     headerTintColor: "#141414",
     headerTitleStyle: {
-      fontWeight: "bold",
-      fontFamily: "Freesentation-6SemiBold",
+      fontFamily: "NotoSansKR-SemiBold",
       fontSize: 20,
       color: "#141414",
     },
