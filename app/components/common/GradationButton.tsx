@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     height: 45,
-    backgroundColor: "##9597A4",
+    backgroundColor: "#b1b2b8",
   },
 
   innerBox: {

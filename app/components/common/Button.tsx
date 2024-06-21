@@ -17,7 +17,7 @@ export function Button({ text, size, color, disabled, onPress, rightIcon }: butt
         disabled={disabled}
         onPress={onPress}
         style={[styles.button, size === "small" ? { width: 100 } : size === "medium" ? { width: 200 } : { width: "100%" }]}>
-        <View style={[styles.innerBox, color === "gray" && { backgroundColor: "##9597A4" }]}>
+        <View style={[styles.innerBox, color === "gray" && { backgroundColor: "#E8ECF1" }]}>
           <Text style={[styles.text, color === "gray" && { color: "#141414" }]}>{text}</Text>
           {rightIcon}
         </View>

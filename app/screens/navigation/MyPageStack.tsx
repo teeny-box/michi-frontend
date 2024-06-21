@@ -36,11 +36,9 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
     headerTintColor: "#141414",
     headerTitleStyle: {
       fontFamily: "NotoSansKR-SemiBold",
-      fontSize: 20,
+      fontSize: 18,
       color: "#141414",
     },
-    headerBackTitleVisible: false,
-    headerTitleAlign: "center",
   };
 
   useLayoutEffect(() => {

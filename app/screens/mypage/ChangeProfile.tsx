@@ -152,22 +152,11 @@ export function ChangeProfile() {
     setNewProfileImage(userData.profileImage);
   }, [userData]);
 
-  useEffect(() => {
-    const disabled = !((userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage);
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable onPress={handlePressSubmitButton} disabled={disabled}>
-          <Text style={[styles.headerRightText, disabled ? { color: "gray" } : { color: "#7000ff" }]}>완료</Text>
-        </Pressable>
-      ),
-    });
-  }, [newNickname, newProfileImage]);
-
   return (
     <View style={[styles.outBox, { paddingTop: top }]}>
       <TouchableOpacity onPress={handleChangeProfileImage} style={styles.imageBox}>
-        <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
         <Image source={newProfileImage ? { uri: newProfileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />
+        <Image source={require("@assets/images/circle/circle_border_camera.png")} style={styles.borderImage} />
       </TouchableOpacity>
       <View style={styles.nicknameBox}>
         <TextInputField
@@ -180,6 +169,7 @@ export function ChangeProfile() {
           placeholder={userData.nickname || "닉네임을 입력하세요"}
         />
       </View>
+      <View style={{ height: 30, width: "100%" }} />
       <GradationButton
         text="수정완료"
         onPress={handlePressSubmitButton}

@@ -105,17 +105,6 @@ export function ChangePassword(): React.JSX.Element {
     }
   };
 
-  useEffect(() => {
-    const disabled = currentPassword === "" || !isAvailable || !isSame;
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable onPress={handlePressSubmitButton} disabled={disabled}>
-          <Text style={[styles.headerRightText, disabled ? { color: "gray" } : { color: "#7000ff" }]}>완료</Text>
-        </Pressable>
-      ),
-    });
-  }, [currentPassword, isAvailable, isSame]);
-
   return (
     <View style={[styles.outBox, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
@@ -146,6 +135,7 @@ export function ChangePassword(): React.JSX.Element {
           isAvailable={isSame}
           secureTextEntry={true}
         />
+        <View style={{ height: 30, width: "100%" }} />
         <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={currentPassword === "" || !isAvailable || !isSame} />
       </ScrollView>
     </View>
