@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { Image, StyleSheet, TouchableOpacity, View, Platform, Pressable, Text, Keyboard } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View, Platform, Pressable, Text, Keyboard, StatusBar } from "react-native";
 import { useRecoilState } from "recoil";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
@@ -154,6 +154,7 @@ export function ChangeProfile() {
 
   return (
     <View style={[styles.outBox, { paddingTop: top }]}>
+      <StatusBar backgroundColor={"#fff"} />
       <TouchableOpacity onPress={handleChangeProfileImage} style={styles.imageBox}>
         <Image source={newProfileImage ? { uri: newProfileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />
         <Image source={require("@assets/images/circle/circle_border_camera.png")} style={styles.borderImage} />

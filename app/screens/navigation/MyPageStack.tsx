@@ -52,22 +52,19 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
   }, [navigation, route]);
 
   return (
-    <>
-      <StatusBar backgroundColor={"#fff"} />
-      <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false, ...customStackNavigationOptions }}>
-        <Stack.Screen name="mypage" component={MyPage} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="changeId" component={ChangeId} /> */}
-        <Stack.Screen name="changePassword" component={ChangePassword} options={{ title: "비밀번호 변경" }} />
-        <Stack.Screen name="changeProfile" component={ChangeProfile} options={{ title: "프로필 수정" }} />
-        <Stack.Screen name="certification" component={Certification} />
-        <Stack.Screen name="findId" component={FindIdStackNavigation} />
-        <Stack.Screen name="findPassword" component={FindPasswordStackNavigation} />
-        <Stack.Screen
-          name="changeProfileImageModal"
-          component={ChangeProfileImageModal}
-          options={{ presentation: "containedTransparentModal", animation: "fade", headerShown: false }}
-        />
-      </Stack.Navigator>
-    </>
+    <Stack.Navigator initialRouteName="mypage" screenOptions={{ headerTransparent: false, ...customStackNavigationOptions }}>
+      <Stack.Screen name="mypage" component={MyPage} options={{ headerShown: false }} />
+      {/* <Stack.Screen name="changeId" component={ChangeId} /> */}
+      <Stack.Screen name="changePassword" component={ChangePassword} options={{ title: "비밀번호 변경" }} />
+      <Stack.Screen name="changeProfile" component={ChangeProfile} options={{ title: "프로필 수정" }} />
+      <Stack.Screen name="certification" component={Certification} />
+      <Stack.Screen name="findId" component={FindIdStackNavigation} />
+      <Stack.Screen name="findPassword" component={FindPasswordStackNavigation} />
+      <Stack.Screen
+        name="changeProfileImageModal"
+        component={ChangeProfileImageModal}
+        options={{ presentation: "containedTransparentModal", animation: "fade", headerShown: false }}
+      />
+    </Stack.Navigator>
   );
 }

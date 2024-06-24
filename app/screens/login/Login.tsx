@@ -85,7 +85,7 @@ export function Login() {
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>
-      <View style={[styles.bgCircle, { width: width * 2, bottom: height / 4 }]}></View>
+      <View style={[styles.bgCircle, { width: width * 2, top: "-45%" }]}></View>
       <LinearGradient style={styles.bgBottom} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={90} angleCenter={{ x: 0.5, y: 0.5 }}></LinearGradient>
       <ScrollView style={styles.scrollBox}>
         <View style={styles.contentsBox}>
