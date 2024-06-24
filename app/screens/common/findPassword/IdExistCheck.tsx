@@ -11,8 +11,8 @@ import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswo
 import { TextInputField } from "@/components/common/TextInputField";
 import { Title } from "@/components/signup/Title";
 import { GradationButton } from "@/components/common/GradationButton";
-import { useLoadingScreen } from "@/hook/useLoadingScreen";
-import { useAlert } from "@/hook/useAlert";
+import { useLoadingScreen } from "@/hooks/useLoadingScreen";
+import { useAlert } from "@/hooks/useAlert";
 import { StartRootStackParam } from "@/screens/navigation/StartStackNavigation";
 
 // 영문자로 시작해야 합니다.

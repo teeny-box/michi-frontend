@@ -4,9 +4,14 @@
     "baseUrl": "./app",
     "paths": {
       "@/*": ["./*"],
+      "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@mocks/*": ["mocks/*"],
+      "@recoil/*": ["recoil/*"],
       "@screens/*": ["screens/*"],
-      "@assets/*": ["assets/*"]
+      "@stogare/*": ["stogare/*"],
+      "@utils/*": ["utils/*"]
     },
     "esModuleInterop": true,
     "resolveJsonModule": true,

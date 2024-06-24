@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import LinearGradient from "react-native-linear-gradient";
 
 import { postsUrl } from "@/utils/apiUrls";
-import { useAccessToken } from "@/hook/useAccessToken";
+import { useAccessToken } from "@/hooks/useAccessToken";
 
 export type RootStackParam = {
   homeMain: undefined;
@@ -36,6 +36,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 export function FeedEdit(): React.JSX.Element {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
+  const [postsData, setPostsData] = useState();
   const { getAccessTokenFromAsyncStorage } = useAccessToken();
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
@@ -108,7 +109,7 @@ export function FeedEdit(): React.JSX.Element {
           />
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.editBtn} onPress={editPostData}>
+          <TouchableOpacity style={styles.editBtn} onPress={editPostsData}>
             <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
               <Text style={styles.editBtnText}>
                 수정하기 <Icon name="angle-right" size={20} />

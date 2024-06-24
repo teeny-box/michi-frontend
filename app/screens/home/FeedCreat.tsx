@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import LinearGradient from "react-native-linear-gradient";
 
 import { postsUrl } from "@/utils/apiUrls";
-import { useAccessToken } from "@/hook/useAccessToken";
+import { useAccessToken } from "@/hooks/useAccessToken";
 
 export type RootStackParam = {
   homeMain: undefined;

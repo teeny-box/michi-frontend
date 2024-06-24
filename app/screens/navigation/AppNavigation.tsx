@@ -6,7 +6,7 @@ import { StartStackNavigation } from "./StartStackNavigation";
 import { useEffect, useState } from "react";
 import { userUrl } from "@/utils/apiUrls";
 import SplashScreen from "react-native-splash-screen";
-import { useAccessToken } from "@/hook/useAccessToken";
+import { useAccessToken } from "@/hooks/useAccessToken";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export type RootStackParam = {

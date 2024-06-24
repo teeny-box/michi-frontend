@@ -26,7 +26,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GradationProfile } from "@/components/common/GradationProfile";
 import LinearGradient from "react-native-linear-gradient";
 import { postsUrl } from "@/utils/apiUrls";
-import { useAccessToken } from "@/hook/useAccessToken";
+import { useAccessToken } from "@/hooks/useAccessToken";
 
 export type RootStackParam = {
   feedCreat: undefined;

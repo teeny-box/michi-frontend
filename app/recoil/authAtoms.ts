@@ -17,6 +17,8 @@ type userStateType = {
 
 type tokenType = null | string;
 
+type oneTimeTokenType = { token: string; time: number };
+
 export const userState = atom<userStateType>({
   key: "userState",
   default: {
@@ -40,12 +42,12 @@ export const accessTokenState = atom<tokenType>({
   default: null,
 });
 
-export const idFoundState = atom({
+export const idFoundState = atom<string>({
   key: "idFoundState",
   default: "",
 });
 
-export const oneTimeTokenState = atom({
+export const oneTimeTokenState = atom<oneTimeTokenType>({
   key: "oneTimeTokenState",
-  default: "",
+  default: { token: "", time: 1000 * 60 * 5 },
 });
