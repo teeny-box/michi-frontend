@@ -11,9 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2164ECADBE101D5575EAE2B4 /* Pods_Michi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33CA3C19B735CE7E81194EEE /* Pods_Michi.framework */; };
 		2A6BC84BDF6A474FB7F52D82 /* Freesentation-6SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86D8141BAD724AF4A173C176 /* Freesentation-6SemiBold.ttf */; };
-		33B48552EBC0A875CC098585 /* Pods_Michi_MichiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D20D835A649A648B969D9 /* Pods_Michi_MichiTests.framework */; };
 		4E0B0B4041ED405195680109 /* Freesentation-2ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF5F0910504D482995BC5DEE /* Freesentation-2ExtraLight.ttf */; };
 		544899FFB1444720826839CF /* WavvePADO-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 69A9019C369D463B9AD768BF /* WavvePADO-Regular.otf */; };
 		56376A1A2558482985FF0F5F /* Freesentation-8ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF8D45C69AC4470F8749894F /* Freesentation-8ExtraBold.ttf */; };
@@ -715,7 +713,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -798,7 +799,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
