@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { Image, StyleSheet, TouchableOpacity, View, Platform, Pressable, Text, Keyboard } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View, Platform, Pressable, Text, Keyboard, StatusBar } from "react-native";
 import { useRecoilState } from "recoil";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
@@ -152,22 +152,12 @@ export function ChangeProfile() {
     setNewProfileImage(userData.profileImage);
   }, [userData]);
 
-  useEffect(() => {
-    const disabled = !((userData.nickname !== newNickname && isAvailable) || userData.profileImage !== newProfileImage);
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable onPress={handlePressSubmitButton} disabled={disabled}>
-          <Text style={[styles.headerRightText, disabled ? { color: "gray" } : { color: "#7000ff" }]}>완료</Text>
-        </Pressable>
-      ),
-    });
-  }, [newNickname, newProfileImage]);
-
   return (
     <View style={[styles.outBox, { paddingTop: top }]}>
+      <StatusBar backgroundColor={"#fff"} />
       <TouchableOpacity onPress={handleChangeProfileImage} style={styles.imageBox}>
-        <Image source={require("@assets/images/circle_border.png")} style={styles.borderImage} />
         <Image source={newProfileImage ? { uri: newProfileImage } : require("@assets/images/user_default_image.png")} style={styles.userImage} />
+        <Image source={require("@assets/images/circle/circle_border_camera.png")} style={styles.borderImage} />
       </TouchableOpacity>
       <View style={styles.nicknameBox}>
         <TextInputField
@@ -180,6 +170,7 @@ export function ChangeProfile() {
           placeholder={userData.nickname || "닉네임을 입력하세요"}
         />
       </View>
+      <View style={{ height: 30, width: "100%" }} />
       <GradationButton
         text="수정완료"
         onPress={handlePressSubmitButton}
@@ -223,7 +214,7 @@ const styles = StyleSheet.create({
   },
 
   headerRightText: {
-    fontFamily: "Freesentation-6SemiBold",
+    fontFamily: "NotoSansKR-SemiBold",
     fontSize: 20,
   },
 });

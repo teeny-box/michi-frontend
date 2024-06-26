@@ -24,8 +24,7 @@ export function FindPasswordStackNavigation() {
     },
     headerTintColor: "#141414",
     headerTitleStyle: {
-      fontWeight: "bold",
-      fontFamily: "Freesentation-6SemiBold",
+      fontFamily: "NotoSansKR-SemiBold",
       fontSize: 20,
       color: "#141414",
     },

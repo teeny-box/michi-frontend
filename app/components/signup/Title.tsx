@@ -13,6 +13,6 @@ const styles = StyleSheet.create({
   title: {
     color: "black",
     fontSize: 30,
-    fontFamily: "WavvePADO-Regular",
+    fontFamily: "JalnanGothic",
   },
 });

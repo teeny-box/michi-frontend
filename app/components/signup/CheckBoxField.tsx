@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
 
   text: {
     color: "black",
-    fontSize: 16,
-    fontFamily: "WavvePADO-Regular",
+    fontSize: 14,
+    fontFamily: "JalnanGothic",
     marginBottom: 30,
   },
 });

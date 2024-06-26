@@ -15,6 +15,11 @@ export const nicknameState = atom({
   default: "",
 });
 
+export const certificationState = atom<"waiting" | "running" | "success" | "fail">({
+  key: "certificationState",
+  default: "waiting",
+});
+
 export const userNameState = atom({
   key: "userNameState",
   default: "",

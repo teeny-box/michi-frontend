@@ -171,14 +171,14 @@ const styles = StyleSheet.create({
   },
 
   headerRightText: {
-    fontFamily: "Freesentation-6SemiBold",
+    fontFamily: "NotoSansKR-SemiBold",
     fontSize: 20,
   },
 
   message: {
     color: "#7000FF",
     fontSize: 12,
-    fontFamily: "Freesentation-5Medium",
+    fontFamily: "NotoSansKR-Medium",
     lineHeight: 12,
     marginBottom: 40,
   },

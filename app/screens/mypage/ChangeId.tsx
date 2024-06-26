@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
 
@@ -81,6 +81,7 @@ export function ChangeId() {
 
   return (
     <View style={[styles.outBox, { paddingTop: top }]}>
+      <StatusBar backgroundColor={"#fff"} />
       <View style={styles.nicknameBox}>
         <TextInputField
           label="아이디 ID"

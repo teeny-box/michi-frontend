@@ -18,9 +18,9 @@ export function TextField({ label, value }: DisableTextFieldProps) {
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "500",
-    fontFamily: "Freesentation-4Regular",
+    fontFamily: "NotoSansKR-Regular",
     color: "#141414",
   },
 
@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
   },
 
   value: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "500",
-    fontFamily: "Freesentation-5Medium",
+    fontFamily: "NotoSansKR-Medium",
     color: "#000",
     paddingHorizontal: 10,
   },
