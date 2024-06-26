@@ -20,6 +20,8 @@ const handleNotification = async message => {
     id: "default",
     name: "Default Channel",
     importance: AndroidImportance.HIGH,
+    timestamp: Date.now(),
+    showTimestamp: true,
   });
 
   // 디바이스에 알림을 표시합니다.
@@ -28,9 +30,13 @@ const handleNotification = async message => {
     title: message.data.title, // message.notification 대신 message.data 사용
     body: message.data.body, // message.notification 대신 message.data 사용
     android: {
-      channelId: channelId,
+      channelId,
+      smallIcon: "ic_small_icon",
+      color: "#9496F5",
+      importance: AndroidImportance.HIGH,
     },
   });
+  console.log("index.js 변경2");
 };
 
 // 포그라운드에서 메시지 수신
