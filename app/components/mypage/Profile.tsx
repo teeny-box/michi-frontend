@@ -27,18 +27,19 @@ export function Profile() {
   return (
     <View style={styles.outBox}>
       <TouchableOpacity style={styles.imageBox} onPress={handlePressChangeProfile}>
-        <Image source={require("@assets/images/circle/circle_border.png")} style={styles.borderImage} />
+        <Image source={require("@assets/images/circle/circle_border.png")} style={styles.borderImage} alt="프로필 이미지 링" />
         <Image
           source={profileImage}
           onError={() => {
             setProfileImage(defaultImage);
           }}
           style={styles.userImage}
+          alt="프로필 이미지"
         />
       </TouchableOpacity>
       <TouchableOpacity style={styles.nicknameBox} onPress={handlePressChangeProfile}>
         <Text style={styles.nickname}>{userData.nickname}</Text>
-        <Image source={require("@assets/images/icon/edit.svg")} />
+        <Image source={require("@assets/images/icon/edit.png")} alt="수정 아이콘" />
       </TouchableOpacity>
     </View>
   );
@@ -72,7 +73,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flexDirection: "row",
     flexGrow: 1,
-    justifyContent: "space-between",
+    alignItems: "center",
+    columnGap: 6,
   },
   nickname: {
     color: "#141414",
