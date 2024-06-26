@@ -11,29 +11,59 @@ import { useAccessToken } from "@/hooks/useAccessToken";
 
 export type RootStackParam = {
   homeMain: undefined;
+  feedEdit: { postNumber: number };
 };
 
-const goAlert = () =>
-  Alert.alert(
-    // 말그대로 Alert를 띄운다
-    "해당 피드를", // 첫번째 text: 타이틀 제목
-    "삭제하시겠어요?", // 두번째 text: 그 밑에 작은 제목
-    [
-      // 버튼 배열
-      {
-        text: "아니요", // 버튼 제목
-        onPress: () => console.log("아니라는데"), //onPress 이벤트시 콘솔창에 로그를 찍는다
-        style: "cancel",
-      },
-      { text: "네", onPress: () => console.log("그렇다는데") }, //버튼 제목
-      // 이벤트 발생시 로그를 찍는다
-    ],
-    { cancelable: false },
-  );
+// const goAlert = () =>
+//   Alert.alert(
+//     // 말그대로 Alert를 띄운다
+//     "해당 피드를", // 첫번째 text: 타이틀 제목
+//     "삭제하시겠어요?", // 두번째 text: 그 밑에 작은 제목
+//     [
+//       // 버튼 배열
+//       {
+//         text: "아니요", // 버튼 제목
+//         onPress: () => console.log("아니라는데"), //onPress 이벤트시 콘솔창에 로그를 찍는다
+//         style: "cancel",
+//       },
+//       { text: "네", onPress: () => console.log("그렇다는데") }, //버튼 제목
+//       // 이벤트 발생시 로그를 찍는다
+//     ],
+//     { cancelable: false },
+//   );
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export function FeedEdit(): React.JSX.Element {
+interface Post {
+  content: string;
+  createdAt: string;
+  deletedAt: string | null;
+  postNumber: number;
+  title: string;
+  user: {
+    birthYear: string;
+    createdAt: string;
+    deletedAt: string | null;
+    nickname: string;
+    phoneNumber: string;
+    profileImage: string | null;
+    role: string;
+    state: string;
+    updatedAt: string;
+    userId: string;
+  };
+}
+
+interface Props {
+  route: {
+    params: {
+      postNumber: number;
+    };
+  };
+}
+
+export function FeedEdit({ route }: Props): React.JSX.Element {
+  const { postNumber } = route.params;
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [postsData, setPostsData] = useState();
@@ -42,20 +72,21 @@ export function FeedEdit(): React.JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
   useEffect(() => {
-    getpostData();
-  }, []);
+    getPostData(postNumber);
+  }, [postNumber]);
 
-  const getpostData = async () => {
+  const getPostData = async (postNumber: number) => {
     const token = await getAccessTokenFromAsyncStorage();
     try {
-      const res = await fetch(`${postsUrl}`, {
+      const res = await fetch(`${postsUrl}/${postNumber}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       console.log(data);
 
       if (res.status === 200) {
-        setPostsData(data);
+        setTitle(data.data.title);
+        setContents(data.data.content);
       } else {
         console.error("데이터를 가져오는데 실패했습니다.", data);
       }
@@ -67,14 +98,15 @@ export function FeedEdit(): React.JSX.Element {
   const editPostsData = async () => {
     const token = await getAccessTokenFromAsyncStorage();
     const postData = {
-      title: "제목",
-      content: "내용",
+      title: title,
+      content: contents,
     };
 
     try {
-      const res = await fetch(`${postsUrl}`, {
+      const res = await fetch(`${postsUrl}/${postNumber}`, {
         method: "PATCH",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(postData), // 요청 데이터를 JSON 문자열로 변환하여 전송
@@ -82,7 +114,8 @@ export function FeedEdit(): React.JSX.Element {
       const data = await res.json();
       console.log(data);
 
-      if (res.status === 201) {
+      if (res.status === 200) {
+        navigation.navigate("homeMain");
       } else {
         console.error("요청에 실패했습니다.", data);
       }
@@ -90,6 +123,8 @@ export function FeedEdit(): React.JSX.Element {
       console.error("addposts error : ", err);
     }
   };
+
+  console.log(postNumber);
 
   return (
     <SafeAreaView style={styles.container}>

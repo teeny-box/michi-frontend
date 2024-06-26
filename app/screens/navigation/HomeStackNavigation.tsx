@@ -9,7 +9,7 @@ import { Home } from "../home/Home";
 export type HomeRootStackParam = {
   homeMain: undefined;
   feedCreat: undefined;
-  feedEdit: undefined;
+  feedEdit: { postNumber: number };
 };
 
 const Stack = createNativeStackNavigator<HomeRootStackParam>();
@@ -29,9 +29,8 @@ export function HomeStackNavigation({ navigation, route }: { navigation: any; ro
 
   useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    console.log(routeName);
-    if (routeName !== "homeMain") {
-      //MyPage이외의 화면에 대해 tabBar none을 설정한다.
+    if (routeName === "feedCreat" || routeName === "feedEdit") {
+      //feedCreat,feedEdit 화면에 대해 tabBar none을 설정한다.
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
       navigation.setOptions({ tabBarStyle: { display: undefined } });
@@ -39,7 +38,7 @@ export function HomeStackNavigation({ navigation, route }: { navigation: any; ro
   }, [navigation, route]);
 
   return (
-    <Stack.Navigator initialRouteName="homeMain" screenOptions={{ headerTransparent: false, gestureEnabled: true }}>
+    <Stack.Navigator initialRouteName="homeMain" screenOptions={customStackNavigationOptions}>
       <Stack.Screen name="homeMain" component={Home} options={{ headerShown: false }} />
       <Stack.Screen
         name="feedCreat"

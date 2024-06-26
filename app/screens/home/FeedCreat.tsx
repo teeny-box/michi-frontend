@@ -43,22 +43,23 @@ export function FeedCreat(): React.JSX.Element {
   const addpostsData = async () => {
     const token = await getAccessTokenFromAsyncStorage();
     const postData = {
-      title: "제목",
-      content: "내용",
+      title: title,
+      content: contents,
     };
 
     try {
       const res = await fetch(`${postsUrl}`, {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(postData), // 요청 데이터를 JSON 문자열로 변환하여 전송
       });
       const data = await res.json();
       console.log(data);
-
       if (res.status === 201) {
+        navigation.navigate("homeMain");
       } else {
         console.error("요청에 실패했습니다.", data);
       }
@@ -66,6 +67,8 @@ export function FeedCreat(): React.JSX.Element {
       console.error("addposts error : ", err);
     }
   };
+  console.log(title);
+  console.log(contents);
 
   return (
     <SafeAreaView style={styles.container}>
