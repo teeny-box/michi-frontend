@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TextInput, Alert, SafeAreaView, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -11,91 +11,36 @@ import { useAccessToken } from "@/hooks/useAccessToken";
 
 export type RootStackParam = {
   homeMain: undefined;
-  feedEdit: { postNumber: number };
 };
 
-// const goAlert = () =>
-//   Alert.alert(
-//     // 말그대로 Alert를 띄운다
-//     "해당 피드를", // 첫번째 text: 타이틀 제목
-//     "삭제하시겠어요?", // 두번째 text: 그 밑에 작은 제목
-//     [
-//       // 버튼 배열
-//       {
-//         text: "아니요", // 버튼 제목
-//         onPress: () => console.log("아니라는데"), //onPress 이벤트시 콘솔창에 로그를 찍는다
-//         style: "cancel",
-//       },
-//       { text: "네", onPress: () => console.log("그렇다는데") }, //버튼 제목
-//       // 이벤트 발생시 로그를 찍는다
-//     ],
-//     { cancelable: false },
-//   );
+const goAlert = () =>
+  Alert.alert(
+    // 말그대로 Alert를 띄운다
+    "해당 피드를", // 첫번째 text: 타이틀 제목
+    "삭제하시겠어요?", // 두번째 text: 그 밑에 작은 제목
+    [
+      // 버튼 배열
+      {
+        text: "아니요", // 버튼 제목
+        onPress: () => console.log("아니라는데"), //onPress 이벤트시 콘솔창에 로그를 찍는다
+        style: "cancel",
+      },
+      { text: "네", onPress: () => console.log("그렇다는데") }, //버튼 제목
+      // 이벤트 발생시 로그를 찍는다
+    ],
+    { cancelable: false },
+  );
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-interface Post {
-  content: string;
-  createdAt: string;
-  deletedAt: string | null;
-  postNumber: number;
-  title: string;
-  user: {
-    birthYear: string;
-    createdAt: string;
-    deletedAt: string | null;
-    nickname: string;
-    phoneNumber: string;
-    profileImage: string | null;
-    role: string;
-    state: string;
-    updatedAt: string;
-    userId: string;
-  };
-}
-
-interface Props {
-  route: {
-    params: {
-      postNumber: number;
-    };
-  };
-}
-
-export function FeedEdit({ route }: Props): React.JSX.Element {
-  const { postNumber } = route.params;
+export function FeedCreat(): React.JSX.Element {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
-  const [postsData, setPostsData] = useState();
   const { getAccessTokenFromAsyncStorage } = useAccessToken();
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
-  useEffect(() => {
-    getPostData(postNumber);
-  }, [postNumber]);
-
-  const getPostData = async (postNumber: number) => {
-    const token = await getAccessTokenFromAsyncStorage();
-    try {
-      const res = await fetch(`${postsUrl}/${postNumber}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      console.log(data);
-
-      if (res.status === 200) {
-        setTitle(data.data.title);
-        setContents(data.data.content);
-      } else {
-        console.error("데이터를 가져오는데 실패했습니다.", data);
-      }
-    } catch (err) {
-      console.error("getposts error : ", err);
-    }
-  };
-
-  const editPostsData = async () => {
+  const addpostsData = async () => {
     const token = await getAccessTokenFromAsyncStorage();
     const postData = {
       title: title,
@@ -103,8 +48,8 @@ export function FeedEdit({ route }: Props): React.JSX.Element {
     };
 
     try {
-      const res = await fetch(`${postsUrl}/${postNumber}`, {
-        method: "PATCH",
+      const res = await fetch(`${postsUrl}`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -113,8 +58,7 @@ export function FeedEdit({ route }: Props): React.JSX.Element {
       });
       const data = await res.json();
       console.log(data);
-
-      if (res.status === 200) {
+      if (res.status === 201) {
         navigation.navigate("homeMain");
       } else {
         console.error("요청에 실패했습니다.", data);
@@ -123,8 +67,8 @@ export function FeedEdit({ route }: Props): React.JSX.Element {
       console.error("addposts error : ", err);
     }
   };
-
-  console.log(postNumber);
+  console.log(title);
+  console.log(contents);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -144,10 +88,10 @@ export function FeedEdit({ route }: Props): React.JSX.Element {
           />
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.editBtn} onPress={editPostsData}>
+          <TouchableOpacity style={styles.editBtn} onPress={addpostsData}>
             <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
               <Text style={styles.editBtnText}>
-                수정하기 <Icon name="angle-right" size={20} />
+                작성하기 <Icon name="angle-right" size={20} />
               </Text>
             </LinearGradient>
           </TouchableOpacity>

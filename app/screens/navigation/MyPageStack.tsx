@@ -45,9 +45,9 @@ export function MyPageStackNavigation({ navigation, route }: { navigation: any; 
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName !== "mypage" && routeName !== "mypage/tab" && routeName !== undefined) {
       //MyPage이외의 화면에 대해 tabBar none을 설정한다.
-      navigation.setOptions({ tabBarStyle: { display: "none" } });
+      navigation.setOptions({ tabBarStyle: { display: "none", backgroundColor: "#fff" } });
     } else {
-      navigation.setOptions({ tabBarStyle: { display: undefined } });
+      navigation.setOptions({ tabBarStyle: { display: undefined, backgroundColor: "#fff" } });
     }
   }, [navigation, route]);
 
