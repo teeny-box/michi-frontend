@@ -6,8 +6,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { IMPCertification } from "@/components/common/IMPCertification";
 import { commonStyles } from "./Common.styled";
-import { useSetRecoilState } from "recoil";
-import { birthYearState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { birthYearState, certificationState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
 import { authUrl } from "@/utils/apiUrls";
 import { GradationButton } from "@/components/common/GradationButton";
 import { Title } from "@/components/signup/Title";
@@ -16,12 +16,10 @@ import getCurrentAge from "@/utils/getCurrentAge";
 import { useAlert } from "@/hooks/useAlert";
 import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 
-type stateType = "waiting" | "running" | "success" | "fail";
-
 export function Certification() {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
-  const [state, setState] = useState<stateType>("waiting");
+  const [state, setState] = useRecoilState(certificationState);
   const setUserName = useSetRecoilState(userNameState);
   const setPhoneNumber = useSetRecoilState(phoneNumberState);
   const setBirthYear = useSetRecoilState(birthYearState);

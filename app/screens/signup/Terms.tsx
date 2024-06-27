@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { commonStyles } from "./Common.styled";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
-import { useRecoilValue } from "recoil";
-import { birthYearState, idState, nicknameState, passwordState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { birthYearState, certificationState, idState, nicknameState, passwordState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
 import { authUrl } from "@/utils/apiUrls";
 import { Title } from "@/components/signup/Title";
 import { CheckBoxField } from "@/components/signup/CheckBoxField";
@@ -14,19 +14,32 @@ import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import Toast from "react-native-toast-message";
 import { useAlert } from "@/hooks/useAlert";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import messaging from "@react-native-firebase/messaging";
 
 export function Terms(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
+  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
+  const { setAlertState } = useAlert();
+
+  // get user data state
   const userId = useRecoilValue(idState);
   const password = useRecoilValue(passwordState);
   const nickname = useRecoilValue(nicknameState);
   const userName = useRecoilValue(userNameState);
   const phoneNumber = useRecoilValue(phoneNumberState);
   const birthYear = useRecoilValue(birthYearState);
-  const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
-  const { setAlertState } = useAlert();
 
+  // reset user data state
+  const resetUserId = useResetRecoilState(idState);
+  const resetPassword = useResetRecoilState(passwordState);
+  const resetNickname = useResetRecoilState(nicknameState);
+  const resetUserName = useResetRecoilState(userNameState);
+  const resetPhoneNumber = useResetRecoilState(phoneNumberState);
+  const resetBirthYear = useResetRecoilState(birthYearState);
+  const resetCertificationState = useResetRecoilState(certificationState);
+
+  // check state
   const [allChecked, setAllChecked] = useState(false);
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
@@ -38,9 +51,24 @@ export function Terms(): React.JSX.Element {
     setAllChecked(isChecked1 && isChecked2 && isChecked3 && isChecked4 && isChecked5);
   }, [isChecked1, isChecked2, isChecked3, isChecked4, isChecked5]);
 
+  const resetAllState = () => {
+    resetUserId();
+    resetPassword();
+    resetNickname();
+    resetUserName();
+    resetPhoneNumber();
+    resetBirthYear();
+    resetCertificationState();
+  };
+
   const signUp = async () => {
     openLoadingScreen();
+
     try {
+      const fcmToken = await messaging().getToken();
+      console.log("디바이스 토큰값");
+      console.log(fcmToken);
+
       const res = await fetch(`${authUrl}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -51,12 +79,15 @@ export function Terms(): React.JSX.Element {
           userName,
           phoneNumber,
           birthYear,
+          fcmToken,
         }),
       });
-      console.log(await res.json());
+      const data = await res.json();
 
       if (res.ok) {
         return 1;
+      } else if (data.errorCode === "1090") {
+        return 1090;
       }
       return 0;
     } catch (err) {
@@ -68,11 +99,21 @@ export function Terms(): React.JSX.Element {
   };
 
   const handlePressSignUpButton = async () => {
-    const success = await signUp();
+    const code = await signUp();
 
-    if (success) {
+    if (code === 1) {
+      resetAllState();
       navigation.reset({ index: 0, routes: [{ name: "welcome" }] });
       Toast.show({ text1: "회원 가입 성공!" });
+    } else if (code === 1090) {
+      resetCertificationState();
+      setAlertState({
+        open: true,
+        title: "이미 가입한 회원입니다.",
+        desc: "다른 인증 정보로 다시 시도해주세요.",
+        defaultText: "확인",
+        onPress: navigation.popToTop,
+      });
     } else {
       setAlertState({ open: true, title: "회원 가입 실패", desc: "입력한 정보를 다시 확인해주세요.", defaultText: "확인" });
     }
@@ -141,21 +182,20 @@ const styles = StyleSheet.create({
   t1: {
     color: "#141414",
     fontSize: 16,
-    fontWeight: "500",
-    fontFamily: "Freesentation-4Regular",
+    fontFamily: "NotoSansKR-Regular",
   },
 
   t2: {
     color: "#141414",
     fontSize: 14,
-    fontFamily: "Freesentation-1Thin",
+    fontFamily: "NotoSansKR-Light",
     flexShrink: 1,
   },
 
   link: {
     color: "#7000ff",
     fontSize: 14,
-    fontFamily: "Freesentation-6SemiBold",
+    fontFamily: "NotoSansKR-SemiBold",
     textDecorationLine: "underline",
   },
 });

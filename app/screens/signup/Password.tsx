@@ -65,7 +65,7 @@ export function Password(): React.JSX.Element {
   return (
     <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={commonStyles.scrollBox} showsVerticalScrollIndicator={false}>
-        <Title text="비밀번호를 입력하세요" />
+        <Title text="비밀번호를 입력해주세요" />
         <TextInputField
           label="새 비밀번호"
           value={newPassword}

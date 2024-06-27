@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
   text: {
     color: "#fff",
-    fontSize: 16,
-    fontFamily: "Freesentation-5Medium",
+    fontSize: 14,
+    fontFamily: "NotoSansKR-Medium",
   },
 });

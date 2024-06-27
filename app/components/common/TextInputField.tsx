@@ -50,9 +50,8 @@ export function TextInputField({ label, value, setValue, message, maxLength, isA
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 16,
-    fontWeight: "500",
-    fontFamily: "Freesentation-4Regular",
+    fontSize: 14,
+    fontFamily: "NotoSansKR-Regular",
     color: "#141414",
     lineHeight: 19,
   },
@@ -71,13 +70,14 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     justifyContent: "center",
-    fontFamily: "Freesentation-5Medium",
+    fontFamily: "NotoSansKR-Medium",
+    includeFontPadding: false,
+    height: 45,
   },
 
   value: {
-    fontSize: 16,
-    fontWeight: "500",
-    fontFamily: "Freesentation-5Medium",
+    fontSize: 12,
+    fontFamily: "NotoSansKR-Medium",
     color: "#000",
     paddingHorizontal: 10,
   },
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
   message: {
     color: "#7000FF",
     fontSize: 12,
-    fontFamily: "Freesentation-5Medium",
-    lineHeight: 12,
+    fontFamily: "NotoSansKR-Medium",
+    lineHeight: 16,
     marginBottom: 30,
   },
 });

@@ -50,9 +50,10 @@ export function useAccessToken() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(storageRefreshToken)}` },
         body: JSON.stringify({ accessToken }),
       });
+      const data = await res.json();
+      console.log(data);
 
       if (res.ok) {
-        const data = await res.json();
         const { accessToken, refreshToken } = data.data;
         setAccessToken(accessToken);
         await setAsyncStorage("accessToken", accessToken);

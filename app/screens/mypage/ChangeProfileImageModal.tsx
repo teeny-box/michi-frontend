@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
 
   listText: {
     margin: "auto",
-    fontSize: 16,
-    fontFamily: "Freesentation-6SemiBold",
+    fontSize: 14,
+    fontFamily: "NotoSansKR-SemiBold",
   },
 });

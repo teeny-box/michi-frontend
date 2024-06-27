@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
 
   listTitle: {
     flexGrow: 1,
-    fontSize: 16,
-    fontFamily: "Freesentation-4Regular",
+    fontSize: 14,
+    fontFamily: "NotoSansKR-Regular",
     color: "#141414",
   },
 
   listText: {
-    fontSize: 16,
-    fontFamily: "Freesentation-3Light",
+    fontSize: 14,
+    fontFamily: "NotoSansKR-Light",
     color: "#141414",
   },
 

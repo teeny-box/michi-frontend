@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TextInputField } from "@/components/common/TextInputField";
 import { GradationButton } from "@/components/common/GradationButton";
@@ -105,19 +105,9 @@ export function ChangePassword(): React.JSX.Element {
     }
   };
 
-  useEffect(() => {
-    const disabled = currentPassword === "" || !isAvailable || !isSame;
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable onPress={handlePressSubmitButton} disabled={disabled}>
-          <Text style={[styles.headerRightText, disabled ? { color: "gray" } : { color: "#7000ff" }]}>완료</Text>
-        </Pressable>
-      ),
-    });
-  }, [currentPassword, isAvailable, isSame]);
-
   return (
     <View style={[styles.outBox, { paddingTop: top }]}>
+      <StatusBar backgroundColor={"#fff"} />
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         <TextInputField
           label="현재 비밀번호"
@@ -146,6 +136,7 @@ export function ChangePassword(): React.JSX.Element {
           isAvailable={isSame}
           secureTextEntry={true}
         />
+        <View style={{ height: 30, width: "100%" }} />
         <GradationButton text="수정완료" onPress={handlePressSubmitButton} disabled={currentPassword === "" || !isAvailable || !isSame} />
       </ScrollView>
     </View>
@@ -166,7 +157,7 @@ const styles = StyleSheet.create({
   },
 
   headerRightText: {
-    fontFamily: "Freesentation-6SemiBold",
+    fontFamily: "NotoSansKR-SemiBold",
     fontSize: 20,
   },
 });

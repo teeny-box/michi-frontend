@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
 
   warning: {
-    fontFamily: "Freesentation-5Medium",
+    fontFamily: "NotoSansKR-Medium",
     fontSize: 12,
     color: "#7000FF",
     marginTop: 10,
