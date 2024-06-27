@@ -1,67 +1,189 @@
-import React, { useState, useEffect } from "react";
-import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Modal,
+  Image,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  Pressable,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/FontAwesome";
 import Icon4 from "react-native-vector-icons/MaterialCommunityIcons";
-import { useNavigation } from "@react-navigation/native";
+import Icon6 from "react-native-vector-icons/FontAwesome5";
+
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GradationProfile } from "@/components/common/GradationProfile";
+import LinearGradient from "react-native-linear-gradient";
+import { postsUrl, userUrl } from "@/utils/apiUrls";
+import { useAccessToken } from "@/hooks/useAccessToken";
+import { useRecoilState } from "recoil";
+import { userState } from "@/recoil/authAtoms";
 
 export type RootStackParam = {
-  feedEdit: undefined;
+  feedCreat: undefined;
+  feedEdit: { postNumber: number };
 };
-
-const feedData = [
-  { id: "1", nickName: "제로콜라파괴자", title: "심심한데 끝말잇기하고 쫑하실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "2", nickName: "제로콜", title: "심심한데 ", content: "규칙" },
-  { id: "3", nickName: "제", title: " 끝말잇기하고 쫑하실분", content: " 없음 비매너 사절ㅡㅡ^" },
-  { id: "4", nickName: "파괴자", title: "심심한데 끝말잇기하고 쫑하실분", content: "한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "5", nickName: "제로콜라파괴자", title: "심심한데 끝말잇쫑하실분", content: "규" },
-  { id: "6", nickName: "제파괴자", title: "심심고 쫑하실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "7", nickName: "제로콜라파괴자", title: "한데 끝말잇기하고 쫑하실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "8", nickName: "제로콜라파괴자", title: "심심한데 끝말잇기하고 쫑하실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "9", nickName: "제로콜라파괴자", title: "심심한데 끝말", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "10", nickName: "제로콜라파괴자", title: "심말잇기하고 쫑하실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "11", nickName: "제로콜라파괴자", title: "심기하고 쫑하실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "12", nickName: "제로콜라파괴자", title: "실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "13", nickName: "제로콜라파괴자", title: "심심한데 끝말", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "14", nickName: "제로콜라파괴자", title: "심심한데  쫑하실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "15", nickName: "제로콜라파괴자", title: "심분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  { id: "16", nickName: "제로콜라파괴자", title: "심 쫑하실분", content: "규칙 세글자 한방단어 없음 비매너 사절ㅡㅡ^" },
-  // Add more data as needed
-];
-
-const onlineUserData = [
-  { id: "1", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "2", nickName: "제로콜", isOnline: "접속중" },
-  { id: "3", nickName: "제", isOnline: " 접속중" },
-  { id: "4", nickName: "파괴자", isOnline: "접속중" },
-  { id: "5", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "6", nickName: "제파괴자", isOnline: "접속중" },
-  { id: "7", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "8", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "9", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "10", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "11", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "12", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "13", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "14", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "15", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  { id: "16", nickName: "제로콜라파괴자", isOnline: "접속중" },
-  // Add more data as needed
-];
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
+interface Post {
+  content: string;
+  createdAt: string;
+  deletedAt: string | null;
+  postNumber: number;
+  title: string;
+  user: {
+    birthYear: string;
+    createdAt: string;
+    deletedAt: string | null;
+    nickname: string;
+    phoneNumber: string;
+    profileImage: string | null;
+    role: string;
+    state: string;
+    updatedAt: string;
+    userId: string;
+  };
+}
+
+const truncateText = (text: string, maxLength: number): string => {
+  if (text.length > maxLength) {
+    return `${text.slice(0, maxLength)}...`;
+  }
+  return text;
+};
+
 export function Home(): React.JSX.Element {
   const [selectedTab, setSelectedTab] = useState("피드");
+  const [postsData, setPostsData] = useState<Post[]>([]);
+  const [onlineUser, setOnlineUser] = useState<Post[]>([]);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isUnderModalVisible, setIsUnderModalVisible] = useState<boolean>(false);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null); // 선택된 게시물
+  const [userData, setUserData] = useRecoilState(userState);
+  const { top, bottom } = useSafeAreaInsets();
+  const { getAccessTokenFromAsyncStorage, updateToken } = useAccessToken();
+
+  useFocusEffect(
+    useCallback(() => {
+      getPostsData();
+    }, []),
+  );
+
+  useEffect(() => {
+    getOnlineUser();
+  }, []);
+
+  const getPostsData = async (): Promise<void | undefined> => {
+    const token = await getAccessTokenFromAsyncStorage();
+
+    try {
+      const res = await fetch(postsUrl, {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+
+      if (res.status === 200) {
+        setPostsData(data.data);
+      } else if (res.status === 401) {
+        const success = await updateToken();
+        if (success) return await getPostsData();
+      }
+    } catch (err) {
+      console.error("getposts error : ", err);
+      console.log(err);
+    }
+  };
+
+  const removeUser = async () => {
+    const token = await getAccessTokenFromAsyncStorage();
+    try {
+      const res = await fetch(`${postsUrl}/${selectedPost?.postNumber}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      console.log(data);
+
+      if (res.ok) {
+        console.log("remove user success");
+        getPostsData();
+      } else if (res.status === 403) {
+        const success = await updateToken();
+        if (success) removeUser();
+        return;
+      }
+    } catch (err) {
+      console.error("remove error : ", err);
+    }
+  };
+
+  const getOnlineUser = async (): Promise<void | undefined> => {
+    const token = await getAccessTokenFromAsyncStorage();
+
+    try {
+      const res = await fetch(`${userUrl}/online`, {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+
+      if (res.status === 200) {
+        setOnlineUser(data.data);
+      } else if (res.status === 401) {
+        const success = await updateToken();
+        if (success) return await getOnlineUser();
+      }
+    } catch (err) {
+      console.error("getposts error : ", err);
+      console.log(err);
+    }
+  };
+
+  const onPressModalOpen = (post: Post) => {
+    setSelectedPost(post);
+    setIsModalVisible(true);
+  };
+
+  const onPressModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const onPressUnderModalOpen = (post: Post) => {
+    setSelectedPost(post);
+    setIsUnderModalVisible(true);
+  };
+  const UnderModalClose = () => {
+    setIsUnderModalVisible(false);
+  };
+
+  const onPressEdit = (postNumber: number) => {
+    navigation.navigate("feedEdit", { postNumber });
+    setIsUnderModalVisible(false);
+  };
+
+  const onPressDelete = () => {
+    removeUser();
+  };
+
+  console.log(onlineUser);
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
   return (
     <View style={styles.container}>
+      <View style={[styles.safeArea, { height: top }]}></View>
       <View style={styles.homeHeader}>
         <View style={styles.randomChatBtn}>
           <Text style={styles.randomChatText}>실시간</Text>
@@ -70,6 +192,7 @@ export function Home(): React.JSX.Element {
             <Icon name="doubleright" size={28} />
           </Text>
         </View>
+        <Image source={require("@assets/images/logo_home.png")} style={styles.homeLogo} />
       </View>
       <View style={styles.homeTabBox}>
         <TouchableOpacity style={styles.homeTab} onPress={() => setSelectedTab("피드")}>
@@ -83,31 +206,38 @@ export function Home(): React.JSX.Element {
         {selectedTab === "피드" ? (
           <View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
-              {feedData.map(feed => (
-                <TouchableOpacity key={feed.id}>
-                  <View style={styles.feed}>
-                    <View style={styles.feedContents}>
-                      <GradationProfile>
+              {postsData &&
+                postsData.map((feed: Post) => (
+                  <TouchableHighlight key={feed.postNumber} onPress={() => onPressModalOpen(feed)} underlayColor={"#rgba(112, 0, 255, 0.05)"}>
+                    <View style={styles.feed}>
+                      <View style={styles.feedContents}>
                         <View style={styles.feedProfile}>
-                          <Icon3 name="user-circle-o" size={46} color={"#fff"} />
+                          <GradationProfile>
+                            <View style={styles.feedProfile}>
+                              <Icon3 name="user-circle-o" size={46} color={"#fff"} />
+                            </View>
+                          </GradationProfile>
                         </View>
-                      </GradationProfile>
-                      <View style={styles.feedInfo}>
-                        <Text style={styles.feedNickName}>
-                          {feed.nickName} <Icon2 name="sparkles-sharp" size={10} color={"#AB94F7"} /> <Text style={styles.feedText}>1시간 전</Text>
-                        </Text>
-                        <Text style={styles.feedTitle}>{feed.title}</Text>
-                        <Text style={styles.feedText}>{feed.content}</Text>
+                        <View style={styles.feedInfo}>
+                          <Text style={styles.feedNickName}>
+                            {truncateText(feed.user.nickname, 10)} <Icon2 name="sparkles-sharp" size={10} color={"#AB94F7"} />{" "}
+                            <Text style={styles.feedText}>1시간 전</Text>
+                          </Text>
+                          <Text style={styles.feedTitle}>{truncateText(feed.title, 18)}</Text>
+                        </View>
+                      </View>
+                      <View>
+                        {userData.userId === feed.user.userId && (
+                          <TouchableOpacity onPress={() => onPressUnderModalOpen(feed)}>
+                            <Icon name="ellipsis1" size={28} color={"#7000FF"} />
+                          </TouchableOpacity>
+                        )}
                       </View>
                     </View>
-                    <View>
-                      <Icon name="ellipsis1" size={28} color={"#7000FF"} />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ))}
+                  </TouchableHighlight>
+                ))}
             </ScrollView>
-            <TouchableOpacity style={styles.writeBtn} onPressIn={() => navigation.navigate("feedEdit")}>
+            <TouchableOpacity style={styles.writeBtn} onPress={() => navigation.navigate("feedCreat")}>
               <Icon4 name="square-edit-outline" size={32} color={"#fff"} />
             </TouchableOpacity>
           </View>
@@ -118,8 +248,8 @@ export function Home(): React.JSX.Element {
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
               <View style={styles.onlineUserContainer}>
-                {onlineUserData.map(user => (
-                  <View key={user.id} style={styles.onlineUser}>
+                {onlineUser && onlineUser.map((user) => (
+                  <View key={user} style={styles.onlineUser}>
                     <GradationProfile>
                       <View style={styles.onlineUserProfile}>
                         <View>
@@ -127,7 +257,7 @@ export function Home(): React.JSX.Element {
                         </View>
                       </View>
                     </GradationProfile>
-                    <Text style={styles.onlineUsernickName}>{user.nickName}</Text>
+                    <Text style={styles.onlineUsernickName}>{user.userName}</Text>
                     <Text style={styles.onlineUserisOnline}>{user.isOnline}</Text>
                   </View>
                 ))}
@@ -136,6 +266,61 @@ export function Home(): React.JSX.Element {
           </View>
         )}
       </View>
+      <Modal animationType="fade" visible={isModalVisible} transparent={true}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalView}>
+            {selectedPost && (
+              <View style={styles.modalcontentsbox}>
+                <View style={styles.modalProfileBox}>
+                  <GradationProfile>
+                    <View style={styles.modalProfileBox}>
+                      <Icon3 name="user-circle-o" size={90} color={"#fff"} />
+                    </View>
+                  </GradationProfile>
+                </View>
+                <View style={styles.modalNicknameBox}>
+                  <Text style={styles.modalNicknameText}>{selectedPost.user.nickname}</Text>
+                  <Text style={styles.modalIsloginText}>
+                    접속중 <Icon2 name="sparkles-sharp" size={12} color={"#AB94F7"} /> 1시간전
+                  </Text>
+                </View>
+                <View style={styles.modalBody}>
+                  <Text style={styles.modalTitle}>{selectedPost.title}</Text>
+                  <View style={styles.modalContents}>
+                    <ScrollView>
+                      <Text style={styles.modalContentsText}>{selectedPost.content}</Text>
+                    </ScrollView>
+                  </View>
+                </View>
+              </View>
+            )}
+            <TouchableOpacity style={styles.modalbtn1}>
+              <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
+                <Text style={styles.modalFooterBtnText}>
+                  채팅하기 <Icon6 name="angle-right" size={22} />
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalbtn2} onPress={onPressModalClose}>
+              <Text style={styles.modalFooterBtnText}>취소</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal animationType="slide" visible={isUnderModalVisible} transparent={true}>
+        <TouchableWithoutFeedback onPress={UnderModalClose}>
+          <View style={styles.underModalOverlay}>
+            <View style={[styles.underModalView, { marginBottom: bottom }]}>
+              <TouchableOpacity style={styles.underModalBtn1} onPress={() => selectedPost && onPressEdit(selectedPost.postNumber)}>
+                <Text>수정</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.underModalBtn2} onPress={() => selectedPost && onPressDelete()}>
+                <Text>삭제</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 }
@@ -145,9 +330,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  safeArea: {
+    backgroundColor: "#7000FF",
+  },
   homeHeader: {
     flex: 2,
+    flexDirection: "row",
     width: "100%",
+    alignItems: "flex-end",
     backgroundColor: "#7000FF",
   },
   randomChatBtn: {
@@ -159,8 +349,14 @@ const styles = StyleSheet.create({
   },
   randomChatText: {
     color: "#fff",
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "600",
+  },
+  homeLogo: {
+    width: "23%",
+    height: "88%",
+    marginRight: "5%",
+    marginBottom: "1%",
   },
   homeTabBox: {
     flex: 1,
@@ -201,8 +397,8 @@ const styles = StyleSheet.create({
   feedProfile: {
     justifyContent: "center",
     alignItems: "center",
-    height: SCREEN_HEIGHT / 16,
-    width: SCREEN_HEIGHT / 16,
+    height: 52,
+    width: 52,
     borderRadius: 100,
   },
   feedInfo: {
@@ -269,5 +465,131 @@ const styles = StyleSheet.create({
     bottom: "3%",
     right: "3%",
     borderRadius: 100,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
+  modalView: {
+    flex: 1,
+    marginHorizontal: SCREEN_WIDTH * 0.06,
+    marginTop: SCREEN_HEIGHT * 0.2,
+    marginBottom: SCREEN_HEIGHT * 0.15,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#7000FF",
+    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalcontentsbox: {
+    flex: 4,
+    width: "85%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  modalProfileBox: {
+    height: 100,
+    width: 100,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalNicknameBox: {
+    alignItems: "center",
+    height: 60,
+    justifyContent: "space-between",
+  },
+  modalNicknameText: {
+    fontSize: 30,
+    fontFamily: "Freesentation-6SemiBold",
+  },
+  modalIsloginText: {
+    color: "#141414",
+    fontFamily: "Freesentation-4Regular",
+  },
+  modalBody: {
+    flex: 1,
+    marginTop: 10,
+    width: "100%",
+  },
+  modalTitle: {
+    marginTop: 10,
+    flex: 0.2,
+    fontSize: 26,
+    fontFamily: "Freesentation-6SemiBold",
+  },
+  modalContents: {
+    flex: 1,
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#E8ECF1",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E8ECF1",
+  },
+  modalContentsText: {
+    fontSize: 16,
+  },
+  modalbtn1: {
+    flex: 0.4,
+    width: "85%",
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  modalbtn2: {
+    flex: 0.4,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "85%",
+    backgroundColor: "#9597A4",
+    marginBottom: 20,
+  },
+  linearGradient: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+  },
+  modalFooterBtnText: {
+    fontSize: 24,
+    fontFamily: "Freesentation-5Medium",
+    color: "#ffffff",
+  },
+  underModalOverlay: {
+    flex: 1,
+  },
+  underModalView: {
+    flex: 1,
+    marginTop: SCREEN_HEIGHT * 0.88,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "#7000ff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#7000ff",
+  },
+  underModalBtn1: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    borderBottomWidth: 1,
+    borderBottomColor: "#9597a4",
+  },
+  underModalBtn2: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
 });

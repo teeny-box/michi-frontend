@@ -3,7 +3,6 @@ import { accessTokenState, userState } from "@/recoil/authAtoms";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MainTabNavigation } from "./MainTabNavigation";
 import { StartStackNavigation } from "./StartStackNavigation";
-import { FeedEdit } from "../home/FeedEdit";
 import { useEffect, useState } from "react";
 import { userUrl } from "@/utils/apiUrls";
 import SplashScreen from "react-native-splash-screen";
@@ -65,33 +64,5 @@ export function AppNavigation() {
     }
   };
 
-  return (
-    <>
-      {accessToken ? (
-        <Stack.Navigator initialRouteName="feed" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="main" component={MainTabNavigation} options={{ headerShown: false }} />
-          <Stack.Screen
-            name="feedEdit"
-            component={FeedEdit}
-            options={{
-              headerShown: true,
-              gestureEnabled: false,
-              headerTitle: "",
-              headerBackTitle: "피드 작성하기",
-              headerBackTitleStyle: {
-                fontFamily: "NotoSansKR-Medium",
-              },
-              headerLargeStyle: false,
-              headerStyle: {
-                backgroundColor: "#fff",
-              },
-              headerTintColor: "#111",
-            }}
-          />
-        </Stack.Navigator>
-      ) : (
-        <StartStackNavigation />
-      )}
-    </>
-  );
+  return <>{accessToken ? <MainTabNavigation /> : <StartStackNavigation />}</>;
 }
