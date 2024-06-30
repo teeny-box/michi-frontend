@@ -25,9 +25,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GradationProfile } from "@/components/common/GradationProfile";
 import LinearGradient from "react-native-linear-gradient";
 import { postsUrl, userUrl } from "@/utils/apiUrls";
-import { useAccessToken } from "@/hooks/useAccessToken";
+import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/authAtoms";
+import { accessTokenState } from "@/recoil/authAtoms";
+import { useAlert } from "@/hooks/useAlert";
 
 export type RootStackParam = {
   feedCreat: undefined;
@@ -70,9 +72,10 @@ export function Home(): React.JSX.Element {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isUnderModalVisible, setIsUnderModalVisible] = useState<boolean>(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null); // 선택된 게시물
-  const [userData, setUserData] = useRecoilState(userState);
+  const [userData] = useRecoilState(userState);
+  const { setAlertState } = useAlert();
   const { top, bottom } = useSafeAreaInsets();
-  const { getAccessTokenFromAsyncStorage, updateToken } = useAccessToken();
+  const accessToken = useRecoilValue(accessTokenState);
 
   useFocusEffect(
     useCallback(() => {
@@ -85,20 +88,15 @@ export function Home(): React.JSX.Element {
   }, []);
 
   const getPostsData = async (): Promise<void | undefined> => {
-    const token = await getAccessTokenFromAsyncStorage();
-
     try {
       const res = await fetch(postsUrl, {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
       });
 
       const data = await res.json();
 
       if (res.status === 200) {
         setPostsData(data.data);
-      } else if (res.status === 401) {
-        const success = await updateToken();
-        if (success) return await getPostsData();
       }
     } catch (err) {
       console.error("getposts error : ", err);
@@ -106,23 +104,18 @@ export function Home(): React.JSX.Element {
     }
   };
 
-  const removeUser = async () => {
-    const token = await getAccessTokenFromAsyncStorage();
+  const removePost = async () => {
     try {
       const res = await fetch(`${postsUrl}/${selectedPost?.postNumber}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
       const data = await res.json();
       console.log(data);
 
       if (res.ok) {
-        console.log("remove user success");
+        console.log("remove post success");
         getPostsData();
-      } else if (res.status === 403) {
-        const success = await updateToken();
-        if (success) removeUser();
-        return;
       }
     } catch (err) {
       console.error("remove error : ", err);
@@ -130,20 +123,15 @@ export function Home(): React.JSX.Element {
   };
 
   const getOnlineUser = async (): Promise<void | undefined> => {
-    const token = await getAccessTokenFromAsyncStorage();
-
     try {
       const res = await fetch(`${userUrl}/online`, {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
       });
 
       const data = await res.json();
 
       if (res.status === 200) {
         setOnlineUser(data.data);
-      } else if (res.status === 401) {
-        const success = await updateToken();
-        if (success) return await getOnlineUser();
       }
     } catch (err) {
       console.error("getposts error : ", err);
@@ -169,15 +157,21 @@ export function Home(): React.JSX.Element {
   };
 
   const onPressEdit = (postNumber: number) => {
-    navigation.navigate("feedEdit", { postNumber });
     setIsUnderModalVisible(false);
+    navigation.navigate("feedEdit", { postNumber });
   };
 
   const onPressDelete = () => {
-    removeUser();
+    setIsUnderModalVisible(false);
+    setAlertState({
+      open: true,
+      title: "해당 피드를 삭제하시겠어요?",
+      desc: "삭제된 피드는 복구되지 않습니다.",
+      defaultText: "확인",
+      onPress: () => removePost(),
+      cancelText: "취소",
+    });
   };
-
-  console.log(onlineUser);
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
@@ -248,19 +242,20 @@ export function Home(): React.JSX.Element {
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
               <View style={styles.onlineUserContainer}>
-                {onlineUser && onlineUser.map((user) => (
-                  <View key={user} style={styles.onlineUser}>
-                    <GradationProfile>
-                      <View style={styles.onlineUserProfile}>
-                        <View>
-                          <Icon3 name="user-circle-o" size={76} color={"#fff"} />
+                {onlineUser &&
+                  onlineUser.map(user => (
+                    <View key={user} style={styles.onlineUser}>
+                      <GradationProfile>
+                        <View style={styles.onlineUserProfile}>
+                          <View>
+                            <Icon3 name="user-circle-o" size={76} color={"#fff"} />
+                          </View>
                         </View>
-                      </View>
-                    </GradationProfile>
-                    <Text style={styles.onlineUsernickName}>{user.userName}</Text>
-                    <Text style={styles.onlineUserisOnline}>{user.isOnline}</Text>
-                  </View>
-                ))}
+                      </GradationProfile>
+                      <Text style={styles.onlineUsernickName}>{user.userName}</Text>
+                      <Text style={styles.onlineUserisOnline}>{user.isOnline}</Text>
+                    </View>
+                  ))}
               </View>
             </ScrollView>
           </View>
