@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TextInput, Alert, SafeAreaView, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -8,28 +8,11 @@ import LinearGradient from "react-native-linear-gradient";
 
 import { postsUrl } from "@/utils/apiUrls";
 import { useAccessToken } from "@/hooks/useAccessToken";
+import { useAlert } from "@/hooks/useAlert"; // useAlert 훅 임포트
 
 export type RootStackParam = {
   homeMain: undefined;
 };
-
-const goAlert = () =>
-  Alert.alert(
-    // 말그대로 Alert를 띄운다
-    "해당 피드를", // 첫번째 text: 타이틀 제목
-    "삭제하시겠어요?", // 두번째 text: 그 밑에 작은 제목
-    [
-      // 버튼 배열
-      {
-        text: "아니요", // 버튼 제목
-        onPress: () => console.log("아니라는데"), //onPress 이벤트시 콘솔창에 로그를 찍는다
-        style: "cancel",
-      },
-      { text: "네", onPress: () => console.log("그렇다는데") }, //버튼 제목
-      // 이벤트 발생시 로그를 찍는다
-    ],
-    { cancelable: false },
-  );
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -37,7 +20,7 @@ export function FeedCreat(): React.JSX.Element {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const { getAccessTokenFromAsyncStorage } = useAccessToken();
-
+  const { setAlertState } = useAlert(); // useAlert 훅 사용
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
   const addpostsData = async () => {
@@ -67,8 +50,38 @@ export function FeedCreat(): React.JSX.Element {
       console.error("addposts error : ", err);
     }
   };
-  console.log(title);
-  console.log(contents);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = (e) => {
+        e.preventDefault();
+        setAlertState({ open: true, title: "경고", desc: "뒤로 가시겠습니까?", defaultText: "확인" });
+        
+        // Alert 사용하여 뒤로 가기 확인
+        Alert.alert(
+          "경고",
+          "뒤로 가시겠습니까?",
+          [
+            {
+              text: "취소",
+              style: "cancel",
+            },
+            {
+              text: "확인",
+              onPress: () => navigation.goBack(),
+            },
+          ],
+          { cancelable: false }
+        );
+      };
+
+      navigation.addListener('beforeRemove', onBackPress);
+
+      return () => {
+        navigation.removeListener('beforeRemove', onBackPress);
+      };
+    }, [navigation, setAlertState])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
