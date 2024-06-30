@@ -59,7 +59,6 @@ export function IdExistCheck() {
 
   const handlePressNextButton = async () => {
     const isExist = await checkIdExist();
-    setId("");
 
     if (isExist) {
       navigation.push("findPassword");
@@ -70,16 +69,11 @@ export function IdExistCheck() {
         desc: "다시 입력하시겠습니까?",
         defaultText: "확인",
         cancelText: "취소",
+        onPress: () => setId(""),
         onClosed: () => navigationStart.reset({ index: 1, routes: [{ name: "login" }] }),
       });
     }
   };
-
-  useEffect(() => {
-    return () => {
-      setId("");
-    };
-  }, []);
 
   return (
     <View style={[commonStyles.container, { paddingTop: top }]}>

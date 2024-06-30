@@ -8,8 +8,8 @@ import { commonStyles } from "@/screens/signup/Common.styled";
 import { GradationButton } from "@/components/common/GradationButton";
 import { TextInputField } from "@/components/common/TextInputField";
 import { userUrl } from "@/utils/apiUrls";
-import { useRecoilValue } from "recoil";
-import { oneTimeTokenState } from "@/recoil/authAtoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { idFoundState, oneTimeTokenState } from "@/recoil/authAtoms";
 import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import Toast from "react-native-toast-message";
 import { useAlert } from "@/hooks/useAlert";
@@ -24,6 +24,7 @@ export function ChangePassword(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
   const oneTimeToken = useRecoilValue(oneTimeTokenState);
+  const setId = useSetRecoilState(idFoundState);
   const { setAlertState } = useAlert();
   const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
 
@@ -90,6 +91,7 @@ export function ChangePassword(): React.JSX.Element {
   const handlePressSubmitButton = async () => {
     const success = await updatePassword();
     if (success) {
+      setId("");
       Toast.show({ text1: "비밀번호 변경 완료" });
       navigation.reset({ index: 1, routes: [{ name: "login" }] });
     } else {
@@ -131,7 +133,7 @@ export function ChangePassword(): React.JSX.Element {
   return (
     <View style={[commonStyles.container, { paddingTop: top }]}>
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
-        <Title text="새 비밀번호를 입력해주세요" marginBottom={15} />
+        <Title text="새 비밀번호를 입력하세요" marginBottom={15} />
         <Text style={styles.message}>변경 유효 시간 {timeFormat(oneTimeToken.time)} 남았습니다.</Text>
         <TextInputField
           label="새 비밀번호"
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
     color: "#7000FF",
     fontSize: 12,
     fontFamily: "NotoSansKR-Medium",
-    lineHeight: 12,
+    lineHeight: 14,
     marginBottom: 40,
   },
 });

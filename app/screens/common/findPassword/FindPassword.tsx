@@ -16,6 +16,7 @@ import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import { NextButton } from "@/components/signup/NextButton";
 
 type stateType = "waiting" | "running" | "fail" | "success";
+const INVALID_TIME = 1000 * 60 * 5;
 
 export function FindPassword() {
   const { top } = useSafeAreaInsets();
@@ -38,6 +39,7 @@ export function FindPassword() {
           userId: id,
         }),
       });
+      console.log(await res.json());
 
       if (res.ok) {
         if (intervalId.current) {
@@ -46,7 +48,7 @@ export function FindPassword() {
         }
         const token = res.headers.get("authorization")?.split(" ")[1];
         if (token) {
-          setOneTimeToken({ token, time: 1000 * 60 - 1000 });
+          setOneTimeToken({ token, time: INVALID_TIME - 1000 });
           intervalId.current = +setInterval(() => {
             setOneTimeToken(cur => {
               return { ...cur, time: cur.time - 1000 };
@@ -54,7 +56,7 @@ export function FindPassword() {
           }, 1000);
           timeoutId.current = +setTimeout(() => {
             clearInterval(intervalId.current);
-          }, 1000 * 60);
+          }, INVALID_TIME);
           return 1;
         }
       }
