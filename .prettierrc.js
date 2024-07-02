@@ -1,13 +1,13 @@
 module.exports = {
-  arrowParens: 'avoid',
+  arrowParens: "avoid",
   bracketSameLine: true,
   bracketSpacing: false,
-  trailingComma: 'all',
+  trailingComma: "all",
 
   // teenybox 프리티어!!
   tabWidth: 2,
   singleQuote: false,
   semi: true,
-  printWidth: 160,
+  printWidth: 120,
   bracketSpacing: true,
 };
