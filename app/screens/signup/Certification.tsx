@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
@@ -16,7 +16,7 @@ import getCurrentAge from "@/utils/getCurrentAge";
 import { useAlert } from "@/hooks/useAlert";
 import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 
-export function Certification() {
+export function Certification(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [state, setState] = useRecoilState(certificationState);

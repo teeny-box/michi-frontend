@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { userUrl } from "@/utils/apiUrls";
 import { TextInputField } from "@/components/common/TextInputField";
-import { Image, StyleSheet, TouchableOpacity, View, Platform, Pressable, Text, Keyboard, StatusBar } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View, Platform, Keyboard, StatusBar } from "react-native";
 import { useRecoilState } from "recoil";
 import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
@@ -21,7 +21,7 @@ import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
 const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 이상 10자 이내로 입력해주세요.";
 
-export function ChangeProfile() {
+export function ChangeProfile(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const { updateToken, getAccessTokenFromAsyncStorage } = useAccessToken();

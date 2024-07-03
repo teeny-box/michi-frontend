@@ -18,7 +18,7 @@ import { NextButton } from "@/components/signup/NextButton";
 const regex = /^[a-zA-Z][a-zA-Z0-9_]{3,19}$/;
 const defaultMessage = "* 영어, 숫자, 밑줄(_)만 사용해주세요.\n* 4자 이상 20자 이내로 입력해주세요.";
 
-export function Id() {
+export function Id(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [id, setId] = useRecoilState(idState);

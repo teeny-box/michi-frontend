@@ -100,8 +100,8 @@ export function ChangePassword(): React.JSX.Element {
   };
 
   const timeFormat = (time: number): string => {
-    let min = Math.floor(time / 60000);
-    let sec = (time % 60000) / 1000;
+    const min = Math.floor(time / 60000);
+    const sec = (time % 60000) / 1000;
     if (time < 0) return "";
     return `${min < 10 ? "0" : ""}${min}:${sec < 10 ? "0" : ""}${sec}`;
   };

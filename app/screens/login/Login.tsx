@@ -15,12 +15,12 @@ import { useAlert } from "@/hooks/useAlert";
 import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import Toast from "react-native-toast-message";
 
-export function Login() {
+export function Login(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+  const [id, setId] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const setAccessToken = useSetRecoilState(accessTokenState);
   const { setAlertState } = useAlert();
   const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
@@ -82,7 +82,6 @@ export function Login() {
   const handlePressFindPassword = () => {
     navigation.push("findPassword_login");
   };
-
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>

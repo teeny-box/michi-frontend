@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { commonStyles } from "@/screens/signup/Common.styled";
 import { useRecoilState } from "recoil";
 import { idFoundState } from "@/recoil/authAtoms";

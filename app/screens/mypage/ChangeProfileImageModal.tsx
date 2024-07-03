@@ -13,7 +13,7 @@ import { decode } from "base64-arraybuffer";
 import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export function ChangeProfileImageModal() {
+export function ChangeProfileImageModal(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const setNewProfileImage = useSetRecoilState(changeProfileImageState);

@@ -1,5 +1,5 @@
 import { ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
-import { Profile } from "@components/mypage/Profile.tsx";
+import { Profile } from "@components/mypage/Profile";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
@@ -17,9 +17,8 @@ import { useAlert } from "@/hooks/useAlert";
 import Toast from "react-native-toast-message";
 import { Button } from "@/components/common/Button";
 import { useLoadingScreen } from "@/hooks/useLoadingScreen";
-import { useEffect } from "react";
 
-export function MyPage() {
+export function MyPage(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);

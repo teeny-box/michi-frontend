@@ -8,7 +8,7 @@ import { useResetRecoilState } from "recoil";
 import { birthYearState, certificationState, idState, nicknameState, passwordState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
 import { useEffect } from "react";
 
-export function Start() {
+export function Start(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
 
