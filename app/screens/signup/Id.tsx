@@ -4,13 +4,13 @@ import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilState } from "recoil";
-import { idState } from "@/recoil/signupAtoms";
 import { commonStyles } from "./Common.styled";
 import { useEffect, useState } from "react";
-import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@/components/common/TextInputField";
-import { Title } from "@/components/signup/Title";
-import { NextButton } from "@/components/signup/NextButton";
+import { idState } from "@recoil/signupAtoms";
+import { userUrl } from "@utils/apiUrls";
+import { TextInputField } from "@components/common/TextInputField";
+import { NextButton } from "@components/signup/NextButton";
+import { Title } from "@components/signup/Title";
 
 // 영문자로 시작해야 합니다.
 // 영문자, 숫자, 밑줄(_)로만 이루어져야 합니다.

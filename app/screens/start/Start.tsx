@@ -1,12 +1,12 @@
-import { GradationButton } from "@/components/common/GradationButton";
+import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import { useResetRecoilState } from "recoil";
-import { birthYearState, certificationState, idState, nicknameState, passwordState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
-import { useEffect } from "react";
+import { birthYearState, certificationState, idState, nicknameState, passwordState, phoneNumberState, userNameState } from "@recoil/signupAtoms";
+import { GradationButton } from "@components/common/GradationButton";
 
 export function Start(): React.JSX.Element {
   const { top } = useSafeAreaInsets();

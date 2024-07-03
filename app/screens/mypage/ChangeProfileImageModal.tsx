@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { Animated, TouchableOpacity, StatusBar, StyleSheet, Text, View, Pressable } from "react-native";
 import { Asset, launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
-import { changeProfileImageState } from "@/recoil/mypageAtoms";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userState } from "@/recoil/authAtoms";
-import { imagesUrl } from "@/utils/apiUrls";
 import Toast from "react-native-toast-message";
 import { decode } from "base64-arraybuffer";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { changeProfileImageState } from "@recoil/mypageAtoms";
+import { userState } from "@recoil/authAtoms";
+import { imagesUrl } from "@utils/apiUrls";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
 
 export function ChangeProfileImageModal(): React.JSX.Element {
   const { top } = useSafeAreaInsets();

@@ -1,8 +1,8 @@
-import ProgressDots from "@/components/common/ProgressDots";
-import { loadingState } from "@/recoil/commonAtoms";
 import { Modal, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRecoilValue } from "recoil";
+import { loadingState } from "@recoil/commonAtoms";
+import ProgressDots from "@components/common/ProgressDots";
 
 export function Loading() {
   const { top } = useSafeAreaInsets();

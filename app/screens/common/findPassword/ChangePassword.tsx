@@ -3,17 +3,17 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { StartRootStackParam } from "@/screens/navigation/StartStackNavigation";
-import { commonStyles } from "@/screens/signup/Common.styled";
-import { GradationButton } from "@/components/common/GradationButton";
-import { TextInputField } from "@/components/common/TextInputField";
-import { userUrl } from "@/utils/apiUrls";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { idFoundState, oneTimeTokenState } from "@/recoil/authAtoms";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
 import Toast from "react-native-toast-message";
-import { useAlert } from "@/hooks/useAlert";
-import { Title } from "@/components/signup/Title";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { idFoundState, oneTimeTokenState } from "@recoil/authAtoms";
+import { StartRootStackParam } from "@screens/navigation/StartStackNavigation";
+import { commonStyles } from "@screens/signup/Common.styled";
+import { Title } from "@components/signup/Title";
+import { TextInputField } from "@components/common/TextInputField";
+import { GradationButton } from "@components/common/GradationButton";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { useAlert } from "@hooks/useAlert";
+import { userUrl } from "@utils/apiUrls";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.

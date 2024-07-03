@@ -4,17 +4,17 @@ import { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
-import { IMPCertification } from "@/components/common/IMPCertification";
 import { commonStyles } from "./Common.styled";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { birthYearState, certificationState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
-import { authUrl } from "@/utils/apiUrls";
-import { GradationButton } from "@/components/common/GradationButton";
-import { Title } from "@/components/signup/Title";
-import { NextButton } from "@/components/signup/NextButton";
-import getCurrentAge from "@/utils/getCurrentAge";
-import { useAlert } from "@/hooks/useAlert";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
+import { birthYearState, certificationState, phoneNumberState, userNameState } from "@recoil/signupAtoms";
+import { IMPCertification } from "@components/common/IMPCertification";
+import { GradationButton } from "@components/common/GradationButton";
+import { Title } from "@components/signup/Title";
+import { NextButton } from "@components/signup/NextButton";
+import { useAlert } from "@hooks/useAlert";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { authUrl } from "@utils/apiUrls";
+import getCurrentAge from "@utils/getCurrentAge";
 
 export function Certification(): React.JSX.Element {
   const { top } = useSafeAreaInsets();

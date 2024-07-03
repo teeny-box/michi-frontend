@@ -1,18 +1,18 @@
-import { idFoundState } from "@/recoil/authAtoms";
-import { authUrl } from "@/utils/apiUrls";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSetRecoilState } from "recoil";
-import { commonStyles } from "../../signup/Common.styled";
+import { headerShowState } from "@recoil/commonAtoms";
+import { idFoundState } from "@recoil/authAtoms";
+import { FindIDRootStackParam } from "@screens/navigation/user/FindIdNavigation";
 import { IMPCertification } from "@components/common/IMPCertification";
-import { FindIDRootStackParam } from "@/screens/navigation/user/FindIdNavigation";
-import { headerShowState } from "@/recoil/commonAtoms";
-import { GradationButton } from "@/components/common/GradationButton";
-import { Title } from "@/components/signup/Title";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
+import { GradationButton } from "@components/common/GradationButton";
+import { Title } from "@components/signup/Title";
+import { authUrl } from "@utils/apiUrls";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { commonStyles } from "../../signup/Common.styled";
 
 type stateType = "waiting" | "running" | "fail";
 type idFoundBodyType = {

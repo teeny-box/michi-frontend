@@ -2,19 +2,18 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@/components/common/TextInputField";
 import { Image, StyleSheet, TouchableOpacity, View, Platform, Keyboard, StatusBar } from "react-native";
-import { useRecoilState } from "recoil";
-import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
-import { userState } from "@/recoil/authAtoms";
-
-import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions";
-import { useAccessToken } from "@/hooks/useAccessToken";
-import { changeProfileImageState } from "@/recoil/mypageAtoms";
 import Toast from "react-native-toast-message";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
+import { PERMISSIONS, RESULTS, requestMultiple } from "react-native-permissions";
+import { useRecoilState } from "recoil";
+import { userState } from "@recoil/authAtoms";
+import { changeProfileImageState } from "@recoil/mypageAtoms";
+import { TextInputField } from "@components/common/TextInputField";
+import { GradationButton } from "@components/common/GradationButton";
+import { useAccessToken } from "@hooks/useAccessToken";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { userUrl } from "@utils/apiUrls";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.

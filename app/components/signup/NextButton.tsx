@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { GestureResponderEvent, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Gradation } from "../common/Gradation";
+import { Gradation } from "@components/common/Gradation";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 type nextButtonProps = {

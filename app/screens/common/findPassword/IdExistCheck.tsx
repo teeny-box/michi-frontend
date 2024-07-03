@@ -3,17 +3,17 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
-import { commonStyles } from "@/screens/signup/Common.styled";
 import { useRecoilState } from "recoil";
-import { idFoundState } from "@/recoil/authAtoms";
-import { userUrl } from "@/utils/apiUrls";
-import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswordNavigation";
-import { TextInputField } from "@/components/common/TextInputField";
-import { Title } from "@/components/signup/Title";
-import { GradationButton } from "@/components/common/GradationButton";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
-import { useAlert } from "@/hooks/useAlert";
-import { StartRootStackParam } from "@/screens/navigation/StartStackNavigation";
+import { idFoundState } from "@recoil/authAtoms";
+import { commonStyles } from "@screens/signup/Common.styled";
+import { StartRootStackParam } from "@screens/navigation/StartStackNavigation";
+import { FindPasswordRootStackParam } from "@screens/navigation/user/FindPasswordNavigation";
+import { userUrl } from "@utils/apiUrls";
+import { Title } from "@components/signup/Title";
+import { TextInputField } from "@components/common/TextInputField";
+import { GradationButton } from "@components/common/GradationButton";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { useAlert } from "@hooks/useAlert";
 
 // 영문자로 시작해야 합니다.
 // 영문자, 숫자, 밑줄(_)로만 이루어져야 합니다.

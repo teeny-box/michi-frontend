@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { commonStyles } from "./Common.styled";
-import { useRecoilState } from "recoil";
-import { passwordState } from "@/recoil/signupAtoms";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
-import { Title } from "@/components/signup/Title";
-import { TextInputField } from "@/components/common/TextInputField";
-import { NextButton } from "@/components/signup/NextButton";
+import { useRecoilState } from "recoil";
+import { passwordState } from "@recoil/signupAtoms";
+import { TextInputField } from "@components/common/TextInputField";
+import { NextButton } from "@components/signup/NextButton";
+import { Title } from "@components/signup/Title";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.

@@ -1,4 +1,3 @@
-import { nicknameState } from "@/recoil/signupAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
@@ -7,10 +6,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRecoilState } from "recoil";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { commonStyles } from "./Common.styled";
-import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@/components/common/TextInputField";
-import { Title } from "@components/signup/Title";
+import { nicknameState } from "@recoil/signupAtoms";
+import { userUrl } from "@utils/apiUrls";
+import { TextInputField } from "@components/common/TextInputField";
 import { NextButton } from "@components/signup/NextButton";
+import { Title } from "@components/signup/Title";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.

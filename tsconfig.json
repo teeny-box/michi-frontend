@@ -10,7 +10,7 @@
       "@mocks/*": ["mocks/*"],
       "@recoil/*": ["recoil/*"],
       "@screens/*": ["screens/*"],
-      "@stogare/*": ["stogare/*"],
+      "@storage/*": ["storage/*"],
       "@utils/*": ["utils/*"]
     },
     "esModuleInterop": true,

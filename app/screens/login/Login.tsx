@@ -1,18 +1,18 @@
-import { accessTokenState } from "@/recoil/authAtoms";
-import { setAsyncStorage } from "@/storage/AsyncStorage";
-import { authUrl } from "@/utils/apiUrls";
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useSetRecoilState } from "recoil";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import LinearGradient from "react-native-linear-gradient";
-import { TextInputField } from "@/components/common/TextInputField";
-import { GradationButton } from "@/components/common/GradationButton";
-import { useAlert } from "@/hooks/useAlert";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
+import { useSetRecoilState } from "recoil";
+import { accessTokenState } from "@recoil/authAtoms";
+import { setAsyncStorage } from "@storage/AsyncStorage";
+import { TextInputField } from "@components/common/TextInputField";
+import { GradationButton } from "@components/common/GradationButton";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { useAlert } from "@hooks/useAlert";
+import { authUrl } from "@utils/apiUrls";
 import Toast from "react-native-toast-message";
 
 export function Login(): React.JSX.Element {

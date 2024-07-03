@@ -1,9 +1,9 @@
-import { headerShowState } from "@/recoil/commonAtoms";
-import { ChangePassword } from "@/screens/common/findPassword/ChangePassword";
-import { FindPassword } from "@/screens/common/findPassword/FindPassword";
-import { IdExistCheck } from "@/screens/common/findPassword/IdExistCheck";
-import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
+import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
+import { headerShowState } from "@recoil/commonAtoms";
+import { ChangePassword } from "@screens/common/findPassword/ChangePassword";
+import { FindPassword } from "@screens/common/findPassword/FindPassword";
+import { IdExistCheck } from "@screens/common/findPassword/IdExistCheck";
 
 export type FindPasswordRootStackParam = {
   idCheck: undefined;
