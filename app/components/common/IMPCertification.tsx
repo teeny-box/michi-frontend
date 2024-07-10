@@ -12,7 +12,8 @@ export function IMPCertification({ callback }: CertificationPropsType): React.JS
     carrier: "",
     name: "",
     phone: "",
-    min_age: "",
+    min_age: "19",
+    type: "certification",
   };
 
   return (

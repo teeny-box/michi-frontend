@@ -12,7 +12,7 @@ export function Title({ text, marginBottom = 30 }: TextProps) {
 const styles = StyleSheet.create({
   title: {
     color: "black",
-    fontSize: 30,
+    fontSize: 24,
     fontFamily: "JalnanGothic",
   },
 });

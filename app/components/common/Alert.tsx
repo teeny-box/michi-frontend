@@ -4,7 +4,7 @@ import { useAlert } from "@hooks/useAlert";
 import { useRecoilValue } from "recoil";
 import { alertState } from "@recoil/commonAtoms";
 import { useState } from "react";
-import ProgressDots from "./ProgressDots";
+import { ProgressDots } from "./ProgressDots";
 
 export function Alert(): React.JSX.Element {
   const { closeAlert } = useAlert();

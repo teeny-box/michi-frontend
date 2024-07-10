@@ -6,7 +6,7 @@ type ProgressDotsProps = {
   color?: "white" | "main";
 };
 
-const ProgressDots: React.FC<ProgressDotsProps> = ({ duration = 500, color }) => {
+export function ProgressDots({ duration = 500, color }: ProgressDotsProps): React.JSX.Element {
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
   const dot3 = useRef(new Animated.Value(0)).current;
@@ -83,7 +83,7 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ duration = 500, color }) =>
       <Animated.View style={[styles.dot, color === "main" && { backgroundColor: "#7000ff" }, getDotStyle(dot3)]} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -100,5 +100,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
 });
-
-export default ProgressDots;

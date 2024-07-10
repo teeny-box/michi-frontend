@@ -22,8 +22,8 @@ export function Id(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [id, setId] = useRecoilState(idState);
-  const [checkMessage, setCheckMessage] = useState(defaultMessage);
-  const [isAvailable, setIsAvailable] = useState(false);
+  const [checkMessage, setCheckMessage] = useState<string>(defaultMessage);
+  const [isAvailable, setIsAvailable] = useState<boolean>(false);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
   useEffect(() => {
@@ -80,9 +80,11 @@ export function Id(): React.JSX.Element {
     if (timer) {
       clearTimeout(timer);
     }
+
     const newTimer = setTimeout(async () => {
       await idValidation(text);
     }, 500);
+
     setTimer(newTimer);
   };
 

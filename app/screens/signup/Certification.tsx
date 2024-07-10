@@ -32,11 +32,16 @@ export function Certification(): React.JSX.Element {
       setPhoneNumber("");
       setBirthYear("");
     }
+
+    if (state === "running") {
+      navigation.setOptions({ headerShown: false });
+    } else {
+      navigation.setOptions({ headerShown: true });
+    }
   }, [state]);
 
   const handlePressCertificationButton = () => {
     setState("running");
-    navigation.setOptions({ headerShown: false });
   };
 
   const getPortOne = async (impUid: string): Promise<true | undefined> => {
@@ -64,6 +69,7 @@ export function Certification(): React.JSX.Element {
 
   const callback = async (res: any) => {
     console.log(res);
+
     if (res.success === "false") {
       setState("fail");
       return;
@@ -75,7 +81,6 @@ export function Certification(): React.JSX.Element {
       setState("fail");
       setAlertState({ open: true, title: "미성년자는 가입할 수 없습니다.", defaultText: "확인" });
     }
-    navigation.setOptions({ headerShown: true });
   };
 
   const handlePressNextButton = () => {

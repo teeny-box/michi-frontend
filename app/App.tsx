@@ -32,18 +32,10 @@ function App(): React.JSX.Element {
 
     enableMocking().then(() => setLoading(false));
 
-    getToken();
-
     return () => {
       soketClient.soketClient.close(); // 소켓 연결 해제
     };
   }, []);
-
-  const getToken = async () => {
-    const fcmToken = await messaging().getToken();
-    console.log("디바이스 토큰값");
-    console.log(fcmToken);
-  };
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
