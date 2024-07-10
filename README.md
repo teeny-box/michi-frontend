@@ -1,79 +1,40 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Michi : 관심사를 공유하는 랜덤 채팅 서비스
 
-# Getting Started
+웹소켓을 기반으로 하는 서비스를 만들고자 시작하게 되었습니다.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+1차적으로 기획한 기능들을 구현 완료한 상태입니다.
 
-## Step 1: Start the Metro Server
+## 🖌️ 기획 / 디자인 / api 문서
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 📄 스토리보드
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## 📄 ERD
 
-```bash
-# using npm
-npm start
+![Michi](https://github.com/teeny-box/michi-frontend/assets/56782035/97b6f1a9-91a6-44a9-9f44-52f940c26b0d)
 
-# OR using Yarn
-yarn start
-```
+## 🛠 기술 스택
 
-## Step 2: Start your Application
+### Front-end
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+### Back-end
 
-### For Android
+## ⚙ 아키텍쳐
 
-```bash
-# using npm
-npm run android
+## 🗂️ 폴더 구조
 
-# OR using Yarn
-yarn android
-```
+## ✔️ 주요 기능
 
-### For iOS
+- 랜덤채팅
+   - 랜덤 채팅 버튼을 누르면 온라인 상태인 유저들을 상대로 랜덤채팅 가능
+- 게시글
+   - 자신의 관심사를 게시글로 올리면 관심있는 유저가 채팅 신청 가능
+- 채팅
+   - 1:1 채팅방에서 원활한 채팅 가능
+- 알림
+   - 메시지, 공지사항이 오면 유저 디바이스로 알림 도착 (FCM 사용)
+- 유저
+   - 간단한 핸드폰 인증으로 회원가입
+   - 여러 개의 기기에서 접속
+   - 온라인 상태인 유저 목록 조회
 
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## 💻 팀원 소개
