@@ -118,6 +118,8 @@
             <a href="https://github.com/JMTcord"><I>JMTcord</I></a>
         </td>
         <td>
+            <img src="https://avatars.githubusercontent.com/u/104901712?size=100">
+            <br>
             <a href="https://github.com/Woo7i"><I>Woo7i</I></a>
         </td>
         <td>
