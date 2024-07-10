@@ -11,7 +11,7 @@
 
 **👤 페르소나**
 
-<img src="assets/persona" width=200 alt="학생 이미지"/>
+<img src="assets/persona.png" width=200 alt="학생 이미지"/>
 
 이름 : 김소나
 <br/>
