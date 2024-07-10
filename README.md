@@ -1,7 +1,6 @@
 # Michi : 관심사를 공유하는 랜덤 채팅 서비스
 
 <img src="assets/logo_ver2.png" width=300 alt="미치 로고"/>
-<br/>
 
 웹소켓을 기반으로 하는 서비스를 만들고자 시작하게 되었습니다.
 
@@ -9,9 +8,9 @@
 
 <br/>
 
-**👤 페르소나**
+**[ 페르소나 ]**
 
-<img src="assets/persona.png" width=200 alt="학생 이미지"/>
+<img src="assets/persona.png" width=150 alt="학생 이미지"/>
 
 이름 : 김소나
 <br/>
