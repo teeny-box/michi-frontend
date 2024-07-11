@@ -1,8 +1,12 @@
+import React from "react";
 import { StyleSheet } from "react-native";
 import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeStackNavigation } from "./HomeStackNavigation";
 import { ChatroomsStackNavigation } from "./ChatroomStack";
 import { MyPageStackNavigation } from "./MyPageStack";
+import HomeIcon from "react-native-vector-icons/Entypo";
+import ChatIcon from "react-native-vector-icons/Ionicons";
+import MypageIcon from "react-native-vector-icons/FontAwesome";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,11 +23,34 @@ export function MainTabNavigation() {
   };
 
   return (
-      <Tab.Navigator initialRouteName="home" screenOptions={{ headerShown: false, }}>
-        <Tab.Screen name="home" component={HomeStackNavigation} />
-        <Tab.Screen name="chatting" component={ChatroomsStackNavigation} />
-        <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
-      </Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="home"
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => {
+          let iconName: string = "";
+          let IconComponent: React.ComponentType<any> = HomeIcon;
+
+          if (route.name === "home") {
+            IconComponent = HomeIcon;
+            iconName = "home";
+          } else if (route.name === "chatting") {
+            IconComponent = ChatIcon;
+            iconName = "chatbubble-ellipses";
+          } else if (route.name === "mypage/tab") {
+            IconComponent = MypageIcon;
+            iconName = "user-circle-o";
+          }
+
+          return <IconComponent name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: "#7000Ff",
+        tabBarInactiveTintColor: "gray",
+      })}
+    >
+      <Tab.Screen name="home" component={HomeStackNavigation} />
+      <Tab.Screen name="chatting" component={ChatroomsStackNavigation} />
+      <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
+    </Tab.Navigator>
   );
 }
-

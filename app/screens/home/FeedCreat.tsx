@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity, TextInput, Alert, SafeAreaView, ScrollView } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -50,38 +50,6 @@ export function FeedCreat(): React.JSX.Element {
       console.error("addposts error : ", err);
     }
   };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = (e) => {
-        e.preventDefault();
-        setAlertState({ open: true, title: "경고", desc: "뒤로 가시겠습니까?", defaultText: "확인" });
-        
-        // Alert 사용하여 뒤로 가기 확인
-        Alert.alert(
-          "경고",
-          "뒤로 가시겠습니까?",
-          [
-            {
-              text: "취소",
-              style: "cancel",
-            },
-            {
-              text: "확인",
-              onPress: () => navigation.goBack(),
-            },
-          ],
-          { cancelable: false }
-        );
-      };
-
-      navigation.addListener('beforeRemove', onBackPress);
-
-      return () => {
-        navigation.removeListener('beforeRemove', onBackPress);
-      };
-    }, [navigation, setAlertState])
-  );
 
   return (
     <SafeAreaView style={styles.container}>
