@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Platform, FlatList, TextInput, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { KeyboardAvoidingView } from "react-native";
-import io from "socket.io-client";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
-import { userState } from "../../recoil/authAtoms";
+import { userState, accessTokenState } from "../../recoil/authAtoms";
+import { socketState } from "../../recoil/socketAtom";
 import TextInputComponent from "../../components/chat/chatscreen/TextInputComponent";
 
 type ChatScreenParams = {
@@ -13,6 +13,7 @@ type ChatScreenParams = {
     params: {
       navigation: any;
       room: string;
+      roomId: string;
     };
   };
 };
@@ -29,67 +30,67 @@ type Message = {
 export default function ChatScreen({ route }: Navigation) {
   const [messageText, setMessageText] = useState("");
   const [serverMessages, setServerMessages] = useState<Message[]>([]);
-  const webSocket = useRef(null);
-  const { nickname } = useRecoilValue(userState); // Recoil에서 user 값을 구조 분해하여 nickname만 가져옴
+  const socket = useRecoilValue(socketState);
+  const { nickname } = useRecoilValue(userState);
   const { top } = useSafeAreaInsets();
 
   useEffect(() => {
-    webSocket.current = io(`${process.env.BASE_URL}`);
+    if (socket) {
+      socket.on("connect", () => {
+        console.log("Connected Server");
+        const joinMessage = {
+          type: "join",
+          chatroomId: route.params.roomId,
+        };
+        socket.emit("join", joinMessage);
+      });
 
-    webSocket.current.on("connect", () => {
-      let message = {
-        type: "Welcome",
-        user: nickname,
-        message: `${nickname} 님이 입장하셨습니다.`,
-        room: route.params.room,
+      socket.on("onJoin", (e: any) => {
+        console.log("User Joined:", e);
+        setServerMessages(prevMessages => [...prevMessages, { type: "join", ...e.data }]);
+      });
+
+      socket.on("onLeave", (e: any) => {
+        console.log("User Left:", e);
+        setServerMessages(prevMessages => [...prevMessages, { type: "leave", ...e }]);
+      });
+
+      socket.on("onMessage", (e: any) => {
+        console.log("Received message:", e);
+        setServerMessages(prevMessages => [...prevMessages, { type: "message", ...e.data }]);
+      });
+
+      socket.on("disconnect", reason => {
+        console.log(`Disconnected. Reason: ${reason}`);
+      });
+
+      socket.on("error", error => {
+        console.log(`Socket error: ${error}`);
+      });
+
+      return () => {
+        const leaveMessage = {
+          type: "leave",
+          chatroomId: route.params.roomId,
+        };
+        socket.emit("leave", leaveMessage);
+        socket.disconnect();
       };
-
-      webSocket.current.emit("welcome", message);
-      console.log("Connected Server");
-    });
-
-    webSocket.current.on("message", (e: Message) => {
-      console.log(nickname, "message", e);
-      setServerMessages(prevMessages => [...prevMessages, e]);
-    });
-
-    webSocket.current.on("welcome", (e: Message) => {
-      console.log("welcome", e);
-      setServerMessages(prevMessages => [...prevMessages, e]);
-    });
-
-    webSocket.current.on("leave", (e: Message) => {
-      setServerMessages(prevMessages => [...prevMessages, e]);
-    });
-
-    webSocket.current.on("error", e => {
-      console.log(e.message);
-    });
-
-    webSocket.current.on("disconnect", e => {
-      console.log("Disconnected. Check internet or server.");
-    });
-
-    return () => {
-      let message = {
-        type: "Leave",
-        user: nickname,
-        message: `${nickname} 님이 퇴장하셨습니다.`,
-        room: route.params.room,
-      };
-      webSocket.current.emit("leave", message);
-      webSocket.current.disconnect();
-    };
-  }, [nickname, route.params.room]);
+    }
+  }, [socket, route.params.roomId]);
 
   const sendMessage = () => {
-    let message = {
-      type: "Chat",
-      user: nickname,
-      message: messageText,
-      room: route.params.room,
-    };
-    webSocket.current.emit("message", message);
+    if (messageText.trim() === "") return;
+
+    if (socket) {
+      const chatMessage = {
+        type: "message",
+        message: messageText,
+        messageType: "chat",
+        chatroomId: route.params.roomId,
+      };
+      socket.emit("message", chatMessage);
+    }
     setMessageText("");
   };
 
