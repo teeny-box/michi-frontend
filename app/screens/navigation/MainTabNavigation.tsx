@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeStackNavigation } from "./HomeStackNavigation";
-import { ChatroomsStackNavigation } from "./ChatroomStack";
+import ChatNavigation from "./chat/ChatroomStack";
 import { MyPageStackNavigation } from "./MyPageStack";
 import HomeIcon from "react-native-vector-icons/Entypo";
 import ChatIcon from "react-native-vector-icons/Ionicons";
@@ -49,7 +49,7 @@ export function MainTabNavigation() {
       })}
     >
       <Tab.Screen name="home" component={HomeStackNavigation} />
-      <Tab.Screen name="chatting" component={ChatroomsStackNavigation} />
+      <Tab.Screen name="chatting" component={ChatNavigation} />
       <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
     </Tab.Navigator>
   );
