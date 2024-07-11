@@ -10,7 +10,7 @@ export default function ChatRoomCell({ chatRoom }: ChatRoomCellParams) {
     <View style={styles.container}>
       <Text style={styles.title}> {chatRoom.title} </Text>
       <Text style={styles.message}> {chatRoom.lastMessage} </Text>
-      <Text style={styles.time}>{chatRoom.time.toDateString()}</Text>
+      <Text style={styles.time}>{chatRoom.time ? chatRoom.time.toDateString() : "No date available"}</Text>
     </View>
   );
 }
