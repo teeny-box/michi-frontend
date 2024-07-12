@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeStackNavigation } from "./HomeStackNavigation";
 import ChatNavigation from "./chat/ChatroomStack";
@@ -7,10 +6,13 @@ import { MyPageStackNavigation } from "./MyPageStack";
 import HomeIcon from "react-native-vector-icons/Entypo";
 import ChatIcon from "react-native-vector-icons/Ionicons";
 import MypageIcon from "react-native-vector-icons/FontAwesome";
+import { useSocket } from "@/hooks/useSocket";
 
 const Tab = createBottomTabNavigator();
 
 export function MainTabNavigation() {
+  useSocket();
+
   const customTabNavigationOptions: BottomTabNavigationOptions = {
     title: "",
     headerStyle: {
@@ -46,8 +48,7 @@ export function MainTabNavigation() {
         },
         tabBarActiveTintColor: "#7000Ff",
         tabBarInactiveTintColor: "gray",
-      })}
-    >
+      })}>
       <Tab.Screen name="home" component={HomeStackNavigation} />
       <Tab.Screen name="chatting" component={ChatNavigation} />
       <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />

@@ -36,13 +36,12 @@ const handleNotification = async message => {
       importance: AndroidImportance.HIGH,
     },
   });
-  console.log("index.js 변경2");
 };
 
 // 포그라운드에서 메시지 수신
 messaging().onMessage(async remoteMessage => {
   console.log("Foreground message received:", remoteMessage);
-  handleNotification(remoteMessage);
+  // handleNotification(remoteMessage);
 });
 
 // 백그라운드에서 메시지 수신

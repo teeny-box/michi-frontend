@@ -43,6 +43,7 @@ export function Login(): React.JSX.Element {
         setAccessToken(accessToken);
         setAsyncStorage("accessToken", accessToken);
         setAsyncStorage("refreshToken", refreshToken);
+
         console.log("login success");
         return 1;
       }
