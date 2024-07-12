@@ -4,7 +4,13 @@ import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import LinearGradient from "react-native-linear-gradient";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from "react-native-reanimated";
 
-const TextInputComponent = ({ messageText, setMessageText, sendMessage }) => {
+interface TextInputComponentProps {
+  messageText: string;
+  setMessageText: (text: string) => void;
+  sendMessage: () => void;
+}
+
+const TextInputComponent: React.FC<TextInputComponentProps> = ({ messageText, setMessageText, sendMessage }) => {
   const [isTyping, setIsTyping] = useState(false);
   const scale = useSharedValue(0);
 
