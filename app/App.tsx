@@ -9,7 +9,6 @@ import { Alert } from "@components/common/Alert";
 import { ToastCustom } from "./components/common/ToastCustom";
 import { Loading } from "./screens/common/Loading";
 import { APP_ENV } from "@env";
-import { SoketClient } from "./socket/socket-clients";
 
 async function enableMocking() {
   console.log("APP_ENV : ", APP_ENV);
@@ -27,14 +26,7 @@ function App(): React.JSX.Element {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const soketClient = new SoketClient();
-    soketClient.onModuleInit();
-
     enableMocking().then(() => setLoading(false));
-
-    return () => {
-      soketClient.soketClient.close(); // 소켓 연결 해제
-    };
   }, []);
 
   const backgroundStyle = {

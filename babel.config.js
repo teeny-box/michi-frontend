@@ -30,5 +30,6 @@ module.exports = {
         verbose: false,
       },
     ],
+    "react-native-reanimated/plugin", // 이 줄을 배열의 마지막에 추가
   ],
 };

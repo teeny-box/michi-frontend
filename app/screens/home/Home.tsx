@@ -1,25 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Modal,
-  Image,
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Pressable,
-} from "react-native";
+import { Modal, Image, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/FontAwesome";
 import Icon4 from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon6 from "react-native-vector-icons/FontAwesome5";
-
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GradationProfile } from "@/components/common/GradationProfile";
@@ -58,6 +44,11 @@ interface Post {
   };
 }
 
+interface User {
+  nickname: string;
+  profileImage?: string | null;
+}
+
 const truncateText = (text: string, maxLength: number): string => {
   if (text.length > maxLength) {
     return `${text.slice(0, maxLength)}...`;
@@ -68,10 +59,11 @@ const truncateText = (text: string, maxLength: number): string => {
 export function Home(): React.JSX.Element {
   const [selectedTab, setSelectedTab] = useState("피드");
   const [postsData, setPostsData] = useState<Post[]>([]);
-  const [onlineUser, setOnlineUser] = useState<Post[]>([]);
+  const [onlineUser, setOnlineUser] = useState<User[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isUnderModalVisible, setIsUnderModalVisible] = useState<boolean>(false);
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null); // 선택된 게시물
+  const [isInnerModalVisible, setIsInnerModalVisible] = useState<boolean>(false);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [userData] = useRecoilState(userState);
   const { setAlertState } = useAlert();
   const { top, bottom } = useSafeAreaInsets();
@@ -100,7 +92,6 @@ export function Home(): React.JSX.Element {
       }
     } catch (err) {
       console.error("getposts error : ", err);
-      console.log(err);
     }
   };
 
@@ -131,11 +122,10 @@ export function Home(): React.JSX.Element {
       const data = await res.json();
 
       if (res.status === 200) {
-        setOnlineUser(data.data);
+        setOnlineUser(data.data as User[]);
       }
     } catch (err) {
       console.error("getposts error : ", err);
-      console.log(err);
     }
   };
 
@@ -146,6 +136,7 @@ export function Home(): React.JSX.Element {
 
   const onPressModalClose = () => {
     setIsModalVisible(false);
+    setIsInnerModalVisible(false);
   };
 
   const onPressUnderModalOpen = (post: Post) => {
@@ -157,12 +148,32 @@ export function Home(): React.JSX.Element {
   };
 
   const onPressEdit = (postNumber: number) => {
-    setIsUnderModalVisible(false);
+    setIsModalVisible(false);
+    setIsInnerModalVisible(false);
     navigation.navigate("feedEdit", { postNumber });
+    setIsUnderModalVisible(false);
   };
 
   const onPressDelete = () => {
+    setIsModalVisible(false); 
     setIsUnderModalVisible(false);
+    setAlertState({
+      open: true,
+      title: "해당 피드를 삭제하시겠어요?",
+      desc: "삭제된 피드는 복구되지 않습니다.",
+      defaultText: "확인",
+      onPress: () => removePost(),
+      cancelText: "취소",
+    });
+  };
+
+  const toggleInnerModal = () => {
+    setIsInnerModalVisible(!isInnerModalVisible);
+  };
+
+  const onPressInnerDelete = () => {
+    setIsModalVisible(false); 
+    setIsInnerModalVisible(false);
     setAlertState({
       open: true,
       title: "해당 피드를 삭제하시겠어요?",
@@ -175,10 +186,12 @@ export function Home(): React.JSX.Element {
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
+  console.log(onlineUser);
+
   return (
     <View style={styles.container}>
       <View style={[styles.safeArea, { height: top }]}></View>
-      <View style={styles.homeHeader}>
+      <TouchableOpacity style={styles.homeHeader}>
         <View style={styles.randomChatBtn}>
           <Text style={styles.randomChatText}>실시간</Text>
           <Text style={styles.randomChatText}>
@@ -187,12 +200,12 @@ export function Home(): React.JSX.Element {
           </Text>
         </View>
         <Image source={require("@assets/images/logo_home.png")} style={styles.homeLogo} />
-      </View>
+      </TouchableOpacity>
       <View style={styles.homeTabBox}>
-        <TouchableOpacity style={styles.homeTab} onPress={() => setSelectedTab("피드")}>
+        <TouchableOpacity style={[styles.homeTab, selectedTab === "피드" ? styles.selectedTab : null]} onPress={() => setSelectedTab("피드")}>
           <Text style={[styles.homeTabText, selectedTab === "피드" ? styles.selectedTabText : null]}>피드</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.homeTab} onPress={() => setSelectedTab("온라인")}>
+        <TouchableOpacity style={[styles.homeTab, selectedTab === "온라인" ? styles.selectedTab : null]} onPress={() => setSelectedTab("온라인")}>
           <Text style={[styles.homeTabText, selectedTab === "온라인" ? styles.selectedTabText : null]}>온라인</Text>
         </TouchableOpacity>
       </View>
@@ -208,14 +221,22 @@ export function Home(): React.JSX.Element {
                         <View style={styles.feedProfile}>
                           <GradationProfile>
                             <View style={styles.feedProfile}>
-                              <Icon3 name="user-circle-o" size={46} color={"#fff"} />
+                              <GradationProfile>
+                                {feed.user.profileImage ? (
+                                  <Image source={{ uri: feed.user.profileImage }} style={styles.feedProfileImage} alt="프로필 이미지" />
+                                ) : (
+                                  <View style={styles.feedProfile}>
+                                    <Icon3 name="user-circle-o" size={46} color={"#fff"} />
+                                  </View>
+                                )}
+                              </GradationProfile>
                             </View>
                           </GradationProfile>
                         </View>
                         <View style={styles.feedInfo}>
                           <Text style={styles.feedNickName}>
-                            {truncateText(feed.user.nickname, 10)} <Icon2 name="sparkles-sharp" size={10} color={"#AB94F7"} />{" "}
-                            <Text style={styles.feedText}>1시간 전</Text>
+                            {truncateText(feed.user.nickname, 10)}
+                            <Text style={styles.feedText}></Text>
                           </Text>
                           <Text style={styles.feedTitle}>{truncateText(feed.title, 18)}</Text>
                         </View>
@@ -243,18 +264,20 @@ export function Home(): React.JSX.Element {
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
               <View style={styles.onlineUserContainer}>
                 {onlineUser &&
-                  onlineUser.map(user => (
-                    <View key={user} style={styles.onlineUser}>
+                  onlineUser.map((online, index) => (
+                    <TouchableOpacity key={index} style={styles.onlineUser} >
                       <GradationProfile>
                         <View style={styles.onlineUserProfile}>
-                          <View>
+                          {online.profileImage ? (
+                            <Image source={{ uri: online.profileImage }} style={styles.onlineProfileImage} alt="프로필 이미지" />
+                          ) : (
                             <Icon3 name="user-circle-o" size={76} color={"#fff"} />
-                          </View>
+                          )}
                         </View>
                       </GradationProfile>
-                      <Text style={styles.onlineUsernickName}>{user.userName}</Text>
-                      <Text style={styles.onlineUserisOnline}>{user.isOnline}</Text>
-                    </View>
+                      <Text style={styles.onlineUsernickName}>{online.nickname}</Text>
+                      <Text style={styles.onlineUserisOnline}>접속중</Text>
+                    </TouchableOpacity>
                   ))}
               </View>
             </ScrollView>
@@ -266,18 +289,35 @@ export function Home(): React.JSX.Element {
           <View style={styles.modalView}>
             {selectedPost && (
               <View style={styles.modalcontentsbox}>
+                {userData.userId === selectedPost.user.userId && (
+                  <TouchableOpacity style={styles.modalMenuBtn} onPress={toggleInnerModal}>
+                    <Icon name="ellipsis1" size={32} color={"#7000FF"} />
+                  </TouchableOpacity>
+                )}
+                {isInnerModalVisible && (
+                  <View style={styles.innerModal}>
+                    <TouchableOpacity style={styles.innerModalBtn1} onPress={() => selectedPost && onPressEdit(selectedPost.postNumber)}>
+                      <Text>수정</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.innerModalBtn2} onPress={() => selectedPost && onPressDelete()}>
+                      <Text>삭제</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
                 <View style={styles.modalProfileBox}>
                   <GradationProfile>
                     <View style={styles.modalProfileBox}>
-                      <Icon3 name="user-circle-o" size={90} color={"#fff"} />
+                      {selectedPost.user.profileImage ? (
+                        <Image source={{ uri: selectedPost.user.profileImage }} style={styles.modalProfileImage} alt="프로필 이미지" />
+                      ) : (
+                        <Icon3 name="user-circle-o" size={90} color={"#fff"} />
+                      )}
                     </View>
                   </GradationProfile>
                 </View>
                 <View style={styles.modalNicknameBox}>
                   <Text style={styles.modalNicknameText}>{selectedPost.user.nickname}</Text>
-                  <Text style={styles.modalIsloginText}>
-                    접속중 <Icon2 name="sparkles-sharp" size={12} color={"#AB94F7"} /> 1시간전
-                  </Text>
+                  <Text style={styles.modalIsloginText}>접속중</Text>
                 </View>
                 <View style={styles.modalBody}>
                   <Text style={styles.modalTitle}>{selectedPost.title}</Text>
@@ -309,7 +349,7 @@ export function Home(): React.JSX.Element {
               <TouchableOpacity style={styles.underModalBtn1} onPress={() => selectedPost && onPressEdit(selectedPost.postNumber)}>
                 <Text>수정</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.underModalBtn2} onPress={() => selectedPost && onPressDelete()}>
+              <TouchableOpacity style={styles.underModalBtn2} onPress={() => selectedPost && onPressInnerDelete()}>
                 <Text>삭제</Text>
               </TouchableOpacity>
             </View>
@@ -366,7 +406,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   homeTab: {
-    marginLeft: "6%",
+    width: "25%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  selectedTab: {
+    borderBottomWidth: 3,
+    borderBottomColor: "#7000FF",
   },
   homeTabText: { fontSize: 26, fontWeight: "700", color: "#aaa" },
   selectedTabText: {
@@ -443,11 +490,21 @@ const styles = StyleSheet.create({
     width: SCREEN_HEIGHT / 10,
     borderRadius: 100,
   },
+  onlineProfileImage: {
+    height: SCREEN_HEIGHT / 11,
+    width: SCREEN_HEIGHT / 11,
+    borderRadius: 100,
+  },
+  feedProfileImage: {
+    height: SCREEN_HEIGHT / 19,
+    width: SCREEN_HEIGHT / 19,
+  },
   onlineUsernickName: {
     fontWeight: "600",
     marginVertical: SCREEN_HEIGHT / 200,
   },
   onlineUserisOnline: {
+    fontSize: 12,
     fontWeight: "400",
   },
   writeBtn: {
@@ -491,6 +548,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+    position: "relative",
+  },
+  modalMenuBtn: {
+    top: 0,
+    right: 0,
+    position: "absolute",
   },
   modalProfileBox: {
     height: 100,
@@ -498,6 +561,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  modalProfileImage: {
+    height: SCREEN_HEIGHT / 10,
+    width: SCREEN_HEIGHT / 10,
+    borderRadius: 100,
   },
   modalNicknameBox: {
     alignItems: "center",
@@ -558,6 +626,29 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "Freesentation-5Medium",
     color: "#ffffff",
+  },
+  innerModal: {
+    top: 30,
+    right: 0,
+    position: "absolute",
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#7000ff",
+  },
+  innerModalBtn1: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: SCREEN_WIDTH * 0.2,
+    height: SCREEN_HEIGHT * 0.04,
+    borderBottomWidth: 1,
+    borderColor: "#rgba(112, 0, 255, 0.2)",
+  },
+  innerModalBtn2: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: SCREEN_WIDTH * 0.2,
+    height: SCREEN_HEIGHT * 0.04,
   },
   underModalOverlay: {
     flex: 1,
