@@ -77,7 +77,7 @@ export function Chatrooms(): React.JSX.Element {
         renderItem={({ item }) => (
           <Pressable
             onPress={() => {
-              navigation.navigate("ChatScreen", { room: item.title });
+              navigation.navigate("ChatScreen", { room: item.title, roomId: item.roomId });
             }}>
             <ChatRoomCell chatRoom={item} />
           </Pressable>
