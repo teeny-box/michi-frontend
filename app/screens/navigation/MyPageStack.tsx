@@ -1,16 +1,13 @@
-import { NativeStackNavigationOptions, NativeStackNavigationProp, createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MyPage } from "@screens/mypage/MyPage";
-import { ChangeId } from "@screens/mypage/ChangeId";
 import { ChangePassword } from "@screens/mypage/ChangePassword";
 import { ChangeProfile } from "../mypage/ChangeProfile";
 import { Certification } from "../signup/Certification";
 import { FindIdStackNavigation } from "./user/FindIdNavigation";
 import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
 import { useLayoutEffect } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
-import { getFocusedRouteNameFromRoute, useNavigation } from "@react-navigation/native";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { ChangeProfileImageModal } from "../mypage/ChangeProfileImageModal";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type MypageRootStackParam = {
   mypage: undefined;

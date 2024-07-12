@@ -1,4 +1,3 @@
-import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
 import { accessTokenState, userState } from "@/recoil/authAtoms";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MainTabNavigation } from "./MainTabNavigation";
@@ -7,14 +6,11 @@ import { useEffect, useState } from "react";
 import { userUrl } from "@/utils/apiUrls";
 import SplashScreen from "react-native-splash-screen";
 import { useAccessToken } from "@/hooks/useAccessToken";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export type RootStackParam = {
   main: undefined;
   feedEdit: undefined;
 };
-
-const Stack = createNativeStackNavigator();
 
 export function AppNavigation() {
   const accessToken = useRecoilValue(accessTokenState);

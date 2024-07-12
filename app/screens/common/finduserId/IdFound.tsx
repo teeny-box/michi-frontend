@@ -1,15 +1,15 @@
-import { commonStyles } from "@screens/signup/Common.styled";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRecoilValue } from "recoil";
-import { idFoundState } from "@/recoil/authAtoms";
-import { Title } from "@/components/signup/Title";
-import { TextField } from "@/components/signup/TextField";
-import { GradationButton } from "@/components/common/GradationButton";
-import { Button } from "@/components/common/Button";
-import { StartRootStackParam } from "@/screens/navigation/StartStackNavigation";
+import { idFoundState } from "@recoil/authAtoms";
+import { Title } from "@components/signup/Title";
+import { Button } from "@components/common/Button";
+import { TextField } from "@components/signup/TextField";
+import { GradationButton } from "@components/common/GradationButton";
+import { StartRootStackParam } from "@screens/navigation/StartStackNavigation";
+import { commonStyles } from "@screens/signup/Common.styled";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 export function IdFound(): React.JSX.Element {

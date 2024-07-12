@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
-import { GradationButton } from "@/components/common/GradationButton";
+import { GradationButton } from "@components/common/GradationButton";
 
 export function Welcome(): React.JSX.Element {
   const { top } = useSafeAreaInsets();

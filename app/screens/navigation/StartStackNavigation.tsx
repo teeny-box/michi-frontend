@@ -2,7 +2,6 @@ import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react
 import { Start } from "../start/Start";
 import { Login } from "../login/Login";
 import { SignUpStackNavigation } from "./SignUpStackNavigation";
-import { MainTabNavigation } from "./MainTabNavigation";
 import { FindIdStackNavigation } from "./user/FindIdNavigation";
 import { FindPasswordStackNavigation } from "./user/FindPasswordNavigation";
 import { StatusBar } from "react-native";

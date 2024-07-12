@@ -1,21 +1,22 @@
-import { idFoundState, oneTimeTokenState } from "@/recoil/authAtoms";
-import { authUrl } from "@/utils/apiUrls";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { commonStyles } from "../../signup/Common.styled";
+import { idFoundState, oneTimeTokenState } from "@recoil/authAtoms";
+import { headerShowState } from "@recoil/commonAtoms";
+import { FindPasswordRootStackParam } from "@screens/navigation/user/FindPasswordNavigation";
 import { IMPCertification } from "@components/common/IMPCertification";
-import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswordNavigation";
-import { GradationButton } from "@/components/common/GradationButton";
-import { Title } from "@/components/signup/Title";
-import { headerShowState } from "@/recoil/commonAtoms";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
-import { NextButton } from "@/components/signup/NextButton";
+import { GradationButton } from "@components/common/GradationButton";
+import { NextButton } from "@components/signup/NextButton";
+import { Title } from "@components/signup/Title";
+import { authUrl } from "@utils/apiUrls";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { commonStyles } from "../../signup/Common.styled";
 
 type stateType = "waiting" | "running" | "fail" | "success";
+const INVALID_TIME = 1000 * 60 * 5;
 
 export function FindPassword() {
   const { top } = useSafeAreaInsets();
@@ -38,6 +39,7 @@ export function FindPassword() {
           userId: id,
         }),
       });
+      console.log(await res.json());
 
       if (res.ok) {
         if (intervalId.current) {
@@ -46,7 +48,7 @@ export function FindPassword() {
         }
         const token = res.headers.get("authorization")?.split(" ")[1];
         if (token) {
-          setOneTimeToken({ token, time: 1000 * 60 - 1000 });
+          setOneTimeToken({ token, time: INVALID_TIME - 1000 });
           intervalId.current = +setInterval(() => {
             setOneTimeToken(cur => {
               return { ...cur, time: cur.time - 1000 };
@@ -54,7 +56,7 @@ export function FindPassword() {
           }, 1000);
           timeoutId.current = +setTimeout(() => {
             clearInterval(intervalId.current);
-          }, 1000 * 60);
+          }, INVALID_TIME);
           return 1;
         }
       }

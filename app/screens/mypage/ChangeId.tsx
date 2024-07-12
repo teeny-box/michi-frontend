@@ -1,19 +1,19 @@
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@/components/common/TextInputField";
-import { StyleSheet, View } from "react-native";
-import { GradationButton } from "@/components/common/GradationButton";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
+import { userUrl } from "@utils/apiUrls";
+import { TextInputField } from "@components/common/TextInputField";
+import { GradationButton } from "@components/common/GradationButton";
 
 // 영문자, 숫자, 한글로만 이루어져야 합니다.
 // 길이는 2자 이상 10자 이하여야 합니다.
 const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
 const defaultMessage = "* 한글, 영어, 숫자만 사용해주세요.\n* 2자 이상 10자 이내로 입력해주세요.";
 
-export function ChangeId() {
+export function ChangeId(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const [inputId, setInputId] = useState("");

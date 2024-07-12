@@ -1,8 +1,8 @@
-import { headerShowState } from "@/recoil/commonAtoms";
-import { FindId } from "@/screens/common/finduserId/FindId";
-import { IdFound } from "@/screens/common/finduserId/IdFound";
-import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
+import { NativeStackNavigationOptions, createNativeStackNavigator } from "@react-navigation/native-stack";
+import { headerShowState } from "@recoil/commonAtoms";
+import { FindId } from "@screens/common/finduserId/FindId";
+import { IdFound } from "@screens/common/finduserId/IdFound";
 
 export type FindIDRootStackParam = {
   findId: undefined;
@@ -22,7 +22,7 @@ export function FindIdStackNavigation() {
     headerTintColor: "#141414",
     headerTitleStyle: {
       fontFamily: "NotoSansKR-SemiBold",
-      fontSize: 20,
+      fontSize: 18,
       color: "#141414",
     },
     headerBackTitleVisible: false,

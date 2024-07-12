@@ -1,26 +1,26 @@
-import { accessTokenState } from "@/recoil/authAtoms";
-import { setAsyncStorage } from "@/storage/AsyncStorage";
-import { authUrl } from "@/utils/apiUrls";
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useSetRecoilState } from "recoil";
 import { StartRootStackParam } from "../navigation/StartStackNavigation";
 import LinearGradient from "react-native-linear-gradient";
-import { TextInputField } from "@/components/common/TextInputField";
-import { GradationButton } from "@/components/common/GradationButton";
-import { useAlert } from "@/hooks/useAlert";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
+import { useSetRecoilState } from "recoil";
+import { accessTokenState } from "@recoil/authAtoms";
+import { setAsyncStorage } from "@storage/AsyncStorage";
+import { TextInputField } from "@components/common/TextInputField";
+import { GradationButton } from "@components/common/GradationButton";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { useAlert } from "@hooks/useAlert";
+import { authUrl } from "@utils/apiUrls";
 import Toast from "react-native-toast-message";
 
-export function Login() {
+export function Login(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const navigation = useNavigation<NativeStackNavigationProp<StartRootStackParam>>();
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+  const [id, setId] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const setAccessToken = useSetRecoilState(accessTokenState);
   const { setAlertState } = useAlert();
   const { openLoadingScreen, closeLoadingScreen } = useLoadingScreen();
@@ -43,6 +43,7 @@ export function Login() {
         setAccessToken(accessToken);
         setAsyncStorage("accessToken", accessToken);
         setAsyncStorage("refreshToken", refreshToken);
+
         console.log("login success");
         return 1;
       }
@@ -82,7 +83,6 @@ export function Login() {
   const handlePressFindPassword = () => {
     navigation.push("findPassword_login");
   };
-
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>

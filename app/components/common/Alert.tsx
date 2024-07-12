@@ -1,15 +1,15 @@
 import { Modal, StyleSheet, Text, View } from "react-native";
 import { Button } from "@components/common/Button";
-import { useAlert } from "@/hooks/useAlert";
+import { useAlert } from "@hooks/useAlert";
 import { useRecoilValue } from "recoil";
-import { alertState } from "@/recoil/commonAtoms";
+import { alertState } from "@recoil/commonAtoms";
 import { useState } from "react";
-import ProgressDots from "./ProgressDots";
+import { ProgressDots } from "./ProgressDots";
 
-export function Alert() {
+export function Alert(): React.JSX.Element {
   const { closeAlert } = useAlert();
   const { open, title, desc, onPress, onClosed, defaultText, cancelText } = useRecoilValue(alertState);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onPressDefaultButton = async () => {
     setLoading(true);
