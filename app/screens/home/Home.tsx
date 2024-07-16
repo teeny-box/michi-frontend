@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Modal, Image, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/AntDesign";
-import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/FontAwesome";
 import Icon4 from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon6 from "react-native-vector-icons/FontAwesome5";
@@ -63,6 +62,7 @@ export function Home(): React.JSX.Element {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isUnderModalVisible, setIsUnderModalVisible] = useState<boolean>(false);
   const [isInnerModalVisible, setIsInnerModalVisible] = useState<boolean>(false);
+  const [isOnlineModalVisible, setIsOnlineModalVisible] = useState<boolean>(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [userData] = useRecoilState(userState);
   const { setAlertState } = useAlert();
@@ -123,6 +123,7 @@ export function Home(): React.JSX.Element {
 
       if (res.status === 200) {
         setOnlineUser(data.data as User[]);
+        console.log(1);
       }
     } catch (err) {
       console.error("getposts error : ", err);
@@ -132,6 +133,11 @@ export function Home(): React.JSX.Element {
   const onPressModalOpen = (post: Post) => {
     setSelectedPost(post);
     setIsModalVisible(true);
+  };
+
+  const onPressOnlineModalOpen = (online: online) => {
+    setSelectedPost(online);
+    setIsOnlineModalVisible(true);
   };
 
   const onPressModalClose = () => {
@@ -186,7 +192,7 @@ export function Home(): React.JSX.Element {
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
-  console.log(onlineUser);
+
 
   return (
     <View style={styles.container}>
@@ -264,8 +270,8 @@ export function Home(): React.JSX.Element {
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
               <View style={styles.onlineUserContainer}>
                 {onlineUser &&
-                  onlineUser.map((online, index) => (
-                    <TouchableOpacity key={index} style={styles.onlineUser} >
+                  onlineUser.map((online: online, index) => (
+                    <TouchableOpacity key={index} style={styles.onlineUser} onPress={() => onPressOnlineModalOpen(online)}>
                       <GradationProfile>
                         <View style={styles.onlineUserProfile}>
                           {online.profileImage ? (
@@ -299,7 +305,7 @@ export function Home(): React.JSX.Element {
                     <TouchableOpacity style={styles.innerModalBtn1} onPress={() => selectedPost && onPressEdit(selectedPost.postNumber)}>
                       <Text>수정</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.innerModalBtn2} onPress={() => selectedPost && onPressDelete()}>
+                    <TouchableOpacity style={styles.innerModalBtn2} onPress={() => selectedPost && onPressInnerDelete()}>
                       <Text>삭제</Text>
                     </TouchableOpacity>
                   </View>
@@ -342,6 +348,46 @@ export function Home(): React.JSX.Element {
           </View>
         </View>
       </Modal>
+      <Modal animationType="fade" visible={isOnlineModalVisible} transparent={true}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalView}>
+            {selectedPost && (
+              <View style={styles.modalcontentsbox}>
+                {userData.userId === selectedPost.user.userId && (
+                  <TouchableOpacity style={styles.modalMenuBtn} onPress={toggleInnerModal}>
+                    <Icon name="ellipsis1" size={32} color={"#7000FF"} />
+                  </TouchableOpacity>
+                )}
+                <View style={styles.modalProfileBox}>
+                  <GradationProfile>
+                    <View style={styles.modalProfileBox}>
+                      {selectedPost.user.profileImage ? (
+                        <Image source={{ uri: selectedPost.user.profileImage }} style={styles.modalProfileImage} alt="프로필 이미지" />
+                      ) : (
+                        <Icon3 name="user-circle-o" size={90} color={"#fff"} />
+                      )}
+                    </View>
+                  </GradationProfile>
+                </View>
+                <View style={styles.modalNicknameBox}>
+                  <Text style={styles.modalNicknameText}>{selectedPost.user.nickname}</Text>
+                  <Text style={styles.modalIsloginText}>접속중</Text>
+                </View>
+              </View>
+            )}
+            <TouchableOpacity style={styles.modalbtn1}>
+              <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
+                <Text style={styles.modalFooterBtnText}>
+                  채팅하기 <Icon6 name="angle-right" size={22} />
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalbtn2} onPress={onPressModalClose}>
+              <Text style={styles.modalFooterBtnText}>취소</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <Modal animationType="slide" visible={isUnderModalVisible} transparent={true}>
         <TouchableWithoutFeedback onPress={UnderModalClose}>
           <View style={styles.underModalOverlay}>
@@ -349,7 +395,7 @@ export function Home(): React.JSX.Element {
               <TouchableOpacity style={styles.underModalBtn1} onPress={() => selectedPost && onPressEdit(selectedPost.postNumber)}>
                 <Text>수정</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.underModalBtn2} onPress={() => selectedPost && onPressInnerDelete()}>
+              <TouchableOpacity style={styles.underModalBtn2} onPress={() => selectedPost && onPressDelete()}>
                 <Text>삭제</Text>
               </TouchableOpacity>
             </View>
