@@ -161,7 +161,7 @@ export function Home(): React.JSX.Element {
   };
 
   const onPressDelete = () => {
-    setIsModalVisible(false); 
+    setIsModalVisible(false);
     setIsUnderModalVisible(false);
     setAlertState({
       open: true,
@@ -178,7 +178,7 @@ export function Home(): React.JSX.Element {
   };
 
   const onPressInnerDelete = () => {
-    setIsModalVisible(false); 
+    setIsModalVisible(false);
     setIsInnerModalVisible(false);
     setAlertState({
       open: true,
@@ -191,8 +191,6 @@ export function Home(): React.JSX.Element {
   };
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
-
-
 
   return (
     <View style={styles.container}>
@@ -224,21 +222,19 @@ export function Home(): React.JSX.Element {
                   <TouchableHighlight key={feed.postNumber} onPress={() => onPressModalOpen(feed)} underlayColor={"#rgba(112, 0, 255, 0.05)"}>
                     <View style={styles.feed}>
                       <View style={styles.feedContents}>
-                        <View style={styles.feedProfile}>
-                          <GradationProfile>
-                            <View style={styles.feedProfile}>
-                              <GradationProfile>
-                                {feed.user.profileImage ? (
-                                  <Image source={{ uri: feed.user.profileImage }} style={styles.feedProfileImage} alt="프로필 이미지" />
-                                ) : (
-                                  <View style={styles.feedProfile}>
-                                    <Icon3 name="user-circle-o" size={46} color={"#fff"} />
-                                  </View>
-                                )}
-                              </GradationProfile>
-                            </View>
-                          </GradationProfile>
-                        </View>
+                        <GradationProfile>
+                          <View style={styles.feedProfile}>
+                            <GradationProfile>
+                              {feed.user.profileImage ? (
+                                <Image source={{ uri: feed.user.profileImage }} style={styles.feedProfileImage} alt="프로필 이미지" />
+                              ) : (
+                                <View style={styles.feedProfile}>
+                                  <Icon3 name="user-circle-o" size={46} color={"#fff"} />
+                                </View>
+                              )}
+                            </GradationProfile>
+                          </View>
+                        </GradationProfile>
                         <View style={styles.feedInfo}>
                           <Text style={styles.feedNickName}>
                             {truncateText(feed.user.nickname, 10)}
@@ -542,8 +538,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   feedProfileImage: {
-    height: SCREEN_HEIGHT / 19,
-    width: SCREEN_HEIGHT / 19,
+    height: 44,
+    width: 44,
   },
   onlineUsernickName: {
     fontWeight: "600",

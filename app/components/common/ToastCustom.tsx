@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, StyleSheetProperties, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast, { ToastConfigParams } from "react-native-toast-message";
 

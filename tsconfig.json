@@ -1,5 +1,5 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
+  "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./app",
     "paths": {
@@ -10,12 +10,13 @@
       "@mocks/*": ["mocks/*"],
       "@recoil/*": ["recoil/*"],
       "@screens/*": ["screens/*"],
-      "@stogare/*": ["stogare/*"],
+      "@storage/*": ["storage/*"],
       "@utils/*": ["utils/*"]
     },
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "module": "ES2022"
+    "module": "ES2022",
+    "moduleResolution": "node",
   }
 }

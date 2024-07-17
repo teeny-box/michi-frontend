@@ -5,7 +5,7 @@ type gradationProps = {
   children?: React.ReactNode;
 };
 
-export function Gradation({ children }: gradationProps) {
+export function Gradation({ children }: gradationProps): React.JSX.Element {
   return (
     <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
       {children}

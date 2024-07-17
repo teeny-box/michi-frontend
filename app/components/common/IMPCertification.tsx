@@ -1,11 +1,10 @@
 import IMP from "iamport-react-native";
-import { Text } from "react-native";
 
 interface CertificationPropsType {
-  callback: (response: any) => any;
+  callback: (response: any) => void;
 }
 
-export function IMPCertification({ callback }: CertificationPropsType) {
+export function IMPCertification({ callback }: CertificationPropsType): React.JSX.Element {
   /* [필수입력] 본인인증에 필요한 데이터를 입력합니다. */
   const data = {
     merchant_uid: `mid_${new Date().getTime()}`,
@@ -13,7 +12,8 @@ export function IMPCertification({ callback }: CertificationPropsType) {
     carrier: "",
     name: "",
     phone: "",
-    min_age: "",
+    min_age: "19",
+    type: "certification",
   };
 
   return (

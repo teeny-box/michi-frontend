@@ -1,25 +1,24 @@
 import { ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
-import { Profile } from "@components/mypage/Profile.tsx";
+import { Profile } from "@components/mypage/Profile";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useRecoilValue } from "recoil";
-import { userState } from "@/recoil/authAtoms";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GradationButton } from "@/components/common/GradationButton";
-import { ListItem } from "@/components/mypage/ListItem";
-import { LinkedListItem } from "@/components/mypage/LinkedListItem";
 import { MypageRootStackParam } from "../navigation/MyPageStack";
-import { authUrl, userUrl } from "@/utils/apiUrls";
-import { useAccessToken } from "@/hooks/useAccessToken";
-import getCurrentAge from "@/utils/getCurrentAge";
-import phoneNumberFormat from "@/utils/phoneNumberFormat";
-import { useAlert } from "@/hooks/useAlert";
 import Toast from "react-native-toast-message";
-import { Button } from "@/components/common/Button";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
-import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { userState } from "@recoil/authAtoms";
+import { Button } from "@components/common/Button";
+import { GradationButton } from "@components/common/GradationButton";
+import { LinkedListItem } from "@components/mypage/LinkedListItem";
+import { ListItem } from "@components/mypage/ListItem";
+import { useAlert } from "@hooks/useAlert";
+import { useAccessToken } from "@hooks/useAccessToken";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { authUrl, userUrl } from "@utils/apiUrls";
+import phoneNumberFormat from "@utils/phoneNumberFormat";
+import getCurrentAge from "@utils/getCurrentAge";
 
-export function MyPage() {
+export function MyPage(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<MypageRootStackParam>>();
   const userData = useRecoilValue(userState);

@@ -10,7 +10,7 @@ type gradationProps = {
   rightIcon?: ReactElement;
 };
 
-export function GradationButton({ text, size, disabled, onPress, rightIcon }: gradationProps) {
+export function GradationButton({ text, size, disabled, onPress, rightIcon }: gradationProps): React.JSX.Element {
   return (
     <>
       {disabled ? (

@@ -1,9 +1,9 @@
-import { userState } from "@/recoil/authAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useRecoilValue } from "recoil";
+import { userState } from "@recoil/authAtoms";
 
 const defaultImage = require("@assets/images/user_default_image.png");
 

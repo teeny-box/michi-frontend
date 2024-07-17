@@ -1,8 +1,7 @@
 module.exports = {
-  arrowParens: 'avoid',
+  arrowParens: "avoid",
   bracketSameLine: true,
-  bracketSpacing: false,
-  trailingComma: 'all',
+  trailingComma: "all",
 
   // teenybox 프리티어!!
   tabWidth: 2,

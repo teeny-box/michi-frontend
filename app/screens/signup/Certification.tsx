@@ -1,22 +1,22 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
-import { IMPCertification } from "@/components/common/IMPCertification";
 import { commonStyles } from "./Common.styled";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { birthYearState, certificationState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
-import { authUrl } from "@/utils/apiUrls";
-import { GradationButton } from "@/components/common/GradationButton";
-import { Title } from "@/components/signup/Title";
-import { NextButton } from "@/components/signup/NextButton";
-import getCurrentAge from "@/utils/getCurrentAge";
-import { useAlert } from "@/hooks/useAlert";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
+import { birthYearState, certificationState, phoneNumberState, userNameState } from "@recoil/signupAtoms";
+import { IMPCertification } from "@components/common/IMPCertification";
+import { GradationButton } from "@components/common/GradationButton";
+import { Title } from "@components/signup/Title";
+import { NextButton } from "@components/signup/NextButton";
+import { useAlert } from "@hooks/useAlert";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { authUrl } from "@utils/apiUrls";
+import getCurrentAge from "@utils/getCurrentAge";
 
-export function Certification() {
+export function Certification(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [state, setState] = useRecoilState(certificationState);
@@ -32,11 +32,16 @@ export function Certification() {
       setPhoneNumber("");
       setBirthYear("");
     }
+
+    if (state === "running") {
+      navigation.setOptions({ headerShown: false });
+    } else {
+      navigation.setOptions({ headerShown: true });
+    }
   }, [state]);
 
   const handlePressCertificationButton = () => {
     setState("running");
-    navigation.setOptions({ headerShown: false });
   };
 
   const getPortOne = async (impUid: string): Promise<true | undefined> => {
@@ -64,6 +69,7 @@ export function Certification() {
 
   const callback = async (res: any) => {
     console.log(res);
+
     if (res.success === "false") {
       setState("fail");
       return;
@@ -75,7 +81,6 @@ export function Certification() {
       setState("fail");
       setAlertState({ open: true, title: "미성년자는 가입할 수 없습니다.", defaultText: "확인" });
     }
-    navigation.setOptions({ headerShown: true });
   };
 
   const handlePressNextButton = () => {

@@ -4,13 +4,13 @@ import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilState } from "recoil";
-import { idState } from "@/recoil/signupAtoms";
 import { commonStyles } from "./Common.styled";
 import { useEffect, useState } from "react";
-import { userUrl } from "@/utils/apiUrls";
-import { TextInputField } from "@/components/common/TextInputField";
-import { Title } from "@/components/signup/Title";
-import { NextButton } from "@/components/signup/NextButton";
+import { idState } from "@recoil/signupAtoms";
+import { userUrl } from "@utils/apiUrls";
+import { TextInputField } from "@components/common/TextInputField";
+import { NextButton } from "@components/signup/NextButton";
+import { Title } from "@components/signup/Title";
 
 // 영문자로 시작해야 합니다.
 // 영문자, 숫자, 밑줄(_)로만 이루어져야 합니다.
@@ -18,12 +18,12 @@ import { NextButton } from "@/components/signup/NextButton";
 const regex = /^[a-zA-Z][a-zA-Z0-9_]{3,19}$/;
 const defaultMessage = "* 영어, 숫자, 밑줄(_)만 사용해주세요.\n* 4자 이상 20자 이내로 입력해주세요.";
 
-export function Id() {
+export function Id(): React.JSX.Element {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<SignUpRootStackParam>>();
   const [id, setId] = useRecoilState(idState);
-  const [checkMessage, setCheckMessage] = useState(defaultMessage);
-  const [isAvailable, setIsAvailable] = useState(false);
+  const [checkMessage, setCheckMessage] = useState<string>(defaultMessage);
+  const [isAvailable, setIsAvailable] = useState<boolean>(false);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>(); // 디바운싱 타이머
 
   useEffect(() => {
@@ -80,9 +80,11 @@ export function Id() {
     if (timer) {
       clearTimeout(timer);
     }
+
     const newTimer = setTimeout(async () => {
       await idValidation(text);
     }, 500);
+
     setTimer(newTimer);
   };
 

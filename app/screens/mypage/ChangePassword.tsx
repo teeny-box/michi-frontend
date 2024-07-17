@@ -1,15 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { TextInputField } from "@/components/common/TextInputField";
-import { GradationButton } from "@/components/common/GradationButton";
-import { MypageRootStackParam } from "../navigation/MyPageStack";
-import { userUrl } from "@/utils/apiUrls";
-import { useAccessToken } from "@/hooks/useAccessToken";
 import Toast from "react-native-toast-message";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
+import { MypageRootStackParam } from "../navigation/MyPageStack";
+import { TextInputField } from "@components/common/TextInputField";
+import { GradationButton } from "@components/common/GradationButton";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { useAccessToken } from "@hooks/useAccessToken";
+import { userUrl } from "@utils/apiUrls";
 
 // 8자 이상이어야 합니다.
 // 최소 1개 이상의 영문자, 숫자, 특수문자를 각각 포함해야 합니다.

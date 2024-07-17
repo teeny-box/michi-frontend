@@ -1,4 +1,4 @@
-import { birthYearState, phoneNumberState, userNameState } from "@/recoil/signupAtoms";
+import { birthYearState, phoneNumberState, userNameState } from "@recoil/signupAtoms";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView, View } from "react-native";
@@ -6,11 +6,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRecoilValue } from "recoil";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { commonStyles } from "./Common.styled";
-import { Title } from "@/components/signup/Title";
-import { TextField } from "@/components/signup/TextField";
-import { NextButton } from "@/components/signup/NextButton";
-import phoneNumberFormat from "@/utils/phoneNumberFormat";
-import getCurrentAge from "@/utils/getCurrentAge";
+import { Title } from "@components/signup/Title";
+import { TextField } from "@components/signup/TextField";
+import { NextButton } from "@components/signup/NextButton";
+import phoneNumberFormat from "@utils/phoneNumberFormat";
+import getCurrentAge from "@utils/getCurrentAge";
 
 export function CheckInfo(): React.JSX.Element {
   const { top } = useSafeAreaInsets();

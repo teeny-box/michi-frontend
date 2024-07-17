@@ -10,7 +10,7 @@ type buttonProps = {
   rightIcon?: ReactElement;
 };
 
-export function Button({ text, size, color, disabled, onPress, rightIcon }: buttonProps) {
+export function Button({ text, size, color, disabled, onPress, rightIcon }: buttonProps): React.JSX.Element {
   return (
     <>
       <TouchableOpacity

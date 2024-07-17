@@ -2,18 +2,18 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
-import { commonStyles } from "@/screens/signup/Common.styled";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { idFoundState } from "@/recoil/authAtoms";
-import { userUrl } from "@/utils/apiUrls";
-import { FindPasswordRootStackParam } from "@/screens/navigation/user/FindPasswordNavigation";
-import { TextInputField } from "@/components/common/TextInputField";
-import { Title } from "@/components/signup/Title";
-import { GradationButton } from "@/components/common/GradationButton";
-import { useLoadingScreen } from "@/hooks/useLoadingScreen";
-import { useAlert } from "@/hooks/useAlert";
-import { StartRootStackParam } from "@/screens/navigation/StartStackNavigation";
+import { idFoundState } from "@recoil/authAtoms";
+import { commonStyles } from "@screens/signup/Common.styled";
+import { StartRootStackParam } from "@screens/navigation/StartStackNavigation";
+import { FindPasswordRootStackParam } from "@screens/navigation/user/FindPasswordNavigation";
+import { userUrl } from "@utils/apiUrls";
+import { Title } from "@components/signup/Title";
+import { TextInputField } from "@components/common/TextInputField";
+import { GradationButton } from "@components/common/GradationButton";
+import { useLoadingScreen } from "@hooks/useLoadingScreen";
+import { useAlert } from "@hooks/useAlert";
 
 // 영문자로 시작해야 합니다.
 // 영문자, 숫자, 밑줄(_)로만 이루어져야 합니다.
@@ -59,7 +59,6 @@ export function IdExistCheck() {
 
   const handlePressNextButton = async () => {
     const isExist = await checkIdExist();
-    setId("");
 
     if (isExist) {
       navigation.push("findPassword");
@@ -70,16 +69,11 @@ export function IdExistCheck() {
         desc: "다시 입력하시겠습니까?",
         defaultText: "확인",
         cancelText: "취소",
+        onPress: () => setId(""),
         onClosed: () => navigationStart.reset({ index: 1, routes: [{ name: "login" }] }),
       });
     }
   };
-
-  useEffect(() => {
-    return () => {
-      setId("");
-    };
-  }, []);
 
   return (
     <View style={[commonStyles.container, { paddingTop: top }]}>

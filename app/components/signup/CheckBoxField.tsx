@@ -1,5 +1,4 @@
-import { ReactElement } from "react";
-import { GestureResponderEvent, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { GestureResponderEvent, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 type checkBoxFieldProps = {
   children: React.ReactNode;
