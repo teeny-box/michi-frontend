@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, Dimensions, FlatList, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil";
 import { accessTokenState } from "../../recoil/authAtoms";
 
 interface ChatRoom {
+  id: string;
   title: string;
   lastMessage: string;
   time: Date;
@@ -23,6 +24,27 @@ export function Chatrooms(): React.JSX.Element {
   const accessToken = useRecoilValue(accessTokenState); // 토큰 가져오기
 
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+
+  useEffect(() => {
+    fetchChatRooms(accessToken);
+  }, [accessToken]);
+
+  async function fetchChatRooms(token: string) {
+    const response = await fetch(`${process.env.BASE_URL}/chatroom`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch chat rooms");
+    }
+
+    const data = await response.json();
+    setChatRooms(data.data);
+  }
 
   async function fetchRandomChatRoom(token: string) {
     const response = await fetch(`${process.env.BASE_URL}/chat/random`, {
@@ -41,12 +63,38 @@ export function Chatrooms(): React.JSX.Element {
     return data.data; // data.data에 채팅 방 정보가 들어있습니다.
   }
 
+  async function fetchChatRoomMessages(chatroomId: string, token: string) {
+    const response = await fetch(`${process.env.BASE_URL}/chat/${chatroomId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch chat room messages");
+    }
+
+    const data = await response.json();
+    return data.data;
+  }
+
   const handlePressRandomChat = async () => {
     try {
       const chatRoomData = await fetchRandomChatRoom(accessToken);
-      // console.log("🚀 ~ handlePressRandomChat ~ chatRoomData:", chatRoomData);
       setChatRooms([...chatRooms, chatRoomData]);
       navigation.navigate("ChatScreen", { room: chatRoomData.title, roomId: chatRoomData.id });
+    } catch (error) {
+      console.error(error);
+      // 오류 처리 로직 추가
+    }
+  };
+
+  const handlePressChatRoom = async (roomId: string, title: string) => {
+    try {
+      const messages = await fetchChatRoomMessages(roomId, accessToken);
+      navigation.navigate("ChatScreen", { room: title, roomId, messages });
     } catch (error) {
       console.error(error);
       // 오류 처리 로직 추가
@@ -73,12 +121,9 @@ export function Chatrooms(): React.JSX.Element {
       <FlatList
         contentContainerStyle={{ paddingBottom: 50 }}
         data={chatRooms}
-        keyExtractor={item => item.title}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <Pressable
-            onPress={() => {
-              navigation.navigate("ChatScreen", { room: item.title, roomId: item.roomId });
-            }}>
+          <Pressable onPress={() => handlePressChatRoom(item.id, item.title)}>
             <ChatRoomCell chatRoom={item} />
           </Pressable>
         )}
