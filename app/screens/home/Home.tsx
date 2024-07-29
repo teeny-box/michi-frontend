@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Modal, Image, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from "react-native";
+import { Modal, Image, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback, GestureResponderEvent } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon3 from "react-native-vector-icons/FontAwesome";
@@ -15,6 +15,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/authAtoms";
 import { accessTokenState } from "@/recoil/authAtoms";
 import { useAlert } from "@/hooks/useAlert";
+import RandomChatBanner from "@/components/home/RandomChatBanner";
 
 export type RootStackParam = {
   feedCreat: undefined;
@@ -123,7 +124,6 @@ export function Home(): React.JSX.Element {
 
       if (res.status === 200) {
         setOnlineUser(data.data as User[]);
-        console.log(1);
       }
     } catch (err) {
       console.error("getposts error : ", err);
@@ -190,21 +190,16 @@ export function Home(): React.JSX.Element {
     });
   };
 
+  const handlePress = (event: GestureResponderEvent) => {
+    console.log('RandomChatBanner pressed');
+  };
+
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
   return (
     <View style={styles.container}>
       <View style={[styles.safeArea, { height: top }]}></View>
-      <TouchableOpacity style={styles.homeHeader}>
-        <View style={styles.randomChatBtn}>
-          <Text style={styles.randomChatText}>실시간</Text>
-          <Text style={styles.randomChatText}>
-            랜덤 채팅 START
-            <Icon name="doubleright" size={28} />
-          </Text>
-        </View>
-        <Image source={require("@assets/images/logo_home.png")} style={styles.homeLogo} />
-      </TouchableOpacity>
+      <RandomChatBanner onPress={handlePress} />
       <View style={styles.homeTabBox}>
         <TouchableOpacity style={[styles.homeTab, selectedTab === "피드" ? styles.selectedTab : null]} onPress={() => setSelectedTab("피드")}>
           <Text style={[styles.homeTabText, selectedTab === "피드" ? styles.selectedTabText : null]}>피드</Text>
@@ -226,7 +221,9 @@ export function Home(): React.JSX.Element {
                           <View style={styles.feedProfile}>
                             <GradationProfile>
                               {feed.user.profileImage ? (
-                                <Image source={{ uri: feed.user.profileImage }} style={styles.feedProfileImage} alt="프로필 이미지" />
+                                <View style={styles.feedProfileInner}>
+                                  <Image source={{ uri: feed.user.profileImage }} style={styles.feedProfileImage} alt="프로필 이미지" />
+                                </View>
                               ) : (
                                 <View style={styles.feedProfile}>
                                   <Icon3 name="user-circle-o" size={46} color={"#fff"} />
@@ -310,7 +307,9 @@ export function Home(): React.JSX.Element {
                   <GradationProfile>
                     <View style={styles.modalProfileBox}>
                       {selectedPost.user.profileImage ? (
-                        <Image source={{ uri: selectedPost.user.profileImage }} style={styles.modalProfileImage} alt="프로필 이미지" />
+                        <View style={styles.modalProfileBoxInner}>
+                          <Image source={{ uri: selectedPost.user.profileImage }} style={styles.modalProfileImage} alt="프로필 이미지" />
+                        </View>
                       ) : (
                         <Icon3 name="user-circle-o" size={90} color={"#fff"} />
                       )}
@@ -410,31 +409,6 @@ const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: "#7000FF",
   },
-  homeHeader: {
-    flex: 2,
-    flexDirection: "row",
-    width: "100%",
-    alignItems: "flex-end",
-    backgroundColor: "#7000FF",
-  },
-  randomChatBtn: {
-    flex: 1,
-    justifyContent: "flex-end",
-    marginVertical: "3%",
-    marginLeft: "5%",
-    backgroundColor: "#7000FF",
-  },
-  randomChatText: {
-    color: "#fff",
-    fontSize: 32,
-    fontWeight: "600",
-  },
-  homeLogo: {
-    width: "23%",
-    height: "88%",
-    marginRight: "5%",
-    marginBottom: "1%",
-  },
   homeTabBox: {
     flex: 1,
     flexDirection: "row",
@@ -472,7 +446,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: "6%",
-    height: SCREEN_HEIGHT / 11,
+    height: 80,
   },
   feedContents: {
     flex: 1,
@@ -484,6 +458,14 @@ const styles = StyleSheet.create({
     height: 52,
     width: 52,
     borderRadius: 100,
+  },
+  feedProfileInner: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 46,
+    width: 46,
+    borderRadius: 100,
+    backgroundColor: "#fff",
   },
   feedInfo: {
     flex: 1,
@@ -508,7 +490,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT / 15,
+    height: 60,
     backgroundColor: "rgba(112, 0, 255, 0.05)",
   },
   onlineUserContainer: {
@@ -540,6 +522,7 @@ const styles = StyleSheet.create({
   feedProfileImage: {
     height: 44,
     width: 44,
+    borderRadius: 100,
   },
   onlineUsernickName: {
     fontWeight: "600",
@@ -552,8 +535,8 @@ const styles = StyleSheet.create({
   writeBtn: {
     justifyContent: "center",
     alignItems: "center",
-    width: SCREEN_HEIGHT / 18,
-    height: SCREEN_HEIGHT / 18,
+    width: 45,
+    height: 45,
     backgroundColor: "#111",
     position: "absolute",
     bottom: "3%",
@@ -566,9 +549,9 @@ const styles = StyleSheet.create({
   },
   modalView: {
     flex: 1,
-    marginHorizontal: SCREEN_WIDTH * 0.06,
-    marginTop: SCREEN_HEIGHT * 0.2,
-    marginBottom: SCREEN_HEIGHT * 0.15,
+    marginHorizontal: 25,
+    marginTop: 150,
+    marginBottom: 120,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -604,14 +587,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  modalProfileBoxInner: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 90,
+    width: 90,
+    borderRadius: 100,
+    backgroundColor: "#fff",
+  },
   modalProfileImage: {
-    height: SCREEN_HEIGHT / 10,
-    width: SCREEN_HEIGHT / 10,
+    height: 85,
+    width: 85,
     borderRadius: 100,
   },
   modalNicknameBox: {
     alignItems: "center",
-    height: 60,
+    height: 50,
     justifyContent: "space-between",
   },
   modalNicknameText: {
@@ -629,7 +620,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     marginTop: 10,
-    flex: 0.2,
+    height: 50,
     fontSize: 26,
     fontFamily: "Freesentation-6SemiBold",
   },
@@ -681,23 +672,23 @@ const styles = StyleSheet.create({
   innerModalBtn1: {
     justifyContent: "center",
     alignItems: "center",
-    width: SCREEN_WIDTH * 0.2,
-    height: SCREEN_HEIGHT * 0.04,
+    width: 80,
+    height: 35,
     borderBottomWidth: 1,
     borderColor: "#rgba(112, 0, 255, 0.2)",
   },
   innerModalBtn2: {
     justifyContent: "center",
     alignItems: "center",
-    width: SCREEN_WIDTH * 0.2,
-    height: SCREEN_HEIGHT * 0.04,
+    width: 80,
+    height: 35,
   },
   underModalOverlay: {
     flex: 1,
+    justifyContent: "flex-end",
   },
   underModalView: {
-    flex: 1,
-    marginTop: SCREEN_HEIGHT * 0.88,
+    height: 100,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",

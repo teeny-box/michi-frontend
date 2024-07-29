@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     width: "86%",
   },
   body: {
-    height: SCREEN_HEIGHT * 0.7,
+    height: 550,
     backgroundColor: "#fff",
   },
   titleInput: {
@@ -114,9 +114,10 @@ const styles = StyleSheet.create({
     height: "60%",
     borderBottomWidth: 1,
     borderBottomColor: "#9597A4",
+    textAlignVertical: 'top',
   },
   footer: {
-    height: SCREEN_HEIGHT * 0.5,
+    height: 100,
   },
   editBtn: {
     height: 50,
