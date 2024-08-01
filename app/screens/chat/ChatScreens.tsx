@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Platform, FlatList, TextInput, Pressable } from "react-native";
+import { View, Text, StyleSheet, Platform, FlatList, KeyboardAvoidingView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { KeyboardAvoidingView } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
-import { userState, accessTokenState } from "../../recoil/authAtoms";
-import { socketState } from "../../recoil/socketAtom";
+import { userState } from "../../recoil/authAtoms";
+import { socket } from "../../hooks/useSocket";
 import TextInputComponent from "../../components/chat/chatscreen/TextInputComponent";
 
 type ChatScreenParams = {
   route: {
     params: {
       navigation: any;
+      user: string;
       room: string;
       roomId: string;
     };
@@ -30,42 +30,29 @@ type Message = {
 export default function ChatScreen({ route }: Navigation) {
   const [messageText, setMessageText] = useState("");
   const [serverMessages, setServerMessages] = useState<Message[]>([]);
-  const socket = useRecoilValue(socketState);
-  const { nickname } = useRecoilValue(userState);
   const { top } = useSafeAreaInsets();
 
   useEffect(() => {
     if (socket) {
-      socket.on("connect", () => {
-        console.log("Connected Server");
-        const joinMessage = {
-          type: "join",
-          chatroomId: route.params.roomId,
-        };
-        socket.emit("join", joinMessage);
-      });
+      const joinMessage = {
+        type: "join",
+        chatroomId: route.params.roomId,
+      };
+      socket.emit("join", joinMessage);
 
       socket.on("onJoin", (e: any) => {
         console.log("User Joined:", e);
-        setServerMessages(prevMessages => [...prevMessages, { type: "join", ...e.data }]);
+        setServerMessages(prevMessages => [...prevMessages, { type: "join", user: e.data.nickname, message: e.message, room: route.params.roomId }]);
       });
 
       socket.on("onLeave", (e: any) => {
         console.log("User Left:", e);
-        setServerMessages(prevMessages => [...prevMessages, { type: "leave", ...e }]);
+        setServerMessages(prevMessages => [...prevMessages, { type: "leave", user: e.data.nickname, message: e.message, room: route.params.roomId }]);
       });
 
       socket.on("onMessage", (e: any) => {
         console.log("Received message:", e);
-        setServerMessages(prevMessages => [...prevMessages, { type: "message", ...e.data }]);
-      });
-
-      socket.on("disconnect", reason => {
-        console.log(`Disconnected. Reason: ${reason}`);
-      });
-
-      socket.on("error", error => {
-        console.log(`Socket error: ${error}`);
+        setServerMessages(prevMessages => [...prevMessages, { type: "message", user: e.data.nickname, message: e.data.message, room: route.params.roomId }]);
       });
 
       return () => {
@@ -74,7 +61,6 @@ export default function ChatScreen({ route }: Navigation) {
           chatroomId: route.params.roomId,
         };
         socket.emit("leave", leaveMessage);
-        socket.disconnect();
       };
     }
   }, [socket, route.params.roomId]);
@@ -86,7 +72,7 @@ export default function ChatScreen({ route }: Navigation) {
       const chatMessage = {
         type: "message",
         message: messageText,
-        messageType: "chat",
+        messageType: "text",
         chatroomId: route.params.roomId,
       };
       socket.emit("message", chatMessage);
@@ -96,9 +82,7 @@ export default function ChatScreen({ route }: Navigation) {
 
   const renderItem = ({ item }: { item: Message }) => (
     <View style={styles.messageContainer}>
-      <Text>
-        {item.user}: {item.message}
-      </Text>
+      <Text>{item.message}</Text>
     </View>
   );
 
