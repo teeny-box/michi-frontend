@@ -125,6 +125,7 @@ export function ChangeProfile(): React.JSX.Element {
       const data = await res.json();
 
       if (res.ok) {
+        // 기존 프사랑 변경된 프사가 다르면 사진 삭제 로직 추가하기
         setUserData(data.data);
         return 1;
       } else if (res.status === 401) {
