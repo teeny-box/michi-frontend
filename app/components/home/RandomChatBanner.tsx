@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   homeLogo: {
-    width: "23%",
-    height: "88%",
+    width: "20%",
+    height: "75%",
     marginRight: "5%",
     marginBottom: "1%",
   },

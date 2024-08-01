@@ -1,5 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Modal, Image, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback, GestureResponderEvent } from "react-native";
+import React, { useState, useCallback } from "react";
+import {
+  Modal,
+  Image,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  GestureResponderEvent,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon3 from "react-native-vector-icons/FontAwesome";
@@ -9,6 +21,8 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GradationProfile } from "@/components/common/GradationProfile";
 import LinearGradient from "react-native-linear-gradient";
+import { GradationButton } from "@/components/common/GradationButton";
+import { Button } from "@/components/common/Button";
 import { postsUrl, userUrl } from "@/utils/apiUrls";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
@@ -16,6 +30,7 @@ import { userState } from "@/recoil/authAtoms";
 import { accessTokenState } from "@/recoil/authAtoms";
 import { useAlert } from "@/hooks/useAlert";
 import RandomChatBanner from "@/components/home/RandomChatBanner";
+import { useSocket } from "@/hooks/useSocket";
 
 export type RootStackParam = {
   feedCreat: undefined;
@@ -69,16 +84,13 @@ export function Home(): React.JSX.Element {
   const { setAlertState } = useAlert();
   const { top, bottom } = useSafeAreaInsets();
   const accessToken = useRecoilValue(accessTokenState);
+  const { onlineUsers } = useSocket();
 
   useFocusEffect(
     useCallback(() => {
       getPostsData();
     }, []),
   );
-
-  useEffect(() => {
-    getOnlineUser();
-  }, []);
 
   const getPostsData = async (): Promise<void | undefined> => {
     try {
@@ -114,28 +126,12 @@ export function Home(): React.JSX.Element {
     }
   };
 
-  const getOnlineUser = async (): Promise<void | undefined> => {
-    try {
-      const res = await fetch(`${userUrl}/online`, {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
-      });
-
-      const data = await res.json();
-
-      if (res.status === 200) {
-        setOnlineUser(data.data as User[]);
-      }
-    } catch (err) {
-      console.error("getposts error : ", err);
-    }
-  };
-
   const onPressModalOpen = (post: Post) => {
     setSelectedPost(post);
     setIsModalVisible(true);
   };
 
-  const onPressOnlineModalOpen = (online: online) => {
+  const onPressOnlineModalOpen = (online: any) => {
     setSelectedPost(online);
     setIsOnlineModalVisible(true);
   };
@@ -191,7 +187,7 @@ export function Home(): React.JSX.Element {
   };
 
   const handlePress = (event: GestureResponderEvent) => {
-    console.log('RandomChatBanner pressed');
+    console.log("RandomChatBanner pressed");
   };
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
@@ -220,15 +216,13 @@ export function Home(): React.JSX.Element {
                         <GradationProfile>
                           <View style={styles.feedProfile}>
                             <GradationProfile>
-                              {feed.user.profileImage ? (
-                                <View style={styles.feedProfileInner}>
-                                  <Image source={{ uri: feed.user.profileImage }} style={styles.feedProfileImage} alt="프로필 이미지" />
-                                </View>
-                              ) : (
-                                <View style={styles.feedProfile}>
-                                  <Icon3 name="user-circle-o" size={46} color={"#fff"} />
-                                </View>
-                              )}
+                              <View style={styles.feedProfileInner}>
+                                <Image
+                                  source={feed.user.profileImage ? { uri: feed.user.profileImage } : require("@assets/images/user_default_image.png")}
+                                  style={styles.feedProfileImage}
+                                  alt="프로필 이미지"
+                                />
+                              </View>
                             </GradationProfile>
                           </View>
                         </GradationProfile>
@@ -262,16 +256,16 @@ export function Home(): React.JSX.Element {
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
               <View style={styles.onlineUserContainer}>
-                {onlineUser &&
-                  onlineUser.map((online: online, index) => (
+                {onlineUsers &&
+                  onlineUsers.map((online, index) => (
                     <TouchableOpacity key={index} style={styles.onlineUser} onPress={() => onPressOnlineModalOpen(online)}>
                       <GradationProfile>
                         <View style={styles.onlineUserProfile}>
-                          {online.profileImage ? (
-                            <Image source={{ uri: online.profileImage }} style={styles.onlineProfileImage} alt="프로필 이미지" />
-                          ) : (
-                            <Icon3 name="user-circle-o" size={76} color={"#fff"} />
-                          )}
+                          <Image
+                            source={online.profileImage ? { uri: online.profileImage } : require("@assets/images/user_default_image.png")}
+                            style={styles.onlineProfileImage}
+                            alt="프로필 이미지"
+                          />
                         </View>
                       </GradationProfile>
                       <Text style={styles.onlineUsernickName}>{online.nickname}</Text>
@@ -284,64 +278,64 @@ export function Home(): React.JSX.Element {
         )}
       </View>
       <Modal animationType="fade" visible={isModalVisible} transparent={true}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalView}>
-            {selectedPost && (
-              <View style={styles.modalcontentsbox}>
-                {userData.userId === selectedPost.user.userId && (
-                  <TouchableOpacity style={styles.modalMenuBtn} onPress={toggleInnerModal}>
-                    <Icon name="ellipsis1" size={32} color={"#7000FF"} />
-                  </TouchableOpacity>
-                )}
-                {isInnerModalVisible && (
-                  <View style={styles.innerModal}>
-                    <TouchableOpacity style={styles.innerModalBtn1} onPress={() => selectedPost && onPressEdit(selectedPost.postNumber)}>
-                      <Text>수정</Text>
+        <TouchableWithoutFeedback onPress={onPressModalClose}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalView}>
+              {selectedPost && (
+                <View style={styles.modalcontentsbox}>
+                  {userData.userId === selectedPost.user.userId && (
+                    <TouchableOpacity style={styles.modalMenuBtn} onPress={toggleInnerModal}>
+                      <Icon name="ellipsis1" size={32} color={"#7000FF"} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.innerModalBtn2} onPress={() => selectedPost && onPressInnerDelete()}>
-                      <Text>삭제</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                <View style={styles.modalProfileBox}>
-                  <GradationProfile>
-                    <View style={styles.modalProfileBox}>
-                      {selectedPost.user.profileImage ? (
-                        <View style={styles.modalProfileBoxInner}>
-                          <Image source={{ uri: selectedPost.user.profileImage }} style={styles.modalProfileImage} alt="프로필 이미지" />
-                        </View>
-                      ) : (
-                        <Icon3 name="user-circle-o" size={90} color={"#fff"} />
-                      )}
+                  )}
+                  {isInnerModalVisible && (
+                    <View style={styles.innerModal}>
+                      <TouchableOpacity style={styles.innerModalBtn1} onPress={() => selectedPost && onPressEdit(selectedPost.postNumber)}>
+                        <Text>수정</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.innerModalBtn2} onPress={() => selectedPost && onPressInnerDelete()}>
+                        <Text>삭제</Text>
+                      </TouchableOpacity>
                     </View>
-                  </GradationProfile>
-                </View>
-                <View style={styles.modalNicknameBox}>
-                  <Text style={styles.modalNicknameText}>{selectedPost.user.nickname}</Text>
-                  <Text style={styles.modalIsloginText}>접속중</Text>
-                </View>
-                <View style={styles.modalBody}>
-                  <Text style={styles.modalTitle}>{selectedPost.title}</Text>
-                  <View style={styles.modalContents}>
-                    <ScrollView>
-                      <Text style={styles.modalContentsText}>{selectedPost.content}</Text>
-                    </ScrollView>
+                  )}
+                  <View style={styles.modalProfileBox}>
+                    <GradationProfile>
+                      <View style={styles.modalProfileBox}>
+                        <View style={styles.modalProfileBoxInner}>
+                          <Image
+                            source={selectedPost.user.profileImage ? { uri: selectedPost.user.profileImage } : require("@assets/images/user_default_image.png")}
+                            style={styles.modalProfileImage}
+                            alt="프로필 이미지"
+                          />
+                        </View>
+                      </View>
+                    </GradationProfile>
+                  </View>
+                  <View style={styles.modalNicknameBox}>
+                    <Text style={styles.modalNicknameText}>{selectedPost.user.nickname}</Text>
+                    <Text style={styles.modalIsloginText}>접속중</Text>
+                  </View>
+                  <View style={styles.modalBody}>
+                    <Text style={styles.modalTitle} numberOfLines={2} ellipsizeMode="tail">
+                      {selectedPost.title}
+                    </Text>
+                    <View style={styles.modalContents}>
+                      <ScrollView>
+                        <Text style={styles.modalContentsText}>{selectedPost.content}</Text>
+                      </ScrollView>
+                    </View>
                   </View>
                 </View>
-              </View>
-            )}
-            <TouchableOpacity style={styles.modalbtn1}>
-              <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
-                <Text style={styles.modalFooterBtnText}>
-                  채팅하기 <Icon6 name="angle-right" size={22} />
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.modalbtn2} onPress={onPressModalClose}>
-              <Text style={styles.modalFooterBtnText}>취소</Text>
-            </TouchableOpacity>
+              )}
+              <TouchableOpacity style={styles.modalbtn1}>
+                <GradationButton text="채팅하기" rightIcon={<Icon6 name="angle-right" size={18} color={"white"} />} onPress={onPressModalClose} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalbtn2}>
+                <Button onPress={onPressModalClose} text="취소" color={"gray"} />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
       <Modal animationType="fade" visible={isOnlineModalVisible} transparent={true}>
         <View style={styles.modalOverlay}>
@@ -377,13 +371,13 @@ export function Home(): React.JSX.Element {
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalbtn2} onPress={onPressModalClose}>
-              <Text style={styles.modalFooterBtnText}>취소</Text>
+            <TouchableOpacity style={styles.modalbtn2}>
+              <Button onPress={onPressModalClose} text="취소" />
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-      <Modal animationType="slide" visible={isUnderModalVisible} transparent={true}>
+      <Modal animationType="fade" visible={isUnderModalVisible} transparent={true}>
         <TouchableWithoutFeedback onPress={UnderModalClose}>
           <View style={styles.underModalOverlay}>
             <View style={[styles.underModalView, { marginBottom: bottom }]}>
@@ -550,8 +544,8 @@ const styles = StyleSheet.create({
   modalView: {
     flex: 1,
     marginHorizontal: 25,
-    marginTop: 150,
-    marginBottom: 120,
+    marginTop: 100,
+    marginBottom: 80,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -606,7 +600,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   modalNicknameText: {
-    fontSize: 30,
+    fontSize: 28,
     fontFamily: "Freesentation-6SemiBold",
   },
   modalIsloginText: {
@@ -620,8 +614,8 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     marginTop: 10,
-    height: 50,
-    fontSize: 26,
+    height: 70,
+    fontSize: 24,
     fontFamily: "Freesentation-6SemiBold",
   },
   modalContents: {
@@ -633,7 +627,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#E8ECF1",
   },
   modalContentsText: {
-    fontSize: 16,
+    fontSize: 14,
   },
   modalbtn1: {
     flex: 0.4,
@@ -684,8 +678,9 @@ const styles = StyleSheet.create({
     height: 35,
   },
   underModalOverlay: {
-    flex: 1,
+    flex: 2,
     justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
   },
   underModalView: {
     height: 100,
