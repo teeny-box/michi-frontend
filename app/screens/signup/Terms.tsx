@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { commonStyles } from "./Common.styled";
 import { SignUpRootStackParam } from "../navigation/SignUpStackNavigation";
 import { useRecoilValue, useResetRecoilState } from "recoil";
@@ -65,9 +65,13 @@ export function Terms(): React.JSX.Element {
     openLoadingScreen();
 
     try {
-      const fcmToken = await messaging().getToken();
-      console.log("디바이스 토큰값");
-      console.log(fcmToken);
+      let fcmToken = "";
+
+      if (Platform.OS === "android") {
+        fcmToken = await messaging().getToken();
+        console.log("디바이스 토큰값");
+        console.log(fcmToken);
+      }
 
       const res = await fetch(`${authUrl}`, {
         method: "POST",
