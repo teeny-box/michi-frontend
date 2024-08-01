@@ -33,13 +33,13 @@ export function MainTabNavigation() {
           let iconName: string = "";
           let IconComponent: React.ComponentType<any> = HomeIcon;
 
-          if (route.name === "home") {
+          if (route.name === "메인") {
             IconComponent = HomeIcon;
             iconName = "home";
-          } else if (route.name === "chatting") {
+          } else if (route.name === "채팅목록") {
             IconComponent = ChatIcon;
             iconName = "chatbubble-ellipses";
-          } else if (route.name === "mypage/tab") {
+          } else if (route.name === "마이페이지") {
             IconComponent = MypageIcon;
             iconName = "user-circle-o";
           }
@@ -49,9 +49,9 @@ export function MainTabNavigation() {
         tabBarActiveTintColor: "#7000Ff",
         tabBarInactiveTintColor: "gray",
       })}>
-      <Tab.Screen name="home" component={HomeStackNavigation} />
-      <Tab.Screen name="chatting" component={ChatNavigation} />
-      <Tab.Screen name="mypage/tab" component={MyPageStackNavigation} />
+      <Tab.Screen name="메인" component={HomeStackNavigation} />
+      <Tab.Screen name="채팅목록" component={ChatNavigation} />
+      <Tab.Screen name="마이페이지" component={MyPageStackNavigation} />
     </Tab.Navigator>
   );
 }
