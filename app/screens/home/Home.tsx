@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Modal,
   Image,
@@ -74,7 +74,6 @@ const truncateText = (text: string, maxLength: number): string => {
 export function Home(): React.JSX.Element {
   const [selectedTab, setSelectedTab] = useState("피드");
   const [postsData, setPostsData] = useState<Post[]>([]);
-  const [onlineUser, setOnlineUser] = useState<User[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isUnderModalVisible, setIsUnderModalVisible] = useState<boolean>(false);
   const [isInnerModalVisible, setIsInnerModalVisible] = useState<boolean>(false);
@@ -84,7 +83,7 @@ export function Home(): React.JSX.Element {
   const { setAlertState } = useAlert();
   const { top, bottom } = useSafeAreaInsets();
   const accessToken = useRecoilValue(accessTokenState);
-  const { onlineUsers } = useSocket();
+  const { onlineUsers, onlineUserIds } = useSocket();
 
   useFocusEffect(
     useCallback(() => {
@@ -192,6 +191,9 @@ export function Home(): React.JSX.Element {
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
+  console.log("123", onlineUsers);
+  console.log("abc", onlineUserIds);
+
   return (
     <View style={styles.container}>
       <View style={[styles.safeArea, { height: top }]}></View>
@@ -206,26 +208,31 @@ export function Home(): React.JSX.Element {
       </View>
       <View style={styles.homeContents}>
         {selectedTab === "피드" ? (
-          <View>
+          <View style={styles.feedContainer}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
               {postsData &&
                 postsData.map((feed: Post) => (
                   <TouchableHighlight key={feed.postNumber} onPress={() => onPressModalOpen(feed)} underlayColor={"#rgba(112, 0, 255, 0.05)"}>
                     <View style={styles.feed}>
                       <View style={styles.feedContents}>
-                        <GradationProfile>
-                          <View style={styles.feedProfile}>
-                            <GradationProfile>
-                              <View style={styles.feedProfileInner}>
-                                <Image
-                                  source={feed.user.profileImage ? { uri: feed.user.profileImage } : require("@assets/images/user_default_image.png")}
-                                  style={styles.feedProfileImage}
-                                  alt="프로필 이미지"
-                                />
-                              </View>
-                            </GradationProfile>
+                        <View>
+                          <GradationProfile>
+                            <View style={styles.feedProfile}>
+                              <GradationProfile>
+                                <View style={styles.feedProfileInner}>
+                                  <Image
+                                    source={feed.user.profileImage ? { uri: feed.user.profileImage } : require("@assets/images/user_default_image.png")}
+                                    style={styles.feedProfileImage}
+                                    alt="프로필 이미지"
+                                  />
+                                </View>
+                              </GradationProfile>
+                            </View>
+                          </GradationProfile>
+                          <View style={styles.isOnline}>
+                            {onlineUserIds.includes(feed.user.userId) ? <View style={styles.isOnlineYes}></View> : <View style={styles.isOnlineNo}></View>}
                           </View>
-                        </GradationProfile>
+                        </View>
                         <View style={styles.feedInfo}>
                           <Text style={styles.feedNickName}>
                             {truncateText(feed.user.nickname, 10)}
@@ -434,6 +441,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   scrollView: {},
+  feedContainer: {
+    flex: 1,
+  },
   feed: {
     flex: 1,
     flexDirection: "row",
@@ -458,6 +468,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 46,
     width: 46,
+    borderRadius: 100,
+    backgroundColor: "#fff",
+  },
+  isOnline: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: "5%",
+    right: "5%",
+    height: 15,
+    width: 15,
+    backgroundColor: "#AB94F7",
+    borderRadius: 100,
+  },
+  isOnlineYes: {
+    height: 10,
+    width: 10,
+    borderRadius: 100,
+    backgroundColor: "#00CF3A",
+  },
+  isOnlineNo: {
+    height: 10,
+    width: 10,
     borderRadius: 100,
     backgroundColor: "#fff",
   },
@@ -533,8 +566,8 @@ const styles = StyleSheet.create({
     height: 45,
     backgroundColor: "#111",
     position: "absolute",
-    bottom: "3%",
-    right: "3%",
+    bottom: "4%",
+    right: "4%",
     borderRadius: 100,
   },
   modalOverlay: {
@@ -630,13 +663,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   modalbtn1: {
-    flex: 0.4,
+    height: 45,
     width: "85%",
     marginTop: 15,
     marginBottom: 10,
   },
   modalbtn2: {
-    flex: 0.4,
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     width: "85%",

@@ -8,6 +8,7 @@ export let socket: Socket;
 export function useSocket() {
   const accessToken = useRecoilValue(accessTokenState);
   const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
+  const [onlineUserIds, setOnlineUserIds] = useState<any[]>([]);
 
   useEffect(() => {
     if (socket) {
@@ -27,6 +28,7 @@ export function useSocket() {
     socket.on("connect", () => {
       console.log("is connected :", socket.connected);
       socket.emit('getOnlineUsers', { page: 1, pageSize: 10 });
+      socket.emit('getOnlineUserIds');
     });
 
     socket.on("onError", e => {
@@ -37,7 +39,12 @@ export function useSocket() {
       console.log('onGetOnlineUsers received:', data);
       setOnlineUsers(data.data);
     });
+
+    socket.on('onGetOnlineUserIds', (data) => {
+      console.log('onGetOnlineUserIds received:', data);
+      setOnlineUserIds(data.data);
+    });
   };
 
-  return { socket, connectSocket, onlineUsers };
+  return { socket, connectSocket, onlineUsers, onlineUserIds };
 }
