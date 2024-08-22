@@ -6,12 +6,10 @@ import { MyPageStackNavigation } from "./MyPageStack";
 import HomeIcon from "react-native-vector-icons/Entypo";
 import ChatIcon from "react-native-vector-icons/Ionicons";
 import MypageIcon from "react-native-vector-icons/FontAwesome";
-import { useSocket } from "@/hooks/useSocket";
 
 const Tab = createBottomTabNavigator();
 
 export function MainTabNavigation() {
-  useSocket();
 
   const customTabNavigationOptions: BottomTabNavigationOptions = {
     title: "",

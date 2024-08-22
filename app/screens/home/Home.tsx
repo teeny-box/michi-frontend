@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Modal,
   Image,
@@ -14,13 +14,11 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/AntDesign";
-import Icon3 from "react-native-vector-icons/FontAwesome";
 import Icon4 from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon6 from "react-native-vector-icons/FontAwesome5";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GradationProfile } from "@/components/common/GradationProfile";
-import LinearGradient from "react-native-linear-gradient";
 import { GradationButton } from "@/components/common/GradationButton";
 import { Button } from "@/components/common/Button";
 import { postsUrl, userUrl } from "@/utils/apiUrls";
@@ -30,11 +28,13 @@ import { userState } from "@/recoil/authAtoms";
 import { accessTokenState } from "@/recoil/authAtoms";
 import { useAlert } from "@/hooks/useAlert";
 import RandomChatBanner from "@/components/home/RandomChatBanner";
+import UserProfile from "@/components/common/UserProfile";
 import { useSocket } from "@/hooks/useSocket";
 
 export type RootStackParam = {
   feedCreat: undefined;
   feedEdit: { postNumber: number };
+  ChatScreen: undefined;
 };
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -59,6 +59,15 @@ interface Post {
   };
 }
 
+interface OnlineUser {
+  userId: string;
+  nickname: string;
+  profileImage?: string | null;
+  title: string;
+  content: string;
+  // 필요한 다른 속성들 추가
+}
+
 interface User {
   nickname: string;
   profileImage?: string | null;
@@ -74,17 +83,19 @@ const truncateText = (text: string, maxLength: number): string => {
 export function Home(): React.JSX.Element {
   const [selectedTab, setSelectedTab] = useState("피드");
   const [postsData, setPostsData] = useState<Post[]>([]);
-  const [onlineUser, setOnlineUser] = useState<User[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isUnderModalVisible, setIsUnderModalVisible] = useState<boolean>(false);
   const [isInnerModalVisible, setIsInnerModalVisible] = useState<boolean>(false);
   const [isOnlineModalVisible, setIsOnlineModalVisible] = useState<boolean>(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [selectedOnline, setSelectedOnline] = useState<OnlineUser | null>(null);
   const [userData] = useRecoilState(userState);
   const { setAlertState } = useAlert();
   const { top, bottom } = useSafeAreaInsets();
   const accessToken = useRecoilValue(accessTokenState);
-  const { onlineUsers } = useSocket();
+  const { onlineUsers, onlineUserIds } = useSocket();
+
+  const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -126,19 +137,40 @@ export function Home(): React.JSX.Element {
     }
   };
 
+  async function fetchRandomChatRoom(token: string) {
+    const response = await fetch(`${process.env.BASE_URL}/chat/random`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch chat room");
+    }
+
+    const data = await response.json();
+    return data.data; // data.data에 채팅 방 정보가 들어있습니다.
+  }
+
   const onPressModalOpen = (post: Post) => {
     setSelectedPost(post);
     setIsModalVisible(true);
   };
 
   const onPressOnlineModalOpen = (online: any) => {
-    setSelectedPost(online);
+    setSelectedOnline(online);
     setIsOnlineModalVisible(true);
   };
 
   const onPressModalClose = () => {
     setIsModalVisible(false);
     setIsInnerModalVisible(false);
+  };
+
+  const onPressOnlineModalClose = () => {
+    setIsOnlineModalVisible(false);
   };
 
   const onPressUnderModalOpen = (post: Post) => {
@@ -186,16 +218,12 @@ export function Home(): React.JSX.Element {
     });
   };
 
-  const handlePress = (event: GestureResponderEvent) => {
-    console.log("RandomChatBanner pressed");
-  };
-
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
-
+  
   return (
     <View style={styles.container}>
       <View style={[styles.safeArea, { height: top }]}></View>
-      <RandomChatBanner onPress={handlePress} />
+      <RandomChatBanner />
       <View style={styles.homeTabBox}>
         <TouchableOpacity style={[styles.homeTab, selectedTab === "피드" ? styles.selectedTab : null]} onPress={() => setSelectedTab("피드")}>
           <Text style={[styles.homeTabText, selectedTab === "피드" ? styles.selectedTabText : null]}>피드</Text>
@@ -206,26 +234,14 @@ export function Home(): React.JSX.Element {
       </View>
       <View style={styles.homeContents}>
         {selectedTab === "피드" ? (
-          <View>
+          <View style={styles.feedContainer}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
               {postsData &&
                 postsData.map((feed: Post) => (
                   <TouchableHighlight key={feed.postNumber} onPress={() => onPressModalOpen(feed)} underlayColor={"#rgba(112, 0, 255, 0.05)"}>
                     <View style={styles.feed}>
                       <View style={styles.feedContents}>
-                        <GradationProfile>
-                          <View style={styles.feedProfile}>
-                            <GradationProfile>
-                              <View style={styles.feedProfileInner}>
-                                <Image
-                                  source={feed.user.profileImage ? { uri: feed.user.profileImage } : require("@assets/images/user_default_image.png")}
-                                  style={styles.feedProfileImage}
-                                  alt="프로필 이미지"
-                                />
-                              </View>
-                            </GradationProfile>
-                          </View>
-                        </GradationProfile>
+                        <UserProfile profileImage={feed.user.profileImage} isOnline={onlineUserIds.includes(feed.user.userId)} />
                         <View style={styles.feedInfo}>
                           <Text style={styles.feedNickName}>
                             {truncateText(feed.user.nickname, 10)}
@@ -259,15 +275,7 @@ export function Home(): React.JSX.Element {
                 {onlineUsers &&
                   onlineUsers.map((online, index) => (
                     <TouchableOpacity key={index} style={styles.onlineUser} onPress={() => onPressOnlineModalOpen(online)}>
-                      <GradationProfile>
-                        <View style={styles.onlineUserProfile}>
-                          <Image
-                            source={online.profileImage ? { uri: online.profileImage } : require("@assets/images/user_default_image.png")}
-                            style={styles.onlineProfileImage}
-                            alt="프로필 이미지"
-                          />
-                        </View>
-                      </GradationProfile>
+                      <UserProfile profileImage={online.profileImage} isOnline={onlineUserIds.includes(online.userId)} size="large" />
                       <Text style={styles.onlineUsernickName}>{online.nickname}</Text>
                       <Text style={styles.onlineUserisOnline}>접속중</Text>
                     </TouchableOpacity>
@@ -278,7 +286,7 @@ export function Home(): React.JSX.Element {
         )}
       </View>
       <Modal animationType="fade" visible={isModalVisible} transparent={true}>
-        <TouchableWithoutFeedback onPress={onPressModalClose}>
+        <TouchableWithoutFeedback>
           <View style={styles.modalOverlay}>
             <View style={styles.modalView}>
               {selectedPost && (
@@ -310,6 +318,9 @@ export function Home(): React.JSX.Element {
                         </View>
                       </View>
                     </GradationProfile>
+                    <View style={styles.isOnline}>
+                      {onlineUserIds.includes(selectedPost.user.userId) ? <View style={styles.isOnlineYes}></View> : <View style={styles.isOnlineNo}></View>}
+                    </View>
                   </View>
                   <View style={styles.modalNicknameBox}>
                     <Text style={styles.modalNicknameText}>{selectedPost.user.nickname}</Text>
@@ -338,44 +349,44 @@ export function Home(): React.JSX.Element {
         </TouchableWithoutFeedback>
       </Modal>
       <Modal animationType="fade" visible={isOnlineModalVisible} transparent={true}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalView}>
-            {selectedPost && (
-              <View style={styles.modalcontentsbox}>
-                {userData.userId === selectedPost.user.userId && (
-                  <TouchableOpacity style={styles.modalMenuBtn} onPress={toggleInnerModal}>
-                    <Icon name="ellipsis1" size={32} color={"#7000FF"} />
-                  </TouchableOpacity>
-                )}
-                <View style={styles.modalProfileBox}>
-                  <GradationProfile>
-                    <View style={styles.modalProfileBox}>
-                      {selectedPost.user.profileImage ? (
-                        <Image source={{ uri: selectedPost.user.profileImage }} style={styles.modalProfileImage} alt="프로필 이미지" />
-                      ) : (
-                        <Icon3 name="user-circle-o" size={90} color={"#fff"} />
-                      )}
+        <TouchableWithoutFeedback onPress={onPressModalClose}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.onlineModalView}>
+              {selectedOnline && (
+                <View style={styles.modalcontentsbox}>
+                  <View style={styles.modalProfileBox}>
+                    <GradationProfile>
+                      <View style={styles.modalProfileBox}>
+                        <View style={styles.modalProfileBoxInner}>
+                          <Image
+                            source={selectedOnline.profileImage ? { uri: selectedOnline.profileImage } : require("@assets/images/user_default_image.png")}
+                            style={styles.modalProfileImage}
+                            alt="프로필 이미지"
+                          />
+                        </View>
+                      </View>
+                    </GradationProfile>
+                    <View style={styles.isOnline}>
+                      {onlineUserIds.includes(selectedOnline.userId) ? <View style={styles.isOnlineYes}></View> : <View style={styles.isOnlineNo}></View>}
                     </View>
-                  </GradationProfile>
+                  </View>
+                  <View style={styles.modalNicknameBox}>
+                    <Text style={styles.modalNicknameText}>{selectedOnline.nickname}</Text>
+                    <Text style={styles.modalIsloginText}>접속중</Text>
+                  </View>
                 </View>
-                <View style={styles.modalNicknameBox}>
-                  <Text style={styles.modalNicknameText}>{selectedPost.user.nickname}</Text>
-                  <Text style={styles.modalIsloginText}>접속중</Text>
-                </View>
+              )}
+              <View style={styles.onlineModalbtnBox}>
+                <TouchableOpacity style={styles.onlineModalbtn1}>
+                  <GradationButton text="채팅하기" rightIcon={<Icon6 name="angle-right" size={18} color={"white"} />} onPress={onPressOnlineModalClose} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.onlineModalbtn2}>
+                  <Button onPress={onPressOnlineModalClose} text="취소" color={"gray"} />
+                </TouchableOpacity>
               </View>
-            )}
-            <TouchableOpacity style={styles.modalbtn1}>
-              <LinearGradient style={styles.linearGradient} colors={["#AA94F7", "#759AF3"]} useAngle={true} angle={170} angleCenter={{ x: 0.5, y: 0.5 }}>
-                <Text style={styles.modalFooterBtnText}>
-                  채팅하기 <Icon6 name="angle-right" size={22} />
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.modalbtn2}>
-              <Button onPress={onPressModalClose} text="취소" />
-            </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
       <Modal animationType="fade" visible={isUnderModalVisible} transparent={true}>
         <TouchableWithoutFeedback onPress={UnderModalClose}>
@@ -434,6 +445,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   scrollView: {},
+  feedContainer: {
+    flex: 1,
+  },
   feed: {
     flex: 1,
     flexDirection: "row",
@@ -445,21 +459,6 @@ const styles = StyleSheet.create({
   feedContents: {
     flex: 1,
     flexDirection: "row",
-  },
-  feedProfile: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 52,
-    width: 52,
-    borderRadius: 100,
-  },
-  feedProfileInner: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 46,
-    width: 46,
-    borderRadius: 100,
-    backgroundColor: "#fff",
   },
   feedInfo: {
     flex: 1,
@@ -501,23 +500,6 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT / 6.5,
     marginVertical: SCREEN_HEIGHT / 200,
   },
-  onlineUserProfile: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: SCREEN_HEIGHT / 10,
-    width: SCREEN_HEIGHT / 10,
-    borderRadius: 100,
-  },
-  onlineProfileImage: {
-    height: SCREEN_HEIGHT / 11,
-    width: SCREEN_HEIGHT / 11,
-    borderRadius: 100,
-  },
-  feedProfileImage: {
-    height: 44,
-    width: 44,
-    borderRadius: 100,
-  },
   onlineUsernickName: {
     fontWeight: "600",
     marginVertical: SCREEN_HEIGHT / 200,
@@ -533,12 +515,13 @@ const styles = StyleSheet.create({
     height: 45,
     backgroundColor: "#111",
     position: "absolute",
-    bottom: "3%",
-    right: "3%",
+    bottom: "4%",
+    right: "4%",
     borderRadius: 100,
   },
   modalOverlay: {
     flex: 1,
+    justifyContent: "center",
     backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   modalView: {
@@ -594,6 +577,29 @@ const styles = StyleSheet.create({
     width: 85,
     borderRadius: 100,
   },
+  isOnline: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: "5%",
+    right: "5%",
+    height: 24,
+    width: 24,
+    backgroundColor: "#AB94F7",
+    borderRadius: 100,
+  },
+  isOnlineYes: {
+    height: 18,
+    width: 18,
+    borderRadius: 100,
+    backgroundColor: "#00CF3A",
+  },
+  isOnlineNo: {
+    height: 18,
+    width: 18,
+    borderRadius: 100,
+    backgroundColor: "#fff",
+  },
   modalNicknameBox: {
     alignItems: "center",
     height: 50,
@@ -630,13 +636,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   modalbtn1: {
-    flex: 0.4,
+    height: 45,
     width: "85%",
     marginTop: 15,
     marginBottom: 10,
   },
   modalbtn2: {
-    flex: 0.4,
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     width: "85%",
@@ -653,6 +659,44 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "Freesentation-5Medium",
     color: "#ffffff",
+  },
+  onlineModalView: {
+    height: 260,
+    marginHorizontal: 25,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#7000FF",
+    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  onlineModalbtnBox: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  onlineModalbtn1: {
+    height: 45,
+    width: "40%",
+    marginRight: 7,
+    marginBottom: 20,
+  },
+  onlineModalbtn2: {
+    height: 45,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "40%",
+    backgroundColor: "#9597A4",
+    marginLeft:7,
+    marginBottom: 20,
   },
   innerModal: {
     top: 30,
