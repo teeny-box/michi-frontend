@@ -44,6 +44,10 @@ export function useSocket() {
       console.log('onGetOnlineUserIds received:', data);
       setOnlineUserIds(data.data);
     });
+
+    socket.on('onlineUsersUpdated', (data) => {
+      console.log('onlineUsersUpdated received:', data);
+    });
   };
 
   return { socket, connectSocket, onlineUsers, onlineUserIds };

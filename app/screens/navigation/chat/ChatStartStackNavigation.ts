@@ -1,5 +1,5 @@
 export type RootStackParam = {
-  ChatScreen: { room: string };
+  ChatScreen: { room: string; roomId: string; messages?: any[] };
   ChatRoomScreen: undefined;
   LoginScreen: undefined;
 };
